@@ -1170,9 +1170,9 @@
                     
                     <!-- Zone de scanner code-barres -->
                     <div id="scannerCalculateur" style="display: none; margin-bottom: 15px;">
-                        <div id="videoCalculateur" style="position: relative; background: #000; border-radius: 10px; overflow: hidden; margin-bottom: 10px;">
-                            <canvas id="canvasCalculateur" style="width: 100%; height: auto; display: block;"></canvas>
-                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80%; height: 60%; border: 2px solid #4caf50; border-radius: 10px; box-shadow: 0 0 0 2000px rgba(0,0,0,0.5);"></div>
+                        <div style="background: #f5f5f5; padding: 15px; border-radius: 10px; margin-bottom: 10px; text-align: center;">
+                            <p style="margin: 0 0 10px 0; color: #666;">📊 Scannez le code-barres du produit</p>
+                            <div id="videoCalculateur" style="position: relative; width: 100%; max-width: 400px; height: 300px; margin: 0 auto; background: #000; border-radius: 10px; overflow: hidden;"></div>
                         </div>
                         <button onclick="arreterScannerCalculateur()" class="btn" style="background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%); width: 100%;">
                             🛑 Arrêter
@@ -5667,30 +5667,31 @@ Réponds de manière personnalisée, encourageante et professionnelle. Donne des
 
         function demarrerScannerCalculateur() {
             document.getElementById('scannerCalculateur').style.display = 'block';
+            document.getElementById('photoCalculateur').style.display = 'none';
             scannerCalculateurActif = true;
 
             Quagga.init({
                 inputStream: {
                     type: "LiveStream",
-                    target: document.querySelector('#canvasCalculateur'),
+                    target: document.querySelector('#videoCalculateur'),
                     constraints: {
+                        width: { min: 640 },
+                        height: { min: 480 },
                         facingMode: "environment"
                     }
                 },
                 decoder: {
-                    readers: ["ean_reader", "ean_8_reader", "upc_reader", "code_128_reader"]
+                    readers: ["ean_reader", "ean_8_reader", "upc_reader", "code_128_reader", "code_39_reader"]
                 },
-                locate: true,
-                locator: {
-                    halfSample: true,
-                    patchSize: "medium"
-                }
+                locate: true
             }, function(err) {
                 if (err) {
                     console.log(err);
                     afficherNotification('❌ Erreur caméra: ' + err.message, 'linear-gradient(135deg, #f5576c 0%, #f093fb 100%)');
+                    arreterScannerCalculateur();
                     return;
                 }
+                console.log('✅ Scanner calculateur démarré');
                 Quagga.start();
             });
 
