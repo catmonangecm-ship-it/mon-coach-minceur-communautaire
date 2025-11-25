@@ -1156,6 +1156,23 @@
                 <div style="background: white; border: 2px solid #667eea; border-radius: 10px; padding: 20px; margin-bottom: 20px;">
                     <h3 style="color: #667eea; margin-bottom: 15px;">🔍 Rechercher un aliment</h3>
                     
+                    <!-- Bouton Scanner -->
+                    <button onclick="demarrerScannerCalculateur()" class="btn" style="background: linear-gradient(135deg, #ff6ec7 0%, #ff006e 100%); width: 100%; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                        <span style="font-size: 1.2em;">📷</span>
+                        <span>Scanner un code-barres</span>
+                    </button>
+                    
+                    <!-- Zone de scanner -->
+                    <div id="scannerCalculateur" style="display: none; margin-bottom: 15px;">
+                        <div id="videoCalculateur" style="position: relative; background: #000; border-radius: 10px; overflow: hidden; margin-bottom: 10px;">
+                            <canvas id="canvasCalculateur" style="width: 100%; height: auto; display: block;"></canvas>
+                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80%; height: 60%; border: 2px solid #4caf50; border-radius: 10px; box-shadow: 0 0 0 2000px rgba(0,0,0,0.5);"></div>
+                        </div>
+                        <button onclick="arreterScannerCalculateur()" class="btn" style="background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%); width: 100%;">
+                            🛑 Arrêter le scanner
+                        </button>
+                    </div>
+                    
                     <div class="form-group">
                         <label>Nom de l'aliment</label>
                         <input type="text" id="searchAliment" placeholder="Ex: poulet, pomme, riz..." oninput="rechercherAliment()">
@@ -1830,6 +1847,38 @@
                 <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 25px; border-radius: 15px; margin-bottom: 25px; text-align: center;">
                     <h3 style="font-size: 1.5em; margin-bottom: 10px;">👋 Bonjour <span id="nomCoachIA">Champion</span> !</h3>
                     <p style="font-size: 1.1em; opacity: 0.95;">Votre coach personnel analyse vos données pour vous accompagner vers votre objectif</p>
+                </div>
+
+                <!-- Chat IA Gratuit -->
+                <div style="background: white; border: 3px solid #667eea; border-radius: 15px; padding: 25px; margin-bottom: 25px;">
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+                        <div style="font-size: 3em;">🤖</div>
+                        <div>
+                            <h3 style="color: #667eea; margin: 0;">Coach IA en Direct</h3>
+                            <p style="color: #666; margin: 5px 0 0 0; font-size: 0.9em;">Posez-moi toutes vos questions sur la nutrition, le sport, la motivation...</p>
+                        </div>
+                    </div>
+
+                    <!-- Zone de conversation -->
+                    <div id="chatIA" style="max-height: 400px; overflow-y: auto; margin-bottom: 20px; padding: 15px; background: #f8f9fa; border-radius: 10px; min-height: 200px;">
+                        <div style="text-align: center; padding: 40px 20px; color: #999;">
+                            <div style="font-size: 3em; margin-bottom: 10px;">💬</div>
+                            <p>Posez votre première question au Coach IA !</p>
+                            <p style="font-size: 0.85em; margin-top: 10px;">Exemples : "Comment perdre du poids efficacement ?", "Quels aliments pour plus d'énergie ?", "Programme d'exercices pour débutant"</p>
+                        </div>
+                    </div>
+
+                    <!-- Zone de saisie -->
+                    <div style="display: flex; gap: 10px;">
+                        <textarea id="questionIA" placeholder="Posez votre question ici... (ex: Comment atteindre mon objectif de perte de poids ?)" style="flex: 1; padding: 15px; border: 2px solid #e0e0e0; border-radius: 10px; resize: vertical; min-height: 60px; font-family: inherit; font-size: 1em;"></textarea>
+                        <button onclick="envoyerQuestionIA()" class="btn" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); white-space: nowrap; padding: 15px 25px; height: auto; min-height: 60px;">
+                            📤 Envoyer
+                        </button>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 15px;">
+                        <small style="color: #999;">✨ IA gratuite et illimitée • Réponses en quelques secondes</small>
+                    </div>
                 </div>
 
                 <div id="tableauBordIA" style="margin-bottom: 25px;"></div>
@@ -4415,6 +4464,153 @@
         }
 
         // ==============================================
+        // COACH IA - API GROQ GRATUITE
+        // ==============================================
+
+        let conversationIA = [];
+
+        async function envoyerQuestionIA() {
+            const questionInput = document.getElementById('questionIA');
+            const question = questionInput.value.trim();
+
+            if (!question) {
+                afficherNotification('⚠️ Veuillez poser une question', 'linear-gradient(135deg, #ffc107 0%, #ff9800 100%)');
+                return;
+            }
+
+            // Désactiver le bouton pendant le chargement
+            const btn = event.target;
+            btn.disabled = true;
+            btn.textContent = '⏳ Réflexion...';
+
+            // Afficher la question de l'utilisateur
+            ajouterMessageChat('user', question);
+            questionInput.value = '';
+
+            // Créer le contexte personnalisé avec les données de l'utilisateur
+            const contexte = `Tu es un coach sportif et nutritionniste professionnel et bienveillant.
+            
+Informations sur l'utilisateur :
+- Nom : ${userData.nom || 'Utilisateur'}
+- Objectif : ${userData.objectif || 'Non défini'}
+- Poids actuel : ${userData.poidsActuel || 'Non défini'} kg
+- Poids objectif : ${userData.poidsObjectif || 'Non défini'} kg
+
+Réponds de manière personnalisée, encourageante et professionnelle. Donne des conseils concrets et applicables immédiatement.`;
+
+            try {
+                // Appel API Groq (gratuit et très rapide)
+                const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer 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' // Clé API Groq gratuite
+                    },
+                    body: JSON.stringify({
+                        model: 'llama-3.3-70b-versatile',
+                        messages: [
+                            {
+                                role: 'system',
+                                content: contexte
+                            },
+                            ...conversationIA,
+                            {
+                                role: 'user',
+                                content: question
+                            }
+                        ],
+                        temperature: 0.7,
+                        max_tokens: 1000
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Erreur API: ' + response.status);
+                }
+
+                const data = await response.json();
+                const reponse = data.choices[0].message.content;
+
+                // Sauvegarder dans l'historique
+                conversationIA.push({
+                    role: 'user',
+                    content: question
+                });
+                conversationIA.push({
+                    role: 'assistant',
+                    content: reponse
+                });
+
+                // Afficher la réponse
+                ajouterMessageChat('assistant', reponse);
+
+            } catch (error) {
+                console.error('Erreur IA:', error);
+                ajouterMessageChat('error', 'Désolé, je n\'ai pas pu traiter votre question. Veuillez réessayer dans quelques instants.');
+            } finally {
+                // Réactiver le bouton
+                btn.disabled = false;
+                btn.textContent = '📤 Envoyer';
+            }
+        }
+
+        function ajouterMessageChat(type, message) {
+            const chatIA = document.getElementById('chatIA');
+            
+            // Supprimer le message de bienvenue si présent
+            if (chatIA.querySelector('div[style*="text-align: center"]')) {
+                chatIA.innerHTML = '';
+            }
+
+            const messageDiv = document.createElement('div');
+            messageDiv.style.cssText = 'margin-bottom: 15px; animation: slideIn 0.3s ease;';
+
+            if (type === 'user') {
+                messageDiv.innerHTML = `
+                    <div style="display: flex; justify-content: flex-end;">
+                        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 18px; border-radius: 18px 18px 4px 18px; max-width: 70%; word-wrap: break-word;">
+                            <strong style="display: block; margin-bottom: 5px; font-size: 0.85em; opacity: 0.9;">Vous</strong>
+                            ${message.replace(/\n/g, '<br>')}
+                        </div>
+                    </div>
+                `;
+            } else if (type === 'assistant') {
+                messageDiv.innerHTML = `
+                    <div style="display: flex; justify-content: flex-start;">
+                        <div style="background: white; border: 2px solid #667eea; color: #333; padding: 12px 18px; border-radius: 18px 18px 18px 4px; max-width: 70%; word-wrap: break-word;">
+                            <strong style="display: block; margin-bottom: 5px; color: #667eea; font-size: 0.85em;">🤖 Coach IA</strong>
+                            ${message.replace(/\n/g, '<br>')}
+                        </div>
+                    </div>
+                `;
+            } else if (type === 'error') {
+                messageDiv.innerHTML = `
+                    <div style="text-align: center;">
+                        <div style="background: #fee; border: 2px solid #fcc; color: #c00; padding: 12px 18px; border-radius: 10px; display: inline-block;">
+                            ⚠️ ${message}
+                        </div>
+                    </div>
+                `;
+            }
+
+            chatIA.appendChild(messageDiv);
+            chatIA.scrollTop = chatIA.scrollHeight;
+        }
+
+        // Permettre l'envoi avec Entrée
+        document.addEventListener('DOMContentLoaded', function() {
+            const questionInput = document.getElementById('questionIA');
+            if (questionInput) {
+                questionInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        envoyerQuestionIA();
+                    }
+                });
+            }
+        });
+
+        // ==============================================
         // FONCTIONS FRIGO & SUGGESTIONS RECETTES
         // ==============================================
 
@@ -4523,15 +4719,6 @@
             produit = baseProduitsCourants.find(p => p.barcode === codebarre);
             if (produit) {
                 afficherProduitScanneFrigo(produit);
-                ajouterAuFrigo({
-                    barcode: codebarre,
-                    nom: produit.nom,
-                    marque: produit.marque,
-                    calories: produit.calories,
-                    proteines: produit.proteines,
-                    glucides: produit.glucides,
-                    lipides: produit.lipides
-                });
                 document.getElementById('loadingScannerFrigo').style.display = 'none';
                 return;
             }
@@ -4540,7 +4727,6 @@
             produit = produitsPerso.find(p => p.barcode === codebarre);
             if (produit) {
                 afficherProduitScanneFrigo(produit);
-                ajouterAuFrigo(produit);
                 document.getElementById('loadingScannerFrigo').style.display = 'none';
                 return;
             }
@@ -4549,7 +4735,6 @@
             produit = produitsSauvegardes.find(p => p.barcode === codebarre);
             if (produit) {
                 afficherProduitScanneFrigo(produit);
-                ajouterAuFrigo(produit);
                 document.getElementById('loadingScannerFrigo').style.display = 'none';
                 return;
             }
@@ -4558,7 +4743,6 @@
             produit = rechercherDansBaseCommunautaire(codebarre);
             if (produit) {
                 afficherProduitScanneFrigo(produit);
-                ajouterAuFrigo(produit);
                 document.getElementById('loadingScannerFrigo').style.display = 'none';
                 afficherNotification('🌍 Produit trouvé dans la base communautaire !', 'linear-gradient(135deg, #4caf50 0%, #45a049 100%)');
                 return;
@@ -4581,7 +4765,6 @@
                         lipides: nutriments.fat_100g || nutriments.fat || 0
                     };
                     afficherProduitScanneFrigo(produitTrouve);
-                    ajouterAuFrigo(produitTrouve);
                 } else {
                     afficherNotification('❌ Produit non trouvé. Ajoutez-le dans "📝 Ma Base Perso"', 'linear-gradient(135deg, #f5576c 0%, #f093fb 100%)');
                 }
@@ -4609,14 +4792,117 @@
             document.getElementById('scanFrigoManual').value = '';
         }
 
-        function afficherProduitScanneFrigo(produit) {
-            document.getElementById('produitScanneFrigo').style.display = 'block';
-            document.getElementById('nomProduitScanneFrigo').textContent = produit.nom;
-            document.getElementById('infoProduitScanneFrigo').textContent = `${produit.marque || ''} • ${Math.round(produit.calories)} kcal/100g`;
+        function afficherProduitScanneFrigo(produit, ajouterAutomatiquement = true) {
+            // Créer un modal de confirmation avec possibilité de correction
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.8);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 10000;
+                padding: 20px;
+            `;
 
-            setTimeout(() => {
-                document.getElementById('produitScanneFrigo').style.display = 'none';
-            }, 5000);
+            modal.innerHTML = `
+                <div style="background: white; border-radius: 15px; padding: 25px; max-width: 500px; width: 100%;">
+                    <h3 style="color: #4caf50; margin-bottom: 20px; text-align: center;">🧊 Produit détecté pour le frigo</h3>
+                    
+                    <div style="background: #f5f5f5; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                        <div style="margin-bottom: 10px;"><strong>📦 Nom:</strong> <span id="modalFrigoNom">${produit.nom}</span></div>
+                        <div style="margin-bottom: 10px;"><strong>🏷️ Marque:</strong> <span id="modalFrigoMarque">${produit.marque || 'N/A'}</span></div>
+                        <div style="margin-bottom: 10px;"><strong>📊 Code:</strong> ${produit.barcode}</div>
+                        <div style="margin-bottom: 10px;"><strong>🔥 Calories:</strong> <span id="modalFrigoCalories">${produit.calories}</span> kcal/100g</div>
+                        <div style="margin-bottom: 10px;"><strong>💪 Protéines:</strong> <span id="modalFrigoProteines">${produit.proteines}</span>g/100g</div>
+                        <div style="margin-bottom: 10px;"><strong>🍞 Glucides:</strong> <span id="modalFrigoGlucides">${produit.glucides}</span>g/100g</div>
+                        <div style="margin-bottom: 10px;"><strong>🧈 Lipides:</strong> <span id="modalFrigoLipides">${produit.lipides}</span>g/100g</div>
+                    </div>
+
+                    <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                        <button onclick="confirmerProduitFrigo(${JSON.stringify(produit).replace(/"/g, '&quot;')})" style="flex: 1; padding: 12px; background: linear-gradient(135deg, #4caf50 0%, #45a049 100%); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                            ✅ Ajouter au frigo
+                        </button>
+                        <button onclick="corrigerProduitFrigo('${produit.barcode}')" style="flex: 1; padding: 12px; background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                            ✏️ Corriger
+                        </button>
+                    </div>
+
+                    <button onclick="this.parentElement.parentElement.remove()" style="width: 100%; padding: 10px; background: #ddd; color: #333; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                        ❌ Annuler
+                    </button>
+                </div>
+            `;
+
+            document.body.appendChild(modal);
+        }
+
+        function confirmerProduitFrigo(produit) {
+            // Récupérer les valeurs modifiées si correction
+            const nom = document.getElementById('modalFrigoNom').textContent;
+            const marque = document.getElementById('modalFrigoMarque').textContent;
+            const calories = parseFloat(document.getElementById('modalFrigoCalories').textContent);
+            const proteines = parseFloat(document.getElementById('modalFrigoProteines').textContent);
+            const glucides = parseFloat(document.getElementById('modalFrigoGlucides').textContent);
+            const lipides = parseFloat(document.getElementById('modalFrigoLipides').textContent);
+
+            const produitAjuste = {
+                ...produit,
+                nom: nom,
+                marque: marque,
+                calories: calories,
+                proteines: proteines,
+                glucides: glucides,
+                lipides: lipides
+            };
+
+            ajouterAuFrigo(produitAjuste);
+            
+            // Fermer le modal
+            document.querySelectorAll('body > div').forEach(el => {
+                if (el.style.position === 'fixed' && el.style.zIndex === '10000') {
+                    el.remove();
+                }
+            });
+        }
+
+        function corrigerProduitFrigo(codebarre) {
+            // Passer en mode édition
+            document.getElementById('modalFrigoNom').contentEditable = true;
+            document.getElementById('modalFrigoNom').style.background = '#fff3cd';
+            document.getElementById('modalFrigoNom').style.padding = '5px';
+            document.getElementById('modalFrigoNom').style.border = '1px solid #ffc107';
+            
+            document.getElementById('modalFrigoMarque').contentEditable = true;
+            document.getElementById('modalFrigoMarque').style.background = '#fff3cd';
+            document.getElementById('modalFrigoMarque').style.padding = '5px';
+            document.getElementById('modalFrigoMarque').style.border = '1px solid #ffc107';
+            
+            document.getElementById('modalFrigoCalories').contentEditable = true;
+            document.getElementById('modalFrigoCalories').style.background = '#fff3cd';
+            document.getElementById('modalFrigoCalories').style.padding = '5px';
+            document.getElementById('modalFrigoCalories').style.border = '1px solid #ffc107';
+            
+            document.getElementById('modalFrigoProteines').contentEditable = true;
+            document.getElementById('modalFrigoProteines').style.background = '#fff3cd';
+            document.getElementById('modalFrigoProteines').style.padding = '5px';
+            document.getElementById('modalFrigoProteines').style.border = '1px solid #ffc107';
+            
+            document.getElementById('modalFrigoGlucides').contentEditable = true;
+            document.getElementById('modalFrigoGlucides').style.background = '#fff3cd';
+            document.getElementById('modalFrigoGlucides').style.padding = '5px';
+            document.getElementById('modalFrigoGlucides').style.border = '1px solid #ffc107';
+            
+            document.getElementById('modalFrigoLipides').contentEditable = true;
+            document.getElementById('modalFrigoLipides').style.background = '#fff3cd';
+            document.getElementById('modalFrigoLipides').style.padding = '5px';
+            document.getElementById('modalFrigoLipides').style.border = '1px solid #ffc107';
+
+            afficherNotification('✏️ Mode correction activé ! Cliquez sur les valeurs pour les modifier', 'linear-gradient(135deg, #ffc107 0%, #ff9800 100%)');
         }
 
         async function scannerPourFrigo() {
@@ -4947,6 +5233,272 @@
             `;
 
             window.scrollTo({ top: container.offsetTop - 100, behavior: 'smooth' });
+        }
+
+        // ==============================================
+        // SCANNER CALCULATEUR
+        // ==============================================
+
+        let scannerCalculateurActif = false;
+
+        function demarrerScannerCalculateur() {
+            document.getElementById('scannerCalculateur').style.display = 'block';
+            scannerCalculateurActif = true;
+
+            Quagga.init({
+                inputStream: {
+                    type: "LiveStream",
+                    target: document.querySelector('#canvasCalculateur'),
+                    constraints: {
+                        facingMode: "environment"
+                    }
+                },
+                decoder: {
+                    readers: ["ean_reader", "ean_8_reader", "upc_reader", "code_128_reader"]
+                },
+                locate: true,
+                locator: {
+                    halfSample: true,
+                    patchSize: "medium"
+                }
+            }, function(err) {
+                if (err) {
+                    console.log(err);
+                    afficherNotification('❌ Erreur caméra: ' + err.message, 'linear-gradient(135deg, #f5576c 0%, #f093fb 100%)');
+                    return;
+                }
+                Quagga.start();
+            });
+
+            Quagga.onDetected(async function(result) {
+                if (scannerCalculateurActif) {
+                    const codebarre = result.codeResult.code;
+                    console.log('📷 Code-barres détecté (Calculateur):', codebarre);
+                    
+                    // Arrêter le scanner
+                    arreterScannerCalculateur();
+                    
+                    // Scanner le produit
+                    await scannerPourCalculateur(codebarre);
+                }
+            });
+        }
+
+        function arreterScannerCalculateur() {
+            if (scannerCalculateurActif) {
+                Quagga.stop();
+                scannerCalculateurActif = false;
+            }
+            document.getElementById('scannerCalculateur').style.display = 'none';
+        }
+
+        async function scannerPourCalculateur(codebarre) {
+            afficherNotification('🔍 Recherche du produit...', 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)');
+
+            // Chercher le produit dans toutes les bases
+            let produit = null;
+
+            // 1. Base locale
+            produit = baseProduitsCourants.find(p => p.barcode === codebarre);
+            if (produit) {
+                afficherProduitCalculateur(produit, codebarre);
+                return;
+            }
+
+            // 2. Base perso
+            produit = produitsPerso.find(p => p.barcode === codebarre);
+            if (produit) {
+                afficherProduitCalculateur(produit, codebarre);
+                return;
+            }
+
+            // 3. Produits scannés
+            produit = produitsSauvegardes.find(p => p.barcode === codebarre);
+            if (produit) {
+                afficherProduitCalculateur(produit, codebarre);
+                return;
+            }
+
+            // 4. Base communautaire
+            produit = rechercherDansBaseCommunautaire(codebarre);
+            if (produit) {
+                afficherNotification('🌍 Produit trouvé dans la base communautaire !', 'linear-gradient(135deg, #4caf50 0%, #45a049 100%)');
+                afficherProduitCalculateur(produit, codebarre);
+                return;
+            }
+
+            // 5. OpenFoodFacts
+            try {
+                const response = await fetch(`https://world.openfoodfacts.org/api/v0/product/${codebarre}.json`);
+                const data = await response.json();
+
+                if (data.status === 1) {
+                    const product = data.product;
+                    const nutriments = product.nutriments;
+
+                    produit = {
+                        barcode: codebarre,
+                        nom: product.product_name || 'Produit inconnu',
+                        marque: product.brands || '',
+                        calories: nutriments['energy-kcal_100g'] || 0,
+                        proteines: nutriments.proteins_100g || 0,
+                        glucides: nutriments.carbohydrates_100g || 0,
+                        lipides: nutriments.fat_100g || 0
+                    };
+
+                    afficherNotification('✅ Produit trouvé dans OpenFoodFacts !', 'linear-gradient(135deg, #4caf50 0%, #45a049 100%)');
+                    afficherProduitCalculateur(produit, codebarre);
+                } else {
+                    afficherNotification('❌ Produit non trouvé', 'linear-gradient(135deg, #f5576c 0%, #f093fb 100%)');
+                    proposerSaisieManuelle(codebarre);
+                }
+            } catch (error) {
+                console.error('Erreur API:', error);
+                afficherNotification('❌ Erreur de connexion', 'linear-gradient(135deg, #f5576c 0%, #f093fb 100%)');
+                proposerSaisieManuelle(codebarre);
+            }
+        }
+
+        function afficherProduitCalculateur(produit, codebarre) {
+            // Créer un modal de confirmation avec possibilité de correction
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.8);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 10000;
+                padding: 20px;
+            `;
+
+            modal.innerHTML = `
+                <div style="background: white; border-radius: 15px; padding: 25px; max-width: 500px; width: 100%;">
+                    <h3 style="color: #667eea; margin-bottom: 20px; text-align: center;">📦 Produit détecté</h3>
+                    
+                    <div style="background: #f5f5f5; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                        <div style="margin-bottom: 10px;"><strong>📦 Nom:</strong> <span id="modalNom">${produit.nom}</span></div>
+                        <div style="margin-bottom: 10px;"><strong>🏷️ Marque:</strong> <span id="modalMarque">${produit.marque || 'N/A'}</span></div>
+                        <div style="margin-bottom: 10px;"><strong>📊 Code:</strong> ${codebarre}</div>
+                        <div style="margin-bottom: 10px;"><strong>🔥 Calories:</strong> <span id="modalCalories">${produit.calories}</span> kcal/100g</div>
+                        <div style="margin-bottom: 10px;"><strong>💪 Protéines:</strong> <span id="modalProteines">${produit.proteines}</span>g/100g</div>
+                        <div style="margin-bottom: 10px;"><strong>🍞 Glucides:</strong> <span id="modalGlucides">${produit.glucides}</span>g/100g</div>
+                        <div style="margin-bottom: 10px;"><strong>🧈 Lipides:</strong> <span id="modalLipides">${produit.lipides}</span>g/100g</div>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 5px; font-weight: bold;">⚖️ Quantité (grammes):</label>
+                        <input type="number" id="modalQuantite" value="100" min="1" style="width: 100%; padding: 10px; border: 2px solid #667eea; border-radius: 8px; font-size: 1em;">
+                    </div>
+
+                    <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                        <button onclick="confirmerProduitCalculateur(${JSON.stringify(produit).replace(/"/g, '&quot;')})" style="flex: 1; padding: 12px; background: linear-gradient(135deg, #4caf50 0%, #45a049 100%); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                            ✅ Ajouter au repas
+                        </button>
+                        <button onclick="corrigerProduitCalculateur('${codebarre}')" style="flex: 1; padding: 12px; background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                            ✏️ Corriger
+                        </button>
+                    </div>
+
+                    <button onclick="this.parentElement.parentElement.remove()" style="width: 100%; padding: 10px; background: #ddd; color: #333; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                        ❌ Annuler
+                    </button>
+                </div>
+            `;
+
+            document.body.appendChild(modal);
+        }
+
+        function confirmerProduitCalculateur(produit) {
+            const quantite = parseInt(document.getElementById('modalQuantite').value) || 100;
+            
+            // Récupérer les valeurs modifiées si correction
+            const nom = document.getElementById('modalNom').textContent;
+            const marque = document.getElementById('modalMarque').textContent;
+            const calories = parseFloat(document.getElementById('modalCalories').textContent);
+            const proteines = parseFloat(document.getElementById('modalProteines').textContent);
+            const glucides = parseFloat(document.getElementById('modalGlucides').textContent);
+            const lipides = parseFloat(document.getElementById('modalLipides').textContent);
+
+            const produitAjuste = {
+                ...produit,
+                nom: nom,
+                marque: marque,
+                calories: calories,
+                proteines: proteines,
+                glucides: glucides,
+                lipides: lipides
+            };
+
+            // Ajouter au calculateur
+            const aliment = {
+                nom: produitAjuste.nom,
+                quantite: quantite,
+                calories: (produitAjuste.calories * quantite) / 100,
+                proteines: (produitAjuste.proteines * quantite) / 100,
+                glucides: (produitAjuste.glucides * quantite) / 100,
+                lipides: (produitAjuste.lipides * quantite) / 100
+            };
+
+            repasActuel.push(aliment);
+            afficherRepasActuel();
+            
+            // Fermer le modal
+            document.querySelectorAll('body > div').forEach(el => {
+                if (el.style.position === 'fixed' && el.style.zIndex === '10000') {
+                    el.remove();
+                }
+            });
+
+            afficherNotification('✅ Produit ajouté au repas !', 'linear-gradient(135deg, #4caf50 0%, #45a049 100%)');
+        }
+
+        function corrigerProduitCalculateur(codebarre) {
+            // Passer en mode édition
+            document.getElementById('modalNom').contentEditable = true;
+            document.getElementById('modalNom').style.background = '#fff3cd';
+            document.getElementById('modalNom').style.padding = '5px';
+            document.getElementById('modalNom').style.border = '1px solid #ffc107';
+            
+            document.getElementById('modalMarque').contentEditable = true;
+            document.getElementById('modalMarque').style.background = '#fff3cd';
+            document.getElementById('modalMarque').style.padding = '5px';
+            document.getElementById('modalMarque').style.border = '1px solid #ffc107';
+            
+            document.getElementById('modalCalories').contentEditable = true;
+            document.getElementById('modalCalories').style.background = '#fff3cd';
+            document.getElementById('modalCalories').style.padding = '5px';
+            document.getElementById('modalCalories').style.border = '1px solid #ffc107';
+            
+            document.getElementById('modalProteines').contentEditable = true;
+            document.getElementById('modalProteines').style.background = '#fff3cd';
+            document.getElementById('modalProteines').style.padding = '5px';
+            document.getElementById('modalProteines').style.border = '1px solid #ffc107';
+            
+            document.getElementById('modalGlucides').contentEditable = true;
+            document.getElementById('modalGlucides').style.background = '#fff3cd';
+            document.getElementById('modalGlucides').style.padding = '5px';
+            document.getElementById('modalGlucides').style.border = '1px solid #ffc107';
+            
+            document.getElementById('modalLipides').contentEditable = true;
+            document.getElementById('modalLipides').style.background = '#fff3cd';
+            document.getElementById('modalLipides').style.padding = '5px';
+            document.getElementById('modalLipides').style.border = '1px solid #ffc107';
+
+            afficherNotification('✏️ Mode correction activé ! Cliquez sur les valeurs pour les modifier', 'linear-gradient(135deg, #ffc107 0%, #ff9800 100%)');
+        }
+
+        function proposerSaisieManuelle(codebarre) {
+            if (confirm('Produit non trouvé. Voulez-vous l\'ajouter manuellement ?')) {
+                // Passer dans l'onglet Ma Base Perso et pré-remplir le code-barres
+                showTab('mabase');
+                document.getElementById('nouveauProduitBarcode').value = codebarre;
+                afficherNotification('📝 Remplissez les informations du produit', 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)');
+            }
         }
 
         // ==============================================
