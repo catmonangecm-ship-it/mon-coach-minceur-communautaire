@@ -1859,12 +1859,99 @@
                         </div>
                     </div>
 
+                    <!-- Configuration de la clé API -->
+                    <div id="configCleAPI" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                            <span style="font-size: 2em;">🔑</span>
+                            <h4 style="color: white; margin: 0;">Configuration de votre clé API Groq</h4>
+                        </div>
+                        
+                        <p style="color: rgba(255,255,255,0.9); font-size: 0.9em; margin-bottom: 15px;">
+                            Pour utiliser le Coach IA, vous avez besoin d'une <strong>clé API Groq gratuite</strong> (100% gratuit, 2 minutes pour l'obtenir)
+                        </p>
+
+                        <!-- Instructions rapides -->
+                        <div style="background: rgba(255,255,255,0.15); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                            <p style="color: white; font-weight: bold; margin: 0 0 10px 0;">📋 Comment obtenir votre clé (2 minutes) :</p>
+                            <ol style="color: white; font-size: 0.9em; margin: 0; padding-left: 20px;">
+                                <li>Ouvrir <a href="https://console.groq.com/" target="_blank" style="color: #ffd700; text-decoration: underline;">console.groq.com</a></li>
+                                <li>Créer un compte gratuit (email + mot de passe)</li>
+                                <li>Aller dans "API Keys" → "Create API Key"</li>
+                                <li>Copier la clé (commence par <code style="background: rgba(0,0,0,0.2); padding: 2px 5px; border-radius: 3px;">gsk_...</code>)</li>
+                                <li>Coller la clé ci-dessous et sauvegarder</li>
+                            </ol>
+                        </div>
+
+                        <!-- Champ de saisie de la clé -->
+                        <div style="margin-bottom: 15px;">
+                            <label style="color: white; font-weight: bold; display: block; margin-bottom: 5px;">
+                                🔐 Votre clé API Groq :
+                            </label>
+                            <input 
+                                type="text" 
+                                id="cleAPIGroq" 
+                                placeholder="gsk_..." 
+                                style="
+                                    width: calc(100% - 30px);
+                                    padding: 12px 15px;
+                                    border: 2px solid white;
+                                    border-radius: 8px;
+                                    font-size: 0.95em;
+                                    font-family: monospace;
+                                    background: rgba(255,255,255,0.9);
+                                "
+                            />
+                        </div>
+
+                        <!-- Boutons -->
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <button 
+                                onclick="sauvegarderCleAPI()" 
+                                style="
+                                    flex: 1;
+                                    min-width: 150px;
+                                    padding: 12px 20px;
+                                    background: #4caf50;
+                                    color: white;
+                                    border: none;
+                                    border-radius: 8px;
+                                    font-weight: bold;
+                                    cursor: pointer;
+                                    font-size: 1em;
+                                "
+                            >
+                                💾 Sauvegarder la clé
+                            </button>
+                            <button 
+                                onclick="testerCleAPI()" 
+                                style="
+                                    flex: 1;
+                                    min-width: 150px;
+                                    padding: 12px 20px;
+                                    background: #ffc107;
+                                    color: #333;
+                                    border: none;
+                                    border-radius: 8px;
+                                    font-weight: bold;
+                                    cursor: pointer;
+                                    font-size: 1em;
+                                "
+                            >
+                                🧪 Tester la clé
+                            </button>
+                        </div>
+
+                        <!-- Statut -->
+                        <div id="statutCleAPI" style="margin-top: 15px; padding: 10px; border-radius: 5px; display: none;">
+                        </div>
+                    </div>
+
                     <!-- Zone de conversation -->
                     <div id="chatIA" style="max-height: 400px; overflow-y: auto; margin-bottom: 20px; padding: 15px; background: #f8f9fa; border-radius: 10px; min-height: 200px;">
                         <div style="text-align: center; padding: 40px 20px; color: #999;">
                             <div style="font-size: 3em; margin-bottom: 10px;">💬</div>
-                            <p>Posez votre première question au Coach IA !</p>
-                            <p style="font-size: 0.85em; margin-top: 10px;">Exemples : "Comment perdre du poids efficacement ?", "Quels aliments pour plus d'énergie ?", "Programme d'exercices pour débutant"</p>
+                            <p>Configurez votre clé API ci-dessus pour commencer !</p>
+                            <p style="font-size: 0.85em; margin-top: 10px;">Une fois la clé configurée, posez toutes vos questions au Coach IA !</p>
                         </div>
                     </div>
 
@@ -1885,8 +1972,10 @@
                                 color: #000000;
                             " 
                             onkeypress="if(event.key === 'Enter') { envoyerQuestionIA(); }"
+                            disabled
                         />
                         <button 
+                            id="btnEnvoyerIA"
                             onclick="envoyerQuestionIA()" 
                             style="
                                 background: #667eea; 
@@ -1898,15 +1987,9 @@
                                 font-weight: bold;
                                 cursor: pointer;
                             "
+                            disabled
                         >
                             📤 Envoyer
-                        </button>
-                    </div>
-                    
-                    <!-- Bouton de test -->
-                    <div style="margin-top: 10px; text-align: center;">
-                        <button onclick="document.getElementById('questionIA').focus(); document.getElementById('questionIA').value = 'Test'; alert('Texte ajouté ! Vous le voyez ?');" style="padding: 10px 20px; background: #ffc107; border: none; border-radius: 5px; cursor: pointer;">
-                            🧪 TEST : Mettre du texte
                         </button>
                     </div>
                     
@@ -4516,7 +4599,110 @@
 
         let conversationIA = [];
 
+        // Charger la clé API au démarrage
+        function chargerCleAPI() {
+            const cle = localStorage.getItem('cleAPIGroq');
+            if (cle) {
+                document.getElementById('cleAPIGroq').value = cle;
+                activerChatIA();
+                afficherStatutCle('✅ Clé API configurée ! Vous pouvez poser vos questions.', '#4caf50');
+            }
+        }
+
+        // Sauvegarder la clé API
+        function sauvegarderCleAPI() {
+            const cle = document.getElementById('cleAPIGroq').value.trim();
+            
+            if (!cle) {
+                afficherStatutCle('⚠️ Veuillez entrer une clé API', '#ff9800');
+                return;
+            }
+            
+            if (!cle.startsWith('gsk_')) {
+                afficherStatutCle('⚠️ La clé doit commencer par "gsk_"', '#ff9800');
+                return;
+            }
+            
+            localStorage.setItem('cleAPIGroq', cle);
+            activerChatIA();
+            afficherStatutCle('✅ Clé sauvegardée avec succès !', '#4caf50');
+            afficherNotification('🔑 Clé API configurée ! Vous pouvez maintenant discuter avec le Coach IA.', 'linear-gradient(135deg, #4caf50 0%, #45a049 100%)');
+        }
+
+        // Tester la clé API
+        async function testerCleAPI() {
+            const cle = document.getElementById('cleAPIGroq').value.trim();
+            
+            if (!cle) {
+                afficherStatutCle('⚠️ Veuillez entrer une clé API', '#ff9800');
+                return;
+            }
+            
+            afficherStatutCle('🔄 Test en cours...', '#2196f3');
+            
+            try {
+                const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + cle
+                    },
+                    body: JSON.stringify({
+                        model: 'llama-3.3-70b-versatile',
+                        messages: [{ role: 'user', content: 'Dis juste "OK" si tu me reçois' }],
+                        max_tokens: 10
+                    })
+                });
+                
+                if (response.ok) {
+                    afficherStatutCle('✅ Clé valide ! Tout fonctionne parfaitement.', '#4caf50');
+                    localStorage.setItem('cleAPIGroq', cle);
+                    activerChatIA();
+                    afficherNotification('✅ Test réussi ! Votre clé fonctionne parfaitement.', 'linear-gradient(135deg, #4caf50 0%, #45a049 100%)');
+                } else {
+                    afficherStatutCle('❌ Clé invalide. Vérifiez que vous avez bien copié la clé complète.', '#f44336');
+                }
+            } catch (error) {
+                afficherStatutCle('❌ Erreur de connexion. Vérifiez votre connexion internet.', '#f44336');
+            }
+        }
+
+        // Afficher le statut de la clé
+        function afficherStatutCle(message, couleur) {
+            const statut = document.getElementById('statutCleAPI');
+            statut.style.display = 'block';
+            statut.style.background = couleur;
+            statut.style.color = 'white';
+            statut.innerHTML = message;
+        }
+
+        // Activer le chat IA
+        function activerChatIA() {
+            document.getElementById('questionIA').disabled = false;
+            document.getElementById('btnEnvoyerIA').disabled = false;
+            document.getElementById('questionIA').placeholder = 'Posez votre question ici...';
+            
+            // Mettre à jour le message de bienvenue
+            const chatIA = document.getElementById('chatIA');
+            if (chatIA.querySelector('div[style*="text-align: center"]')) {
+                chatIA.innerHTML = `
+                    <div style="text-align: center; padding: 40px 20px; color: #999;">
+                        <div style="font-size: 3em; margin-bottom: 10px;">💬</div>
+                        <p>Posez votre première question au Coach IA !</p>
+                        <p style="font-size: 0.85em; margin-top: 10px;">Exemples : "Comment perdre du poids efficacement ?", "Quels aliments pour plus d'énergie ?", "Programme d'exercices pour débutant"</p>
+                    </div>
+                `;
+            }
+        }
+
         async function envoyerQuestionIA() {
+            const cleAPI = localStorage.getItem('cleAPIGroq');
+            
+            if (!cleAPI) {
+                afficherNotification('⚠️ Veuillez d\'abord configurer votre clé API Groq', 'linear-gradient(135deg, #ff9800 0%, #f57c00 100%)');
+                return;
+            }
+            
             const questionInput = document.getElementById('questionIA');
             const question = questionInput.value.trim();
 
@@ -4526,7 +4712,7 @@
             }
 
             // Trouver le bouton d'envoi
-            const btn = document.querySelector('button[onclick="envoyerQuestionIA()"]');
+            const btn = document.getElementById('btnEnvoyerIA');
             if (btn) {
                 btn.disabled = true;
                 btn.textContent = '⏳ Réflexion...';
@@ -4548,12 +4734,12 @@ Informations sur l'utilisateur :
 Réponds de manière personnalisée, encourageante et professionnelle. Donne des conseils concrets et applicables immédiatement.`;
 
             try {
-                // Appel API Groq (gratuit et très rapide)
+                // Appel API Groq avec la clé de l'utilisateur
                 const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': 'Bearer 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' // Clé API Groq gratuite
+                        'Authorization': 'Bearer ' + cleAPI
                     },
                     body: JSON.stringify({
                         model: 'llama-3.3-70b-versatile',
@@ -5787,6 +5973,7 @@ Réponds de manière personnalisée, encourageante et professionnelle. Donne des
             afficherHistoriqueRepas();
             afficherProduitsPerso();
             afficherListeProduits();
+            chargerCleAPI(); // Charger la clé API Groq si elle existe
             afficherPlanning();
             actualiserCoachIA();
             document.getElementById('datePesee').valueAsDate = new Date();
