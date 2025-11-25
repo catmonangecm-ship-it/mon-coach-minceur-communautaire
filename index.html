@@ -1870,8 +1870,8 @@
 
                     <!-- Zone de saisie -->
                     <div style="display: flex; gap: 10px;">
-                        <textarea id="questionIA" placeholder="Posez votre question ici... (ex: Comment atteindre mon objectif de perte de poids ?)" style="flex: 1; padding: 15px; border: 2px solid #e0e0e0; border-radius: 10px; resize: vertical; min-height: 60px; font-family: inherit; font-size: 1em;"></textarea>
-                        <button onclick="envoyerQuestionIA()" class="btn" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); white-space: nowrap; padding: 15px 25px; height: auto; min-height: 60px;">
+                        <textarea id="questionIA" placeholder="Posez votre question ici... (ex: Comment atteindre mon objectif de perte de poids ?)" style="flex: 1; padding: 15px; border: 2px solid #e0e0e0; border-radius: 10px; resize: vertical; min-height: 60px; font-family: inherit; font-size: 1em; position: relative; z-index: 1; background: white;" onkeypress="if(event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); envoyerQuestionIA(); }"></textarea>
+                        <button onclick="envoyerQuestionIA()" class="btn" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); white-space: nowrap; padding: 15px 25px; height: auto; min-height: 60px; position: relative; z-index: 1;">
                             📤 Envoyer
                         </button>
                     </div>
@@ -4478,10 +4478,12 @@
                 return;
             }
 
-            // Désactiver le bouton pendant le chargement
-            const btn = event.target;
-            btn.disabled = true;
-            btn.textContent = '⏳ Réflexion...';
+            // Trouver le bouton d'envoi
+            const btn = document.querySelector('button[onclick="envoyerQuestionIA()"]');
+            if (btn) {
+                btn.disabled = true;
+                btn.textContent = '⏳ Réflexion...';
+            }
 
             // Afficher la question de l'utilisateur
             ajouterMessageChat('user', question);
@@ -4549,8 +4551,10 @@ Réponds de manière personnalisée, encourageante et professionnelle. Donne des
                 ajouterMessageChat('error', 'Désolé, je n\'ai pas pu traiter votre question. Veuillez réessayer dans quelques instants.');
             } finally {
                 // Réactiver le bouton
-                btn.disabled = false;
-                btn.textContent = '📤 Envoyer';
+                if (btn) {
+                    btn.disabled = false;
+                    btn.textContent = '📤 Envoyer';
+                }
             }
         }
 
@@ -4597,18 +4601,6 @@ Réponds de manière personnalisée, encourageante et professionnelle. Donne des
             chatIA.scrollTop = chatIA.scrollHeight;
         }
 
-        // Permettre l'envoi avec Entrée
-        document.addEventListener('DOMContentLoaded', function() {
-            const questionInput = document.getElementById('questionIA');
-            if (questionInput) {
-                questionInput.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                        e.preventDefault();
-                        envoyerQuestionIA();
-                    }
-                });
-            }
-        });
 
         // ==============================================
         // FONCTIONS FRIGO & SUGGESTIONS RECETTES
