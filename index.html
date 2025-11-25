@@ -1869,9 +1869,47 @@
                     </div>
 
                     <!-- Zone de saisie -->
-                    <div style="display: flex; gap: 10px;">
-                        <textarea id="questionIA" placeholder="Posez votre question ici... (ex: Comment atteindre mon objectif de perte de poids ?)" style="flex: 1; padding: 15px; border: 2px solid #e0e0e0; border-radius: 10px; resize: vertical; min-height: 60px; font-family: inherit; font-size: 1em; position: relative; z-index: 1; background: white;" onkeypress="if(event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); envoyerQuestionIA(); }"></textarea>
-                        <button onclick="envoyerQuestionIA()" class="btn" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); white-space: nowrap; padding: 15px 25px; height: auto; min-height: 60px; position: relative; z-index: 1;">
+                    <div style="display: flex; gap: 10px; position: relative; z-index: 100;">
+                        <textarea 
+                            id="questionIA" 
+                            name="questionIA"
+                            placeholder="Posez votre question ici... (ex: Comment atteindre mon objectif de perte de poids ?)" 
+                            style="
+                                flex: 1; 
+                                padding: 15px; 
+                                border: 2px solid #667eea; 
+                                border-radius: 10px; 
+                                resize: vertical; 
+                                min-height: 80px; 
+                                font-family: inherit; 
+                                font-size: 1em; 
+                                background: white !important;
+                                color: #333 !important;
+                                position: relative;
+                                z-index: 100;
+                                pointer-events: auto !important;
+                                user-select: text !important;
+                                -webkit-user-select: text !important;
+                                outline: none;
+                            " 
+                            onkeypress="if(event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); envoyerQuestionIA(); }"
+                            onfocus="this.style.borderColor='#4caf50'"
+                            onblur="this.style.borderColor='#667eea'"
+                        ></textarea>
+                        <button 
+                            onclick="envoyerQuestionIA()" 
+                            class="btn" 
+                            style="
+                                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                                white-space: nowrap; 
+                                padding: 15px 25px; 
+                                height: auto; 
+                                min-height: 80px; 
+                                position: relative; 
+                                z-index: 100;
+                                cursor: pointer;
+                            "
+                        >
                             📤 Envoyer
                         </button>
                     </div>
