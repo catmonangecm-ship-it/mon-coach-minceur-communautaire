@@ -5024,6 +5024,7 @@
             try {
                 afficherNotification('📤 Envoi en cours...', 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)');
 
+                // Ajouter le produit à la collection
                 await db.collection('produitsPartages').add({
                     barcode: produit.barcode,
                     nom: produit.nom,
@@ -5037,10 +5038,24 @@
                     contributeurUid: currentUser.uid
                 });
 
-                // Mettre à jour le compteur de produits partagés
-                await db.collection('users').doc(currentUser.uid).update({
-                    produitsPartages: firebase.firestore.FieldValue.increment(1)
-                });
+                // Mettre à jour ou créer le document utilisateur avec le compteur
+                const userRef = db.collection('users').doc(currentUser.uid);
+                const userDoc = await userRef.get();
+                
+                if (userDoc.exists) {
+                    // Document existe, on incrémente
+                    await userRef.update({
+                        produitsPartages: firebase.firestore.FieldValue.increment(1)
+                    });
+                } else {
+                    // Document n'existe pas, on le crée
+                    await userRef.set({
+                        nom: currentUser.displayName || 'Utilisateur',
+                        email: currentUser.email,
+                        dateInscription: firebase.firestore.FieldValue.serverTimestamp(),
+                        produitsPartages: 1
+                    });
+                }
 
                 await synchroniserBaseCommunautaire();
 
@@ -5051,7 +5066,7 @@
 
             } catch (error) {
                 console.error('❌ Erreur partage:', error);
-                afficherNotification('❌ Erreur lors du partage', 'linear-gradient(135deg, #f5576c 0%, #f093fb 100%)');
+                afficherNotification('❌ Erreur lors du partage: ' + error.message, 'linear-gradient(135deg, #f5576c 0%, #f093fb 100%)');
             }
         }
 
