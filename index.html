@@ -2354,6 +2354,19 @@
         let dernierCodeDetecte = null;
         let timeoutDetection = null;
 
+        // Fonctions de gestion des données utilisateur
+        function sauvegarderUserData() {
+            localStorage.setItem('userData', JSON.stringify(userData));
+        }
+
+        function chargerUserData() {
+            const data = localStorage.getItem('userData');
+            if (data) {
+                userData = JSON.parse(data);
+            }
+            return userData;
+        }
+
         // Planning hebdomadaire
         let planningHebdo = JSON.parse(localStorage.getItem('planningHebdo')) || {};
         let historiqueRepasHebdo = JSON.parse(localStorage.getItem('historiqueRepasHebdo')) || {};
