@@ -982,6 +982,7 @@
                 <button class="tab" onclick="showTab('coachai')">🤖 Coach IA</button>
                 <button class="tab" onclick="showTab('conseils')">🥗 Conseils Nutrition</button>
                 <button class="tab" onclick="showTab('motivation')">💪 Motivation</button>
+                <button class="tab" id="adminTab" onclick="showTab('admin')" style="display: none; background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);">👑 Admin</button>
             </div>
 
             <!-- Onglet Profil -->
@@ -2184,6 +2185,91 @@
                 </div>
             </div>
 
+            <!-- Onglet Admin (visible uniquement pour l'administrateur) -->
+            <div id="admin" class="tab-content" style="display: none;">
+                <h2>👑 Panneau d'Administration</h2>
+                
+                <div style="background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%); color: white; padding: 25px; border-radius: 15px; margin-bottom: 30px; text-align: center;">
+                    <div style="font-size: 4em; margin-bottom: 15px;">👑</div>
+                    <h3 style="font-size: 1.8em; margin-bottom: 15px;">Bienvenue Boss !</h3>
+                    <p style="font-size: 1.1em; opacity: 0.95; line-height: 1.6;">
+                        Gérez les produits et recettes de la communauté
+                    </p>
+                </div>
+
+                <!-- Statistiques Admin -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                    <div style="background: white; padding: 25px; border-radius: 15px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                        <div style="font-size: 2.5em; color: #4caf50;">📦</div>
+                        <div style="font-size: 2.5em; font-weight: bold; color: #4caf50; margin: 10px 0;" id="adminCompteurProduits">0</div>
+                        <div style="color: #666;">Produits communautaires</div>
+                    </div>
+                    
+                    <div style="background: white; padding: 25px; border-radius: 15px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                        <div style="font-size: 2.5em; color: #667eea;">👥</div>
+                        <div style="font-size: 2.5em; font-weight: bold; color: #667eea; margin: 10px 0;" id="adminCompteurContributeurs">0</div>
+                        <div style="color: #666;">Contributeurs</div>
+                    </div>
+                    
+                    <div style="background: white; padding: 25px; border-radius: 15px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                        <div style="font-size: 2.5em; color: #ff9800;">🍳</div>
+                        <div style="font-size: 2.5em; font-weight: bold; color: #ff9800; margin: 10px 0;" id="adminCompteurRecettes">0</div>
+                        <div style="color: #666;">Recettes</div>
+                    </div>
+                </div>
+
+                <!-- Gestion des produits -->
+                <div style="background: white; padding: 25px; border-radius: 15px; margin-bottom: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                    <h3 style="color: #f5576c; margin-bottom: 20px;">📦 Gérer les Produits Communautaires</h3>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <button onclick="synchroniserBaseCommunautaire()" class="btn" style="background: linear-gradient(135deg, #4caf50 0%, #45a049 100%); margin-right: 10px;">
+                            🔄 Synchroniser
+                        </button>
+                        <button onclick="afficherProduitsCommunautairesAdmin()" class="btn" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                            👁️ Afficher tout
+                        </button>
+                    </div>
+
+                    <!-- Barre de recherche -->
+                    <div style="margin-bottom: 20px;">
+                        <input type="text" id="rechercheAdminProduits" placeholder="Rechercher un produit..." style="width: 100%; padding: 12px; border: 2px solid #f5576c; border-radius: 8px; font-size: 1em;" oninput="filtrerProduitsAdmin()">
+                    </div>
+
+                    <!-- Liste des produits -->
+                    <div id="listeProduitsAdmin" style="max-height: 600px; overflow-y: auto;">
+                        <div style="text-align: center; padding: 40px; color: #999;">
+                            <div style="font-size: 3em; margin-bottom: 15px;">📦</div>
+                            <p>Cliquez sur "Afficher tout" pour voir les produits</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gestion des recettes -->
+                <div style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                    <h3 style="color: #f5576c; margin-bottom: 20px;">🍳 Gérer les Recettes</h3>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <button onclick="afficherRecettesAdmin()" class="btn" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                            👁️ Afficher toutes les recettes
+                        </button>
+                    </div>
+
+                    <!-- Barre de recherche recettes -->
+                    <div style="margin-bottom: 20px;">
+                        <input type="text" id="rechercheAdminRecettes" placeholder="Rechercher une recette..." style="width: 100%; padding: 12px; border: 2px solid #f5576c; border-radius: 8px; font-size: 1em;" oninput="filtrerRecettesAdmin()">
+                    </div>
+
+                    <!-- Liste des recettes -->
+                    <div id="listeRecettesAdmin" style="max-height: 600px; overflow-y: auto;">
+                        <div style="text-align: center; padding: 40px; color: #999;">
+                            <div style="font-size: 3em; margin-bottom: 15px;">🍳</div>
+                            <p>Cliquez sur "Afficher toutes les recettes" pour commencer</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Onglet Motivation (simplifié) -->
             <div id="motivation" class="tab-content">
                 <h2>Votre dose de motivation quotidienne</h2>
@@ -2297,6 +2383,9 @@
                         
                         // Afficher le badge utilisateur
                         afficherBadgeUtilisateur();
+                        
+                        // Afficher l'onglet admin si l'utilisateur est admin
+                        afficherOngletAdmin();
                         
                     } else {
                         currentUser = null;
@@ -6040,6 +6129,385 @@ Réponds de manière personnalisée, encourageante et professionnelle. Donne des
             });
             console.log('🍳 Recettes personnalisées chargées:', recettesPerso.length);
         }
+
+        // ==============================================
+        // FONCTIONS D'ADMINISTRATION
+        // ==============================================
+
+        // Liste des UIDs admin (ajoutez votre UID ici)
+        const ADMIN_UIDS = [
+            'meyNFGJOdnROkoMJGdlwWAXDnIg1'  // Boss - Catjer
+        ];
+
+        function estAdmin() {
+            if (!currentUser) return false;
+            // Vérifier si l'UID est dans la liste des admins
+            return ADMIN_UIDS.includes(currentUser.uid);
+        }
+
+        function afficherOngletAdmin() {
+            const adminTab = document.getElementById('adminTab');
+            if (adminTab && estAdmin()) {
+                adminTab.style.display = 'block';
+                console.log('👑 Mode administrateur activé');
+            }
+        }
+
+        function mettreAJourStatsAdmin() {
+            const compteurProduits = document.getElementById('adminCompteurProduits');
+            const compteurContributeurs = document.getElementById('adminCompteurContributeurs');
+            const compteurRecettes = document.getElementById('adminCompteurRecettes');
+
+            if (compteurProduits) compteurProduits.textContent = baseCommunautaire.length;
+            
+            if (compteurContributeurs) {
+                const contributeurs = new Set(baseCommunautaire.map(p => p.contributeurUid).filter(Boolean));
+                compteurContributeurs.textContent = contributeurs.size;
+            }
+            
+            if (compteurRecettes) compteurRecettes.textContent = baseRecettes.length;
+        }
+
+        async function afficherProduitsCommunautairesAdmin() {
+            if (!estAdmin()) {
+                alert('⛔ Accès refusé : Vous n\'êtes pas administrateur');
+                return;
+            }
+
+            const liste = document.getElementById('listeProduitsAdmin');
+            
+            if (baseCommunautaire.length === 0) {
+                liste.innerHTML = `
+                    <div style="text-align: center; padding: 40px; background: #f8f9fa; border-radius: 10px;">
+                        <div style="font-size: 3em; margin-bottom: 15px;">📦</div>
+                        <p style="color: #999; font-size: 1.1em;">Aucun produit dans la base communautaire</p>
+                    </div>
+                `;
+                return;
+            }
+
+            mettreAJourStatsAdmin();
+
+            const produitsTries = [...baseCommunautaire].sort((a, b) => {
+                if (a.dateAjout && b.dateAjout) {
+                    return b.dateAjout.seconds - a.dateAjout.seconds;
+                }
+                return 0;
+            });
+
+            liste.innerHTML = produitsTries.map((produit) => {
+                const date = produit.dateAjout ? new Date(produit.dateAjout.seconds * 1000).toLocaleDateString('fr-FR') : 'Date inconnue';
+                const contributeur = produit.contributeur || 'Anonyme';
+                const idDoc = produit.id || '';
+                
+                return `
+                <div class="weight-item" style="flex-direction: column; align-items: stretch; margin-bottom: 15px; border-left: 4px solid #f5576c;">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+                        <div style="flex: 1;">
+                            <div style="font-weight: bold; color: #333; font-size: 1.1em;">${produit.nom}</div>
+                            <div style="color: #667eea; font-size: 0.9em;">${produit.marque || 'Sans marque'}</div>
+                            <div style="display: flex; gap: 15px; margin-top: 8px;">
+                                <div style="color: #666; font-size: 0.85em;">
+                                    👤 ${contributeur}
+                                </div>
+                                <div style="color: #999; font-size: 0.85em;">
+                                    📅 ${date}
+                                </div>
+                                <div style="color: #999; font-size: 0.75em;">
+                                    🔑 ${idDoc.substring(0, 8)}...
+                                </div>
+                            </div>
+                        </div>
+                        <button onclick="supprimerProduitAdmin('${idDoc.replace(/'/g, "\\'")}', '${produit.nom.replace(/'/g, "\\'")}'); event.stopPropagation();" style="background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%); color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; white-space: nowrap;">
+                            🗑️ Supprimer
+                        </button>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; background: #f8f9fa; padding: 10px; border-radius: 5px;">
+                        <div style="text-align: center;">
+                            <div style="font-weight: bold; color: #667eea;">${Math.round(produit.calories)}</div>
+                            <div style="font-size: 0.8em; color: #666;">kcal</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-weight: bold; color: #f5576c;">${produit.proteines.toFixed(1)}g</div>
+                            <div style="font-size: 0.8em; color: #666;">protéines</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-weight: bold; color: #00f2fe;">${produit.glucides.toFixed(1)}g</div>
+                            <div style="font-size: 0.8em; color: #666;">glucides</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-weight: bold; color: #38f9d7;">${produit.lipides.toFixed(1)}g</div>
+                            <div style="font-size: 0.8em; color: #666;">lipides</div>
+                        </div>
+                    </div>
+                </div>
+            `}).join('');
+
+            afficherNotification('✅ Produits chargés !', 'linear-gradient(135deg, #4caf50 0%, #45a049 100%)');
+        }
+
+        async function supprimerProduitAdmin(idDoc, nomProduit) {
+            if (!estAdmin()) {
+                alert('⛔ Accès refusé : Vous n\'êtes pas administrateur');
+                return;
+            }
+
+            if (!confirm(`⚠️ Êtes-vous sûr de vouloir supprimer "${nomProduit}" de la base communautaire ?\n\nCette action est IRRÉVERSIBLE !`)) {
+                return;
+            }
+
+            try {
+                await db.collection('produitsPartages').doc(idDoc).delete();
+                afficherNotification('✅ Produit supprimé !', 'linear-gradient(135deg, #4caf50 0%, #45a049 100%)');
+                
+                // Resynchroniser
+                await synchroniserBaseCommunautaire();
+                
+                // Réafficher
+                afficherProduitsCommunautairesAdmin();
+                
+                console.log('🗑️ Produit supprimé:', nomProduit, 'ID:', idDoc);
+            } catch (error) {
+                console.error('❌ Erreur suppression:', error);
+                afficherNotification('❌ Erreur lors de la suppression', 'linear-gradient(135deg, #f5576c 0%, #f093fb 100%)');
+            }
+        }
+
+        function filtrerProduitsAdmin() {
+            const recherche = document.getElementById('rechercheAdminProduits').value.toLowerCase();
+            
+            if (!recherche) {
+                afficherProduitsCommunautairesAdmin();
+                return;
+            }
+
+            const liste = document.getElementById('listeProduitsAdmin');
+            const produitsFiltres = baseCommunautaire.filter(p => 
+                p.nom.toLowerCase().includes(recherche) || 
+                (p.marque && p.marque.toLowerCase().includes(recherche)) ||
+                (p.contributeur && p.contributeur.toLowerCase().includes(recherche))
+            );
+
+            if (produitsFiltres.length === 0) {
+                liste.innerHTML = `
+                    <div style="text-align: center; padding: 40px; background: #f8f9fa; border-radius: 10px;">
+                        <div style="font-size: 3em; margin-bottom: 15px;">🔍</div>
+                        <p style="color: #999; font-size: 1.1em;">Aucun produit trouvé pour "${recherche}"</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Afficher les produits filtrés (même logique que afficherProduitsCommunautairesAdmin)
+            const produitsTries = [...produitsFiltres].sort((a, b) => {
+                if (a.dateAjout && b.dateAjout) {
+                    return b.dateAjout.seconds - a.dateAjout.seconds;
+                }
+                return 0;
+            });
+
+            liste.innerHTML = produitsTries.map((produit) => {
+                const date = produit.dateAjout ? new Date(produit.dateAjout.seconds * 1000).toLocaleDateString('fr-FR') : 'Date inconnue';
+                const contributeur = produit.contributeur || 'Anonyme';
+                const idDoc = produit.id || '';
+                
+                return `
+                <div class="weight-item" style="flex-direction: column; align-items: stretch; margin-bottom: 15px; border-left: 4px solid #f5576c;">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+                        <div style="flex: 1;">
+                            <div style="font-weight: bold; color: #333; font-size: 1.1em;">${produit.nom}</div>
+                            <div style="color: #667eea; font-size: 0.9em;">${produit.marque || 'Sans marque'}</div>
+                            <div style="display: flex; gap: 15px; margin-top: 8px;">
+                                <div style="color: #666; font-size: 0.85em;">
+                                    👤 ${contributeur}
+                                </div>
+                                <div style="color: #999; font-size: 0.85em;">
+                                    📅 ${date}
+                                </div>
+                            </div>
+                        </div>
+                        <button onclick="supprimerProduitAdmin('${idDoc.replace(/'/g, "\\'")}', '${produit.nom.replace(/'/g, "\\'")}'); event.stopPropagation();" style="background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%); color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; white-space: nowrap;">
+                            🗑️ Supprimer
+                        </button>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; background: #f8f9fa; padding: 10px; border-radius: 5px;">
+                        <div style="text-align: center;">
+                            <div style="font-weight: bold; color: #667eea;">${Math.round(produit.calories)}</div>
+                            <div style="font-size: 0.8em; color: #666;">kcal</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-weight: bold; color: #f5576c;">${produit.proteines.toFixed(1)}g</div>
+                            <div style="font-size: 0.8em; color: #666;">protéines</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-weight: bold; color: #00f2fe;">${produit.glucides.toFixed(1)}g</div>
+                            <div style="font-size: 0.8em; color: #666;">glucides</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-weight: bold; color: #38f9d7;">${produit.lipides.toFixed(1)}g</div>
+                            <div style="font-size: 0.8em; color: #666;">lipides</div>
+                        </div>
+                    </div>
+                </div>
+            `}).join('');
+        }
+
+        function afficherRecettesAdmin() {
+            if (!estAdmin()) {
+                alert('⛔ Accès refusé : Vous n\'êtes pas administrateur');
+                return;
+            }
+
+            const liste = document.getElementById('listeRecettesAdmin');
+            
+            if (baseRecettes.length === 0) {
+                liste.innerHTML = `
+                    <div style="text-align: center; padding: 40px; background: #f8f9fa; border-radius: 10px;">
+                        <div style="font-size: 3em; margin-bottom: 15px;">🍳</div>
+                        <p style="color: #999; font-size: 1.1em;">Aucune recette disponible</p>
+                    </div>
+                `;
+                return;
+            }
+
+            mettreAJourStatsAdmin();
+
+            liste.innerHTML = baseRecettes.map((recette, index) => `
+                <div class="weight-item" style="flex-direction: column; align-items: stretch; margin-bottom: 15px; border-left: 4px solid #ff9800;">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+                        <div style="flex: 1;">
+                            <div style="font-weight: bold; color: #333; font-size: 1.1em;">${recette.nom}</div>
+                            <div style="color: #666; font-size: 0.9em; margin-top: 5px;">
+                                🍳 ${recette.ingredients.join(', ')}
+                            </div>
+                            <div style="display: flex; gap: 15px; margin-top: 8px;">
+                                <div style="color: #999; font-size: 0.85em;">
+                                    ⏱️ ${recette.temps}
+                                </div>
+                                <div style="color: #999; font-size: 0.85em;">
+                                    📊 ${recette.difficulte}
+                                </div>
+                            </div>
+                        </div>
+                        <button onclick="supprimerRecetteAdmin(${index}, '${recette.nom.replace(/'/g, "\\'")}'); event.stopPropagation();" style="background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%); color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; white-space: nowrap;">
+                            🗑️ Supprimer
+                        </button>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; background: #f8f9fa; padding: 10px; border-radius: 5px;">
+                        <div style="text-align: center;">
+                            <div style="font-weight: bold; color: #667eea;">${recette.calories}</div>
+                            <div style="font-size: 0.8em; color: #666;">kcal</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-weight: bold; color: #f5576c;">${recette.proteines}g</div>
+                            <div style="font-size: 0.8em; color: #666;">protéines</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-weight: bold; color: #00f2fe;">${recette.glucides}g</div>
+                            <div style="font-size: 0.8em; color: #666;">glucides</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-weight: bold; color: #38f9d7;">${recette.lipides}g</div>
+                            <div style="font-size: 0.8em; color: #666;">lipides</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            afficherNotification('✅ Recettes chargées !', 'linear-gradient(135deg, #4caf50 0%, #45a049 100%)');
+        }
+
+        function supprimerRecetteAdmin(index, nomRecette) {
+            if (!estAdmin()) {
+                alert('⛔ Accès refusé : Vous n\'êtes pas administrateur');
+                return;
+            }
+
+            if (!confirm(`⚠️ Êtes-vous sûr de vouloir supprimer la recette "${nomRecette}" ?\n\nCette action est IRRÉVERSIBLE !`)) {
+                return;
+            }
+
+            baseRecettes.splice(index, 1);
+            afficherNotification('✅ Recette supprimée !', 'linear-gradient(135deg, #4caf50 0%, #45a049 100%)');
+            afficherRecettesAdmin();
+            
+            console.log('🗑️ Recette supprimée:', nomRecette);
+        }
+
+        function filtrerRecettesAdmin() {
+            const recherche = document.getElementById('rechercheAdminRecettes').value.toLowerCase();
+            
+            if (!recherche) {
+                afficherRecettesAdmin();
+                return;
+            }
+
+            const liste = document.getElementById('listeRecettesAdmin');
+            const recettesFiltrees = baseRecettes.filter(r => 
+                r.nom.toLowerCase().includes(recherche) ||
+                r.ingredients.some(ing => ing.toLowerCase().includes(recherche))
+            );
+
+            if (recettesFiltrees.length === 0) {
+                liste.innerHTML = `
+                    <div style="text-align: center; padding: 40px; background: #f8f9fa; border-radius: 10px;">
+                        <div style="font-size: 3em; margin-bottom: 15px;">🔍</div>
+                        <p style="color: #999; font-size: 1.1em;">Aucune recette trouvée pour "${recherche}"</p>
+                    </div>
+                `;
+                return;
+            }
+
+            liste.innerHTML = recettesFiltrees.map((recette, index) => {
+                // Trouver l'index réel dans baseRecettes
+                const indexReel = baseRecettes.findIndex(r => r.nom === recette.nom);
+                
+                return `
+                <div class="weight-item" style="flex-direction: column; align-items: stretch; margin-bottom: 15px; border-left: 4px solid #ff9800;">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+                        <div style="flex: 1;">
+                            <div style="font-weight: bold; color: #333; font-size: 1.1em;">${recette.nom}</div>
+                            <div style="color: #666; font-size: 0.9em; margin-top: 5px;">
+                                🍳 ${recette.ingredients.join(', ')}
+                            </div>
+                            <div style="display: flex; gap: 15px; margin-top: 8px;">
+                                <div style="color: #999; font-size: 0.85em;">
+                                    ⏱️ ${recette.temps}
+                                </div>
+                                <div style="color: #999; font-size: 0.85em;">
+                                    📊 ${recette.difficulte}
+                                </div>
+                            </div>
+                        </div>
+                        <button onclick="supprimerRecetteAdmin(${indexReel}, '${recette.nom.replace(/'/g, "\\'")}'); event.stopPropagation();" style="background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%); color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; white-space: nowrap;">
+                            🗑️ Supprimer
+                        </button>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; background: #f8f9fa; padding: 10px; border-radius: 5px;">
+                        <div style="text-align: center;">
+                            <div style="font-weight: bold; color: #667eea;">${recette.calories}</div>
+                            <div style="font-size: 0.8em; color: #666;">kcal</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-weight: bold; color: #f5576c;">${recette.proteines}g</div>
+                            <div style="font-size: 0.8em; color: #666;">protéines</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-weight: bold; color: #00f2fe;">${recette.glucides}g</div>
+                            <div style="font-size: 0.8em; color: #666;">glucides</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-weight: bold; color: #38f9d7;">${recette.lipides}g</div>
+                            <div style="font-size: 0.8em; color: #666;">lipides</div>
+                        </div>
+                    </div>
+                </div>
+            `}).join('');
+        }
+
+        // ==============================================
+        // FIN FONCTIONS D'ADMINISTRATION
+        // ==============================================
 
         function suggererRecettes() {
             if (produitsFrigo.length === 0) {
