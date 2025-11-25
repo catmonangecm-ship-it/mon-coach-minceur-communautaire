@@ -1869,48 +1869,44 @@
                     </div>
 
                     <!-- Zone de saisie -->
-                    <div style="display: flex; gap: 10px; position: relative; z-index: 100;">
+                    <div style="display: flex; gap: 10px; background: white; padding: 10px; border-radius: 10px;">
                         <input 
                             type="text"
                             id="questionIA" 
-                            name="questionIA"
-                            placeholder="Posez votre question ici... (ex: Comment atteindre mon objectif de perte de poids ?)" 
+                            autocomplete="off"
+                            placeholder="Tapez votre question ici..." 
                             style="
-                                flex: 1; 
+                                width: 100%;
                                 padding: 15px; 
-                                border: 2px solid #667eea; 
+                                border: 3px solid #667eea; 
                                 border-radius: 10px; 
-                                min-height: 50px; 
-                                font-family: inherit; 
-                                font-size: 1.1em; 
-                                background: white !important;
-                                color: #333 !important;
-                                position: relative;
-                                z-index: 100;
-                                pointer-events: auto !important;
-                                cursor: text !important;
+                                font-size: 16px; 
+                                background: #ffffff;
+                                color: #000000;
                             " 
-                            onkeypress="if(event.key === 'Enter') { event.preventDefault(); envoyerQuestionIA(); }"
-                            onfocus="this.style.borderColor='#4caf50'; console.log('FOCUS OK !');"
-                            onblur="this.style.borderColor='#667eea'"
-                            onclick="console.log('CLICK OK !');"
-                            oninput="console.log('INPUT OK: ' + this.value);"
+                            onkeypress="if(event.key === 'Enter') { envoyerQuestionIA(); }"
                         />
                         <button 
                             onclick="envoyerQuestionIA()" 
-                            class="btn" 
                             style="
-                                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-                                white-space: nowrap; 
-                                padding: 15px 25px; 
-                                height: auto; 
-                                min-height: 50px; 
-                                position: relative; 
-                                z-index: 100;
+                                background: #667eea; 
+                                color: white;
+                                padding: 15px 30px; 
+                                border: none;
+                                border-radius: 10px;
+                                font-size: 16px;
+                                font-weight: bold;
                                 cursor: pointer;
                             "
                         >
                             📤 Envoyer
+                        </button>
+                    </div>
+                    
+                    <!-- Bouton de test -->
+                    <div style="margin-top: 10px; text-align: center;">
+                        <button onclick="document.getElementById('questionIA').focus(); document.getElementById('questionIA').value = 'Test'; alert('Texte ajouté ! Vous le voyez ?');" style="padding: 10px 20px; background: #ffc107; border: none; border-radius: 5px; cursor: pointer;">
+                            🧪 TEST : Mettre du texte
                         </button>
                     </div>
                     
