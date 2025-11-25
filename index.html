@@ -6218,9 +6218,14 @@ Réponds de manière personnalisée, encourageante et professionnelle. Donne des
                                 </div>
                             </div>
                         </div>
-                        <button onclick="supprimerProduitAdmin('${idDoc.replace(/'/g, "\\'")}', '${produit.nom.replace(/'/g, "\\'")}'); event.stopPropagation();" style="background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%); color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; white-space: nowrap;">
-                            🗑️ Supprimer
-                        </button>
+                        <div style="display: flex; gap: 10px;">
+                            <button onclick="modifierProduitAdmin('${idDoc.replace(/'/g, "\\'")}'); event.stopPropagation();" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; white-space: nowrap;">
+                                ✏️ Modifier
+                            </button>
+                            <button onclick="supprimerProduitAdmin('${idDoc.replace(/'/g, "\\'")}', '${produit.nom.replace(/'/g, "\\'")}'); event.stopPropagation();" style="background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%); color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; white-space: nowrap;">
+                                🗑️ Supprimer
+                            </button>
+                        </div>
                     </div>
                     <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; background: #f8f9fa; padding: 10px; border-radius: 5px;">
                         <div style="text-align: center;">
@@ -6270,6 +6275,162 @@ Réponds de manière personnalisée, encourageante et professionnelle. Donne des
             } catch (error) {
                 console.error('❌ Erreur suppression:', error);
                 afficherNotification('❌ Erreur lors de la suppression', 'linear-gradient(135deg, #f5576c 0%, #f093fb 100%)');
+            }
+        }
+
+        async function modifierProduitAdmin(idDoc) {
+            if (!estAdmin()) {
+                alert('⛔ Accès refusé : Vous n\'êtes pas administrateur');
+                return;
+            }
+
+            // Trouver le produit dans baseCommunautaire
+            const produit = baseCommunautaire.find(p => p.id === idDoc);
+            if (!produit) {
+                alert('❌ Produit introuvable');
+                return;
+            }
+
+            // Créer le modal d'édition
+            const modalHtml = `
+                <div id="modalModificationProduit" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 10000; animation: fadeIn 0.3s;">
+                    <div style="background: white; padding: 30px; border-radius: 15px; max-width: 600px; width: 90%; max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
+                        <h3 style="color: #667eea; margin-bottom: 20px; font-size: 1.5em;">✏️ Modifier le produit</h3>
+                        
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                            <p style="margin: 0; color: #666; font-size: 0.95em;">
+                                <strong>ID:</strong> ${idDoc}<br>
+                                <strong>Contributeur:</strong> ${produit.contributeur || 'Anonyme'}<br>
+                                <strong>Date:</strong> ${produit.dateAjout ? new Date(produit.dateAjout.seconds * 1000).toLocaleDateString('fr-FR') : 'Inconnue'}
+                            </p>
+                        </div>
+
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; margin-bottom: 5px; color: #333; font-weight: bold;">Nom du produit *</label>
+                            <input type="text" id="editNomProduit" value="${produit.nom.replace(/"/g, '&quot;')}" style="width: 100%; padding: 12px; border: 2px solid #667eea; border-radius: 8px; font-size: 1em;">
+                        </div>
+
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; margin-bottom: 5px; color: #333; font-weight: bold;">Marque</label>
+                            <input type="text" id="editMarqueProduit" value="${(produit.marque || '').replace(/"/g, '&quot;')}" style="width: 100%; padding: 12px; border: 2px solid #667eea; border-radius: 8px; font-size: 1em;">
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                            <div>
+                                <label style="display: block; margin-bottom: 5px; color: #667eea; font-weight: bold;">Calories (kcal) *</label>
+                                <input type="number" id="editCalories" value="${produit.calories}" step="0.1" style="width: 100%; padding: 12px; border: 2px solid #667eea; border-radius: 8px; font-size: 1em;">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 5px; color: #f5576c; font-weight: bold;">Protéines (g) *</label>
+                                <input type="number" id="editProteines" value="${produit.proteines}" step="0.1" style="width: 100%; padding: 12px; border: 2px solid #f5576c; border-radius: 8px; font-size: 1em;">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 5px; color: #00f2fe; font-weight: bold;">Glucides (g) *</label>
+                                <input type="number" id="editGlucides" value="${produit.glucides}" step="0.1" style="width: 100%; padding: 12px; border: 2px solid #00f2fe; border-radius: 8px; font-size: 1em;">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 5px; color: #38f9d7; font-weight: bold;">Lipides (g) *</label>
+                                <input type="number" id="editLipides" value="${produit.lipides}" step="0.1" style="width: 100%; padding: 12px; border: 2px solid #38f9d7; border-radius: 8px; font-size: 1em;">
+                            </div>
+                        </div>
+
+                        <div style="background: #fff3cd; border: 1px solid #ffc107; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                            <p style="margin: 0; color: #856404; font-size: 0.9em;">
+                                ⚠️ <strong>Attention :</strong> Les modifications seront synchronisées pour TOUS les utilisateurs de l'application.
+                            </p>
+                        </div>
+
+                        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                            <button onclick="fermerModalModification()" style="padding: 12px 25px; background: #ccc; color: #333; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1em;">
+                                Annuler
+                            </button>
+                            <button onclick="sauvegarderModificationProduit('${idDoc.replace(/'/g, "\\'")}'); event.stopPropagation();" style="padding: 12px 25px; background: linear-gradient(135deg, #4caf50 0%, #45a049 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1em;">
+                                💾 Sauvegarder
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Ajouter le modal au body
+            const modalDiv = document.createElement('div');
+            modalDiv.innerHTML = modalHtml;
+            document.body.appendChild(modalDiv);
+        }
+
+        function fermerModalModification() {
+            const modal = document.getElementById('modalModificationProduit');
+            if (modal && modal.parentElement) {
+                modal.parentElement.style.animation = 'fadeOut 0.3s';
+                setTimeout(() => {
+                    if (modal.parentElement && modal.parentElement.parentElement) {
+                        modal.parentElement.parentElement.removeChild(modal.parentElement);
+                    }
+                }, 300);
+            }
+        }
+
+        async function sauvegarderModificationProduit(idDoc) {
+            if (!estAdmin()) {
+                alert('⛔ Accès refusé : Vous n\'êtes pas administrateur');
+                return;
+            }
+
+            // Récupérer les valeurs
+            const nom = document.getElementById('editNomProduit').value.trim();
+            const marque = document.getElementById('editMarqueProduit').value.trim();
+            const calories = parseFloat(document.getElementById('editCalories').value);
+            const proteines = parseFloat(document.getElementById('editProteines').value);
+            const glucides = parseFloat(document.getElementById('editGlucides').value);
+            const lipides = parseFloat(document.getElementById('editLipides').value);
+
+            // Validation
+            if (!nom) {
+                alert('❌ Le nom du produit est obligatoire');
+                return;
+            }
+
+            if (isNaN(calories) || isNaN(proteines) || isNaN(glucides) || isNaN(lipides)) {
+                alert('❌ Toutes les valeurs nutritionnelles doivent être des nombres valides');
+                return;
+            }
+
+            if (calories < 0 || proteines < 0 || glucides < 0 || lipides < 0) {
+                alert('❌ Les valeurs nutritionnelles ne peuvent pas être négatives');
+                return;
+            }
+
+            if (!confirm(`✅ Confirmer la modification de ce produit ?\n\nCes modifications seront visibles pour tous les utilisateurs.`)) {
+                return;
+            }
+
+            try {
+                // Mettre à jour dans Firebase
+                await db.collection('produitsPartages').doc(idDoc).update({
+                    nom: nom,
+                    marque: marque || '',
+                    calories: calories,
+                    proteines: proteines,
+                    glucides: glucides,
+                    lipides: lipides,
+                    dateModification: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                afficherNotification('✅ Produit modifié avec succès !', 'linear-gradient(135deg, #4caf50 0%, #45a049 100%)');
+                
+                // Fermer le modal
+                fermerModalModification();
+                
+                // Resynchroniser
+                await synchroniserBaseCommunautaire();
+                
+                // Réafficher
+                afficherProduitsCommunautairesAdmin();
+                
+                console.log('✏️ Produit modifié:', nom, 'ID:', idDoc);
+            } catch (error) {
+                console.error('❌ Erreur modification:', error);
+                afficherNotification('❌ Erreur lors de la modification', 'linear-gradient(135deg, #f5576c 0%, #f093fb 100%)');
             }
         }
 
@@ -6326,9 +6487,14 @@ Réponds de manière personnalisée, encourageante et professionnelle. Donne des
                                 </div>
                             </div>
                         </div>
-                        <button onclick="supprimerProduitAdmin('${idDoc.replace(/'/g, "\\'")}', '${produit.nom.replace(/'/g, "\\'")}'); event.stopPropagation();" style="background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%); color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; white-space: nowrap;">
-                            🗑️ Supprimer
-                        </button>
+                        <div style="display: flex; gap: 10px;">
+                            <button onclick="modifierProduitAdmin('${idDoc.replace(/'/g, "\\'")}'); event.stopPropagation();" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; white-space: nowrap;">
+                                ✏️ Modifier
+                            </button>
+                            <button onclick="supprimerProduitAdmin('${idDoc.replace(/'/g, "\\'")}', '${produit.nom.replace(/'/g, "\\'")}'); event.stopPropagation();" style="background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%); color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; white-space: nowrap;">
+                                🗑️ Supprimer
+                            </button>
+                        </div>
                     </div>
                     <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; background: #f8f9fa; padding: 10px; border-radius: 5px;">
                         <div style="text-align: center;">
