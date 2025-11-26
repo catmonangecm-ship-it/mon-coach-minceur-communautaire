@@ -1,17 +1,44 @@
-<!DOCTYPE html>
+
+           <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon Coach Minceur - Le Secret du Poids</title>
-    <script src="https://cdn.jsdelivr.net/npm/@ericblade/quagga2@1.8.4/dist/quagga.min.js"></script>
     
     <!-- Firebase SDK - Version compatible -->
     <script defer src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script defer src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script defer src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
     
     <style>
+        /* ========================================
+           DESIGN PROFESSIONNEL MODERNE
+           ======================================== */
+        
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary-color: #10b981;
+            --accent-color: #f59e0b;
+            --danger-color: #ef4444;
+            --text-dark: #1f2937;
+            --text-medium: #6b7280;
+            --text-light: #9ca3af;
+            --bg-light: #f9fafb;
+            --bg-white: #ffffff;
+            --border-color: #e5e7eb;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --radius-sm: 6px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -19,74 +46,102 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-light);
             min-height: 100vh;
-            padding: 20px;
+            color: var(--text-dark);
+            line-height: 1.6;
         }
 
         .container {
-            max-width: 1600px;
+            max-width: 1400px;
             margin: 0 auto;
+            padding: 20px;
         }
 
+        /* ========================================
+           HEADER PROFESSIONNEL
+           ======================================== */
         .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            padding: 40px 30px;
+            border-radius: var(--radius-xl);
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-lg);
             text-align: center;
             color: white;
-            margin-bottom: 30px;
         }
 
         .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            font-size: 2.25em;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
         }
 
         .header p {
-            font-size: 1.2em;
-            opacity: 0.9;
+            font-size: 1.1em;
+            opacity: 0.95;
+            font-weight: 400;
         }
 
+        /* ========================================
+           CARD MODERNE
+           ======================================== */
         .card {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
+            background: var(--bg-white);
+            border-radius: var(--radius-xl);
+            padding: 30px;
             margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
         }
 
         .card h2 {
-            color: #667eea;
-            margin-bottom: 20px;
-            font-size: 1.8em;
-            border-bottom: 3px solid #667eea;
-            padding-bottom: 10px;
+            color: var(--text-dark);
+            margin-bottom: 24px;
+            font-size: 1.75em;
+            font-weight: 700;
+            letter-spacing: -0.01em;
         }
 
+        /* ========================================
+           NAVIGATION TABS MODERNE
+           ======================================== */
         .tabs {
             display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 8px;
+            margin-bottom: 24px;
             flex-wrap: wrap;
+            background: var(--bg-white);
+            padding: 8px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
         }
 
         .tab {
-            padding: 12px 25px;
-            background: #f0f0f0;
+            padding: 10px 20px;
+            background: transparent;
             border: none;
-            border-radius: 25px;
+            border-radius: var(--radius-md);
             cursor: pointer;
-            font-size: 16px;
-            transition: all 0.3s;
-        }
-
-        .tab.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-medium);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            white-space: nowrap;
         }
 
         .tab:hover {
-            transform: translateY(-2px);
+            background: var(--bg-light);
+            color: var(--text-dark);
+        }
+
+        .tab.active {
+            background: var(--primary-color);
+            color: white;
+            box-shadow: var(--shadow-sm);
         }
 
         .tab-content {
@@ -95,783 +150,277 @@
 
         .tab-content.active {
             display: block;
-            animation: fadeIn 0.3s;
+            animation: fadeIn 0.3s ease-in-out;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
+        /* ========================================
+           FORMULAIRES MODERNES
+           ======================================== */
         .form-group {
             margin-bottom: 20px;
         }
 
-        label {
+        .form-group label {
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
-            color: #333;
+            color: var(--text-dark);
+            font-size: 14px;
         }
 
-        input, select {
+        input[type="text"],
+        input[type="number"],
+        input[type="email"],
+        input[type="password"],
+        input[type="date"],
+        select,
+        textarea {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: border 0.3s;
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: 15px;
+            color: var(--text-dark);
+            background: var(--bg-white);
+            transition: all 0.2s;
         }
 
-        input:focus, select:focus {
+        input:focus,
+        select:focus,
+        textarea:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
 
+        /* ========================================
+           BOUTONS PROFESSIONNELS
+           ======================================== */
         .btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 12px 24px;
+            background: var(--primary-color);
             color: white;
-            padding: 15px 30px;
             border: none;
-            border-radius: 25px;
-            font-size: 18px;
+            border-radius: var(--radius-md);
             cursor: pointer;
-            transition: all 0.3s;
-            width: 100%;
-            margin-top: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            transition: all 0.2s;
+            box-shadow: var(--shadow-sm);
+            display: inline-block;
+            text-align: center;
         }
 
         .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            background: var(--primary-dark);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
         }
 
-        .result-box {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
-            display: none;
+        .btn:active {
+            transform: translateY(0);
         }
 
-        .result-box.show {
-            display: block;
-            animation: fadeIn 0.5s;
+        .btn.delete {
+            background: var(--danger-color);
+            padding: 8px 16px;
+            font-size: 14px;
         }
 
-        .result-box h3 {
-            margin-bottom: 15px;
-            font-size: 1.5em;
+        .btn.delete:hover {
+            background: #dc2626;
         }
 
+        /* ========================================
+           STATS CARDS PROFESSIONNELLES
+           ======================================== */
         .stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
+            gap: 16px;
+            margin: 24px 0;
         }
 
         .stat-card {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 15px;
-            border-radius: 10px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            padding: 24px;
+            border-radius: var(--radius-lg);
             text-align: center;
+            box-shadow: var(--shadow-md);
+            color: white;
         }
 
         .stat-card .value {
             font-size: 2em;
-            font-weight: bold;
-            margin-bottom: 5px;
+            font-weight: 700;
+            margin-bottom: 4px;
         }
 
         .stat-card .label {
-            font-size: 0.9em;
+            font-size: 14px;
             opacity: 0.9;
+            font-weight: 500;
         }
 
-        .weight-entry {
-            display: grid;
-            grid-template-columns: 1fr 1fr auto;
-            gap: 10px;
-            margin-bottom: 10px;
-            align-items: end;
+        /* ========================================
+           RESULT BOX MODERNE
+           ======================================== */
+        .result-box {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border: 1px solid #bae6fd;
+            padding: 24px;
+            border-radius: var(--radius-lg);
+            margin-top: 24px;
         }
 
+        .result-box h3 {
+            color: var(--primary-color);
+            margin-bottom: 16px;
+            font-size: 1.25em;
+            font-weight: 700;
+        }
+
+        /* ========================================
+           WEIGHT ITEMS MODERNES
+           ======================================== */
         .weight-history {
-            max-height: 300px;
-            overflow-y: auto;
-            margin-top: 20px;
+            margin-top: 30px;
+        }
+
+        .weight-history h3 {
+            color: var(--text-dark);
+            margin-bottom: 16px;
+            font-size: 1.25em;
+            font-weight: 700;
         }
 
         .weight-item {
-            background: #f8f9fa;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 10px;
+            background: var(--bg-light);
+            padding: 16px;
+            border-radius: var(--radius-md);
+            margin-bottom: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border: 1px solid var(--border-color);
         }
 
-        .weight-item .date {
-            font-weight: 600;
-            color: #667eea;
-        }
-
-        .weight-item .weight {
-            font-size: 1.2em;
-            font-weight: bold;
-        }
-
-        .weight-item .delete {
-            background: #ff4757;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        canvas {
-            max-width: 100%;
-            margin-top: 20px;
-        }
-
-        .conseil-card {
-            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        .weight-entry {
+            background: var(--bg-light);
             padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 15px;
+            border-radius: var(--radius-lg);
+            margin-bottom: 24px;
+            border: 1px solid var(--border-color);
         }
 
-        .conseil-card h4 {
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        .conseil-card p {
-            color: #555;
-            line-height: 1.6;
-        }
-
-        .motivation-box {
-            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-            padding: 25px;
-            border-radius: 15px;
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .motivation-box .quote {
-            font-size: 1.3em;
-            font-style: italic;
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        .motivation-box .author {
-            color: #666;
-            font-weight: 600;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 30px;
-            background: #e0e0e0;
-            border-radius: 15px;
-            overflow: hidden;
-            margin-top: 10px;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-            transition: width 0.5s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-        }
-
-        .menu-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .menu-card {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 10px;
-            border-left: 4px solid #667eea;
-        }
-
-        .menu-card h4 {
-            color: #667eea;
-            margin-bottom: 10px;
-        }
-
-        .menu-card ul {
-            list-style: none;
-            padding-left: 0;
-        }
-
-        .menu-card li {
-            padding: 5px 0;
-            color: #555;
-        }
-
-        .menu-card li:before {
-            content: "✓ ";
-            color: #4caf50;
-            font-weight: bold;
-        }
-
-        #scannerContainer, #scannerFrigoContainer {
-            position: relative;
-            max-width: 100%;
-            margin: 0 auto;
-        }
-
-        #interactive, #interactiveFrigo {
-            width: 100%;
-            max-width: 640px;
-            margin: 0 auto;
-        }
-
-        #interactive video, #interactiveFrigo video {
-            width: 100%;
-            height: auto;
-            border-radius: 10px;
-        }
-
-        #interactive canvas, #interactiveFrigo canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-
-        .drawingBuffer {
-            display: none;
-        }
-
-        .scan-guide {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80%;
-            height: 100px;
-            border: 3px solid #4caf50;
-            border-radius: 10px;
-            pointer-events: none;
-            z-index: 10;
-            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5);
-        }
-
-        .scan-guide::after {
-            content: "Placez le code-barres ici";
-            position: absolute;
-            bottom: -40px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(76, 175, 80, 0.9);
-            color: white;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 14px;
-            white-space: nowrap;
-        }
-
-        .notification {
+        /* ========================================
+           NOTIFICATIONS MODERNES
+           ======================================== */
+        #notification {
             position: fixed;
             top: 20px;
             right: 20px;
-            padding: 15px 25px;
-            border-radius: 10px;
-            color: white;
-            font-weight: bold;
+            padding: 16px 24px;
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-xl);
             z-index: 10000;
-            animation: slideIn 0.3s ease;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-        }
-
-        /* Modal de connexion */
-        #authModal {
             display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 10001;
-            backdrop-filter: blur(5px);
-        }
-
-        #authModal.active {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .auth-container {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            max-width: 450px;
-            width: 90%;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            animation: scaleIn 0.3s ease;
-        }
-
-        .auth-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .auth-header h2 {
-            color: #667eea;
-            font-size: 2em;
-            margin-bottom: 10px;
-        }
-
-        .auth-header p {
-            color: #666;
-            font-size: 0.95em;
-        }
-
-        .auth-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
-            background: #f0f0f0;
-            padding: 5px;
-            border-radius: 10px;
-        }
-
-        .auth-tab {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            background: transparent;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            color: #666;
-            transition: all 0.3s;
-        }
-
-        .auth-tab.active {
-            background: white;
-            color: #667eea;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .auth-form {
-            display: none;
-        }
-
-        .auth-form.active {
-            display: block;
-        }
-
-        .auth-input-group {
-            margin-bottom: 20px;
-        }
-
-        .auth-input-group label {
-            display: block;
-            color: #333;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .auth-input-group input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 1em;
-            transition: border 0.3s;
-        }
-
-        .auth-input-group input:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .auth-btn {
-            width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 10px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            font-size: 1.1em;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .auth-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
-        }
-
-        .auth-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .auth-error {
-            background: #fee;
-            color: #c00;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 0.9em;
-            display: none;
-        }
-
-        .auth-success {
-            background: #efe;
-            color: #060;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 0.9em;
-            display: none;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes scaleIn {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        @keyframes slideIn {
-            from { transform: translateX(-20px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        @keyframes slideOut {
-            from { transform: translateX(0); opacity: 1; }
-            to { transform: translateX(20px); opacity: 0; }
-        }
-
-        @keyframes fadeOut {
-            from { opacity: 1; }
-            to { opacity: 0; }
-        }
-
-        .user-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(255,255,255,0.2);
-            padding: 8px 15px;
-            border-radius: 20px;
-            color: white;
-            font-size: 0.9em;
-        }
-
-        .notification {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
-            color: white;
-            padding: 15px 25px;
-            border-radius: 10px;
-            box-shadow: 0 5px 20px rgba(76, 175, 80, 0.4);
-            z-index: 10002;
-            font-size: 1em;
-            font-weight: 600;
-            animation: slideInRight 0.3s;
-            opacity: 1;
-            transition: opacity 0.3s;
+            min-width: 300px;
+            border-left: 4px solid var(--primary-color);
+            font-weight: 500;
+            animation: slideInRight 0.3s ease-out;
         }
 
         @keyframes slideInRight {
-            0% {
-                transform: translateX(100px);
+            from {
+                transform: translateX(400px);
                 opacity: 0;
             }
-            100% {
+            to {
                 transform: translateX(0);
                 opacity: 1;
             }
         }
 
-        .sync-indicator {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 25px;
-            font-size: 0.9em;
-            font-weight: 600;
-            box-shadow: 0 3px 15px rgba(76, 175, 80, 0.4);
-            display: none;
-            z-index: 9999;
-            animation: fadeIn 0.3s;
-        }
-
-        .telegram-float {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #0088cc 0%, #006699 100%);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2em;
-            box-shadow: 0 5px 20px rgba(0, 136, 204, 0.4);
-            cursor: pointer;
-            z-index: 9998;
-            transition: all 0.3s;
-            text-decoration: none;
-        }
-
-        .telegram-float:hover {
-            transform: scale(1.1);
-            box-shadow: 0 8px 25px rgba(0, 136, 204, 0.6);
-        }
-
-        .telegram-float::after {
-            content: "Rejoignez-nous !";
-            position: absolute;
-            right: 70px;
-            background: #333;
-            color: white;
-            padding: 8px 15px;
-            border-radius: 20px;
-            white-space: nowrap;
-            font-size: 0.5em;
-            opacity: 0;
-            transition: opacity 0.3s;
-            pointer-events: none;
-        }
-
-        .telegram-float:hover::after {
-            opacity: 1;
-        }
-
-        /* PLANIFICATEUR DE REPAS */
-        .planning-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .planning-day {
+        /* ========================================
+           AUTHENTIFICATION MODERNE
+           ======================================== */
+        .auth-section {
             background: white;
-            border-radius: 15px;
-            padding: 15px;
-            min-height: 400px;
+            padding: 30px;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg);
+            max-width: 400px;
+            margin: 0 auto;
+            border: 1px solid var(--border-color);
         }
 
-        .day-header {
-            font-weight: bold;
-            color: #667eea;
-            margin-bottom: 15px;
+        .auth-section h3 {
+            color: var(--text-dark);
+            margin-bottom: 24px;
+            font-size: 1.5em;
+            font-weight: 700;
             text-align: center;
-            font-size: 1.1em;
         }
 
-        .meal-slot {
-            background: #f8f9fa;
-            border: 2px dashed #ddd;
-            border-radius: 10px;
-            padding: 10px;
-            margin-bottom: 10px;
-            min-height: 80px;
-            transition: all 0.3s;
-        }
-
-        .meal-slot.drag-over {
-            background: #e3f2fd;
-            border-color: #667eea;
-        }
-
-        .meal-slot-title {
-            font-size: 0.85em;
-            color: #999;
-            margin-bottom: 5px;
-        }
-
-        .planned-meal {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-            padding: 8px;
-            border-radius: 8px;
-            font-size: 0.85em;
-            margin-top: 5px;
-        }
-
-        .delete-btn {
-            background: #f5576c;
-            color: white;
-            border: none;
-            padding: 3px 8px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.8em;
-            margin-top: 5px;
-        }
-
-        .recipes-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .recipe-card {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-            cursor: grab;
-            transition: transform 0.3s;
-        }
-
-        .recipe-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .recipe-card:active {
-            cursor: grabbing;
-        }
-
-        .recipe-image {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3em;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-
-        .recipe-content {
-            padding: 15px;
-        }
-
-        .recipe-title {
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        .recipe-info {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.9em;
-            color: #666;
-            align-items: center;
-        }
-
-        .recipe-calories {
-            color: #667eea;
-            font-weight: bold;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 3px 8px;
-            border-radius: 10px;
-            font-size: 0.75em;
-            margin-left: 5px;
-            font-weight: 600;
-        }
-
-        .badge-scanne {
-            background: #4caf50;
-            color: white;
-        }
-
-        .badge-frigo {
-            background: #2196f3;
-            color: white;
-        }
-
-        .badge-perso {
-            background: #ff6b6b;
-            color: white;
-        }
-
-        .meal-entry {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 10px;
-            margin: 10px 0;
-            border-left: 4px solid #667eea;
-        }
-
-        .meal-entry-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .meal-time {
-            font-weight: bold;
-            color: #667eea;
-        }
-
-        .meal-calories {
-            font-size: 1.2em;
-            font-weight: bold;
-            color: #764ba2;
-        }
-
-        .meal-items {
-            font-size: 0.9em;
-            color: #666;
-        }
-
-        @media (max-width: 1200px) {
-            .planning-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-
+        /* ========================================
+           RESPONSIVE
+           ======================================== */
         @media (max-width: 768px) {
-            .header h1 {
-                font-size: 1.8em;
+            .container {
+                padding: 15px;
             }
-            
+
+            .header h1 {
+                font-size: 1.75em;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .tabs {
+                justify-content: center;
+            }
+
+            .tab {
+                font-size: 13px;
+                padding: 8px 16px;
+            }
+
             .stats {
                 grid-template-columns: 1fr;
             }
+        }
 
-            .weight-entry {
-                grid-template-columns: 1fr;
+        /* ========================================
+           ANIMATIONS SUBTILES
+           ======================================== */
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
             }
-
-            .planning-grid {
-                grid-template-columns: 1fr;
+            50% {
+                opacity: 0.8;
             }
         }
+
+        .loading {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
     </style>
 </head>
 <body>
@@ -970,15 +519,11 @@
         <div class="card">
             <div class="tabs">
                 <button class="tab active" onclick="showTab('profil')">📊 Mon Profil</button>
-                <button class="tab" onclick="showTab('suivi')">📈 Suivi du Poids</button>
+                <button class="tab" onclick="showTab('suivi')">📊 Mon Suivi</button>
                 <button class="tab" onclick="showTab('calculateur')">🧮 Calculateur Calories</button>
                 <button class="tab" onclick="showTab('planning')">📅 Planning Repas</button>
-                <button class="tab" onclick="showTab('historique')">📊 Historique Repas</button>
-                <button class="tab" onclick="showTab('scanner')">📷 Scanner Produit</button>
-                <button class="tab" onclick="showTab('frigo')">🍳 Frigo & Recettes</button>
-                <button class="tab" onclick="showTab('baseperso')">📝 Ma Base Perso</button>
-                <button class="tab" onclick="showTab('basecommunautaire')">📦 Base Communautaire</button>
-                <button class="tab" onclick="showTab('telegram')">💬 Communauté</button>
+                <button class="tab" onclick="showTab('frigo')">🍳 Mon Frigo</button>
+                <button class="tab" onclick="showTab('baseperso')">📦 Mes Bases</button>
                 <button class="tab" onclick="showTab('coachai')">🤖 Coach IA</button>
                 <button class="tab" onclick="showTab('conseils')">🥗 Conseils Nutrition</button>
                 <button class="tab" onclick="showTab('motivation')">💪 Motivation</button>
@@ -1058,88 +603,17 @@
                     <div id="imcCategorie" style="margin-top: 15px; font-size: 1.1em;"></div>
                     <div id="dureeProgramme" style="margin-top: 10px;"></div>
                     
-                    <button class="btn" onclick="scrollToGraphiques()" style="margin-top: 20px; background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);">
-                        📊 Voir mon programme détaillé
-                    </button>
-                </div>
-
-                <!-- NOUVEAU GRAPHIQUE DE PROGRESSION -->
-                <div id="graphiqueProgression" style="display: none; margin-top: 30px;">
-                    <div style="background: white; border-radius: 15px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
-                        <h2 style="color: #667eea; margin-bottom: 25px; text-align: center;">📊 Votre Programme de Perte de Poids</h2>
-                        
-                        <!-- Statistiques actuelles -->
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px;">
-                            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 10px; text-align: center;">
-                                <div style="font-size: 2em; font-weight: bold;" id="progressPoidsActuel">-</div>
-                                <div style="opacity: 0.9; margin-top: 5px;">Poids actuel</div>
-                            </div>
-                            <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 20px; border-radius: 10px; text-align: center;">
-                                <div style="font-size: 2em; font-weight: bold;" id="progressPoidsPerdu">0 kg</div>
-                                <div style="opacity: 0.9; margin-top: 5px;">Déjà perdu</div>
-                            </div>
-                            <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 20px; border-radius: 10px; text-align: center;">
-                                <div style="font-size: 2em; font-weight: bold;" id="progressPoidsRestant">-</div>
-                                <div style="opacity: 0.9; margin-top: 5px;">Reste à perdre</div>
-                            </div>
-                            <div style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; padding: 20px; border-radius: 10px; text-align: center;">
-                                <div style="font-size: 2em; font-weight: bold;" id="progressIMCActuel">-</div>
-                                <div style="opacity: 0.9; margin-top: 5px;">IMC actuel</div>
-                            </div>
-                        </div>
-
-                        <!-- Graphique calories -->
-                        <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 25px;">
-                            <h3 style="color: #667eea; margin-bottom: 15px;">🔥 Déficit calorique pour atteindre votre objectif</h3>
-                            <canvas id="graphiqueCalories" width="400" height="150"></canvas>
-                            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-top: 20px; text-align: center;">
-                                <div>
-                                    <div style="font-size: 1.5em; font-weight: bold; color: #667eea;" id="caloriesJournalieres">-</div>
-                                    <div style="font-size: 0.9em; color: #666;">Calories/jour</div>
-                                </div>
-                                <div>
-                                    <div style="font-size: 1.5em; font-weight: bold; color: #f5576c;" id="deficitJour">-</div>
-                                    <div style="font-size: 0.9em; color: #666;">Déficit/jour</div>
-                                </div>
-                                <div>
-                                    <div style="font-size: 1.5em; font-weight: bold; color: #4caf50;" id="caloriesTotales">-</div>
-                                    <div style="font-size: 0.9em; color: #666;">Total à brûler</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Graphique progression poids -->
-                        <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 25px;">
-                            <h3 style="color: #667eea; margin-bottom: 15px;">⚖️ Progression du poids</h3>
-                            <canvas id="graphiqueProgressionPoids" width="400" height="200"></canvas>
-                        </div>
-
-                        <!-- Timeline -->
-                        <div style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); padding: 20px; border-radius: 10px;">
-                            <h3 style="color: #333; margin-bottom: 15px;">📅 Votre timeline</h3>
-                            <div style="display: flex; align-items: center; gap: 15px;">
-                                <div style="flex: 1; text-align: center; padding: 15px; background: white; border-radius: 8px;">
-                                    <div style="font-weight: bold; color: #667eea; font-size: 1.1em;">Aujourd'hui</div>
-                                    <div id="timelineDebut" style="color: #666; margin-top: 5px;">-</div>
-                                </div>
-                                <div style="flex: 2; height: 4px; background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); border-radius: 2px; position: relative;">
-                                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 8px 15px; border-radius: 20px; border: 2px solid #667eea; white-space: nowrap; font-weight: bold; color: #667eea;" id="timelineDuree">
-                                        - semaines
-                                    </div>
-                                </div>
-                                <div style="flex: 1; text-align: center; padding: 15px; background: white; border-radius: 8px;">
-                                    <div style="font-weight: bold; color: #4caf50; font-size: 1.1em;">Objectif atteint !</div>
-                                    <div id="timelineFin" style="color: #666; margin-top: 5px;">-</div>
-                                </div>
-                            </div>
-                        </div>
+                    <div style="margin-top: 20px; text-align: center;">
+                        <button class="btn" onclick="showTab('suivi')" style="background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);">
+                            📊 Voir mon suivi détaillé
+                        </button>
                     </div>
                 </div>
             </div>
 
             <!-- Onglet Suivi -->
             <div id="suivi" class="tab-content">
-                <h2>Suivez votre progression</h2>
+                <h2>📊 Mon Suivi</h2>
                 
                 <div class="weight-entry">
                     <div class="form-group" style="margin-bottom: 0;">
@@ -1161,6 +635,19 @@
                     <h3 style="margin-bottom: 15px;">Historique des pesées</h3>
                     <div id="listePesees"></div>
                 </div>
+
+                <!-- Historique des Repas -->
+                <div style="margin-top: 40px; padding-top: 40px; border-top: 3px solid #e0e0e0;">
+                    <h3 style="color: #667eea; font-size: 1.5em; margin-bottom: 20px;">📊 Historique des Repas</h3>
+                    
+                    <div style="background: linear-gradient(135deg, #e3f2fd 0%, #e1bee7 100%); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                        <p style="text-align: center; color: #333; font-size: 1.1em;">
+                            📊 Visualisez vos repas et calories des derniers jours
+                        </p>
+                    </div>
+
+                    <div id="history-container"></div>
+                </div>
             </div>
 
             <!-- Onglet Calculateur de Calories -->
@@ -1181,45 +668,6 @@
 
                 <div style="background: white; border: 2px solid #667eea; border-radius: 10px; padding: 20px; margin-bottom: 20px;">
                     <h3 style="color: #667eea; margin-bottom: 15px;">🔍 Rechercher un aliment</h3>
-                    
-                    <!-- Boutons Scanner -->
-                    <div style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;">
-                        <button onclick="demarrerScannerCalculateur()" class="btn" style="flex: 1; min-width: 200px; background: linear-gradient(135deg, #ff6ec7 0%, #ff006e 100%); display: flex; align-items: center; justify-content: center; gap: 10px;">
-                            <span style="font-size: 1.2em;">📊</span>
-                            <span>Code-barres</span>
-                        </button>
-                        <button onclick="demarrerPhotoCalculateur()" class="btn" style="flex: 1; min-width: 200px; background: linear-gradient(135deg, #4caf50 0%, #45a049 100%); display: flex; align-items: center; justify-content: center; gap: 10px;">
-                            <span style="font-size: 1.2em;">📷</span>
-                            <span>Photo aliment</span>
-                        </button>
-                    </div>
-                    
-                    <!-- Zone de scanner code-barres -->
-                    <div id="scannerCalculateur" style="display: none; margin-bottom: 15px;">
-                        <div style="background: #f5f5f5; padding: 15px; border-radius: 10px; margin-bottom: 10px; text-align: center;">
-                            <p style="margin: 0 0 10px 0; color: #666;">📊 Scannez le code-barres du produit</p>
-                            <div id="videoCalculateur" style="position: relative; width: 100%; max-width: 400px; height: 300px; margin: 0 auto; background: #000; border-radius: 10px; overflow: hidden;"></div>
-                        </div>
-                        <button onclick="arreterScannerCalculateur()" class="btn" style="background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%); width: 100%;">
-                            🛑 Arrêter
-                        </button>
-                    </div>
-
-                    <!-- Zone de photo aliment -->
-                    <div id="photoCalculateur" style="display: none; margin-bottom: 15px;">
-                        <div style="background: #f5f5f5; padding: 15px; border-radius: 10px; margin-bottom: 10px; text-align: center;">
-                            <p style="margin: 0 0 10px 0; color: #666;">📸 Prenez une photo claire de l'aliment</p>
-                            <video id="videoPhotoCalculateur" style="width: 100%; max-width: 400px; border-radius: 10px; background: #000;" autoplay playsinline></video>
-                        </div>
-                        <div style="display: flex; gap: 10px;">
-                            <button onclick="capturerPhotoCalculateur()" class="btn" style="flex: 1; background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);">
-                                📸 Capturer
-                            </button>
-                            <button onclick="arreterPhotoCalculateur()" class="btn" style="flex: 1; background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);">
-                                🛑 Annuler
-                            </button>
-                        </div>
-                    </div>
                     
                     <div class="form-group">
                         <label>Nom de l'aliment</label>
@@ -1343,194 +791,7 @@
                 <div class="planning-grid" id="planning-container"></div>
             </div>
 
-            <!-- Onglet Historique Repas -->
-            <div id="historique" class="tab-content">
-                <h2>📈 Historique des 7 derniers jours</h2>
-                
-                <div style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
-                    <p style="text-align: center; color: #333; font-size: 1.1em;">
-                        📊 Visualisez vos repas et calories des derniers jours
-                    </p>
-                </div>
-
-                <div id="history-container"></div>
-            </div>
-
             <!-- Onglet Scanner (code existant) -->
-            <div id="scanner" class="tab-content">
-                <h2>Scanner un produit alimentaire</h2>
-                
-                <div style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
-                    <p style="text-align: center; color: #333; font-size: 1.1em; margin-bottom: 15px;">
-                        📱 Trouvez les informations nutritionnelles de vos produits
-                    </p>
-                    <div style="background: rgba(255,255,255,0.8); padding: 15px; border-radius: 8px;">
-                        <p style="color: #1565c0; font-weight: bold; margin-bottom: 10px;">🗄️ 4 Bases de données disponibles :</p>
-                        <ol style="color: #555; font-size: 0.9em; line-height: 1.8; margin-left: 20px;">
-                            <li><strong>Base locale</strong> - ${baseProduitsCourants.length} produits français courants ⚡</li>
-                            <li><strong>Votre base perso</strong> - Vos produits personnalisés (<span id="compteurProduitsScannerPerso">0</span>) 📝</li>
-                            <li><strong>Base communautaire</strong> - Partagée par tous les utilisateurs (<span id="compteurBaseScannerCommunautaire">${baseCommunautaire.length.toLocaleString()}</span>) 🌍</li>
-                            <li><strong>OpenFoodFacts</strong> - Base mondiale collaborative (2 millions+ produits) 🌐</li>
-                        </ol>
-                        <p style="color: #666; font-size: 0.85em; margin-top: 10px; text-align: center;">
-                            💡 La recherche se fait automatiquement dans cet ordre jusqu'à trouver votre produit
-                        </p>
-                    </div>
-                </div>
-
-                <div style="margin-bottom: 30px; padding: 25px; background: linear-gradient(135deg, #e3f2fd 0%, #e1bee7 100%); border-radius: 10px; border: 3px solid #667eea;">
-                    <h3 style="margin-bottom: 15px; color: #667eea; text-align: center;">⌨️ Méthode 1 : Saisie manuelle</h3>
-                    <p style="text-align: center; color: #666; margin-bottom: 15px; font-size: 0.95em;">
-                        ✨ <strong>Recommandée sur mobile</strong> - Plus rapide, plus fiable, pas de permission caméra !
-                    </p>
-                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                        <input type="text" id="manualBarcode" placeholder="Saisissez les 13 chiffres du code-barres" style="flex: 1; padding: 15px; border: 3px solid #667eea; border-radius: 12px; font-size: 18px; min-width: 250px; font-weight: 500;" inputmode="numeric" pattern="[0-9]*">
-                        <button class="btn" onclick="rechercherCodeBarre()" style="width: auto; margin: 0; padding: 15px 35px; font-size: 18px; background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);">🔍 Rechercher</button>
-                    </div>
-                    <p style="margin-top: 12px; color: #666; font-size: 0.9em; text-align: center;">
-                        💡 Le code-barres se trouve au dos du produit (13 chiffres)<br>
-                        Exemple : 3017620422003
-                    </p>
-                    <div style="background: rgba(255,255,255,0.8); padding: 12px; border-radius: 8px; margin-top: 12px;">
-                        <p style="text-align: center; color: #1565c0; font-weight: bold; margin: 0;">
-                            ⚡ Sur Android : Utilisez cette méthode pour éviter les problèmes de caméra !
-                        </p>
-                    </div>
-                </div>
-
-                <div style="margin-bottom: 20px; padding: 20px; background: linear-gradient(135deg, #fff9e6 0%, #ffe6f0 100%); border-radius: 10px; border: 2px solid #ffc107;">
-                    <h3 style="margin-bottom: 15px; color: #f57c00; text-align: center;">📷 Méthode 2 : Scanner avec la caméra</h3>
-                    <p style="text-align: center; color: #666; margin-bottom: 15px; font-size: 0.9em;">
-                        Scannez directement le code-barres du produit
-                    </p>
-
-                    <div style="text-align: center; margin-bottom: 15px;">
-                        <button class="btn" id="startScanBtn" onclick="demarrerScanner()" style="background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);">
-                            📷 Activer le scanner
-                        </button>
-                        <button class="btn" id="stopScanBtn" onclick="arreterScanner()" style="display: none; background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);">
-                            ⏹️ Arrêter le scanner
-                        </button>
-                    </div>
-
-                    <div id="scannerContainer" style="max-width: 640px; margin: 0 auto; position: relative; background: #000; border-radius: 10px; overflow: hidden;">
-                        <div id="scanPlaceholder" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 60px 20px; text-align: center;">
-                            <div style="font-size: 4em; margin-bottom: 15px;">📷</div>
-                            <p style="color: white; font-size: 1.1em; line-height: 1.6;">
-                                Cliquez sur "Activer le scanner" pour utiliser votre caméra<br>
-                                <span style="font-size: 0.9em; opacity: 0.9;">Assurez-vous d'autoriser l'accès à la caméra</span>
-                            </p>
-                        </div>
-                        <div id="interactive" style="display: none; position: relative;">
-                            <div class="scan-guide"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="loadingScanner" style="display: none; text-align: center; padding: 40px;">
-                    <div style="font-size: 3em; animation: spin 1s linear infinite;">⌛</div>
-                    <p style="color: #667eea; font-size: 1.2em; margin-top: 10px;">Recherche en cours...</p>
-                </div>
-
-                <div id="resultatScanner" style="display: none;">
-                    <h3 style="color: #667eea; margin-bottom: 15px;">📦 Informations du produit</h3>
-                    
-                    <div style="background: white; border: 2px solid #667eea; border-radius: 10px; padding: 20px; margin-bottom: 20px;">
-                        <div style="display: flex; gap: 20px; align-items: start; flex-wrap: wrap;">
-                            <img id="productImage" src="" alt="Produit" style="width: 150px; height: 150px; object-fit: contain; border-radius: 8px; background: #f8f9fa;">
-                            <div style="flex: 1; min-width: 200px;">
-                                <h4 id="productName" style="color: #333; margin-bottom: 10px; font-size: 1.3em;"></h4>
-                                <p id="productBrand" style="color: #667eea; font-weight: 600; margin-bottom: 5px;"></p>
-                                <p id="productQuantity" style="color: #666; margin-bottom: 10px;"></p>
-                                <p id="productBarcode" style="color: #999; font-size: 0.9em;"></p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="stats">
-                        <div class="stat-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                            <div class="value" id="productCalories">-</div>
-                            <div class="label">Calories (kcal/100g)</div>
-                        </div>
-                        <div class="stat-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
-                            <div class="value" id="productProteines">-</div>
-                            <div class="label">Protéines (g/100g)</div>
-                        </div>
-                        <div class="stat-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
-                            <div class="value" id="productGlucides">-</div>
-                            <div class="label">Glucides (g/100g)</div>
-                        </div>
-                        <div class="stat-card" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
-                            <div class="value" id="productLipides">-</div>
-                            <div class="label">Lipides (g/100g)</div>
-                        </div>
-                    </div>
-
-                    <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px;">
-                        <button class="btn" onclick="ajouterProduitScanneAuCalculateur()" style="flex: 1; min-width: 200px; background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);">
-                            🧮 Ajouter au Calculateur
-                        </button>
-                        <button class="btn" onclick="sauvegarderProduit()" style="flex: 1; min-width: 200px;">
-                            💾 Sauvegarder ce produit
-                        </button>
-                    </div>
-                </div>
-
-                <div id="erreurScanner" style="display: none; background: #ffebee; color: #c62828; padding: 20px; border-radius: 10px; margin-top: 20px;">
-                    <h4 style="margin-bottom: 10px;">❌ Produit non trouvé</h4>
-                    <p>Ce code-barres n'a pas été trouvé dans notre base de données. Essayez avec un autre produit ou vérifiez le code saisi.</p>
-                </div>
-
-                <div id="erreurPermission" style="display: none; background: #fff3cd; border: 2px solid #ffc107; color: #856404; padding: 25px; border-radius: 10px; margin-top: 20px;">
-                    <h4 style="margin-bottom: 15px; font-size: 1.2em;">🚫 Accès caméra refusé ou non disponible</h4>
-                    <p style="margin-bottom: 15px; line-height: 1.6;">Le navigateur n'a pas pu accéder à la caméra. Voici comment le résoudre :</p>
-                    
-                    <div style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
-                        <h5 style="color: #667eea; margin-bottom: 10px;">📱 Sur Android (Chrome/Firefox) :</h5>
-                        <ol style="line-height: 2; margin-left: 20px;">
-                            <li><strong>Vérifier les permissions Android :</strong>
-                                <ul style="margin-left: 20px; margin-top: 5px;">
-                                    <li>Paramètres → Applications</li>
-                                    <li>Cherchez votre navigateur (Chrome, Firefox...)</li>
-                                    <li>Permissions → Appareil photo → Autoriser</li>
-                                </ul>
-                            </li>
-                            <li><strong>Dans le navigateur :</strong>
-                                <ul style="margin-left: 20px; margin-top: 5px;">
-                                    <li>Cliquez sur le cadenas 🔒 à côté de l'URL</li>
-                                    <li>Autorisations → Appareil photo → Autoriser</li>
-                                    <li>Rechargez la page</li>
-                                </ul>
-                            </li>
-                        </ol>
-                    </div>
-
-                    <div style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
-                        <h5 style="color: #667eea; margin-bottom: 10px;">💻 Sur ordinateur :</h5>
-                        <ol style="line-height: 2; margin-left: 20px;">
-                            <li>Cliquez sur l'icône 🔒 ou 🔓 dans la barre d'adresse</li>
-                            <li>Autorisez l'accès à la caméra</li>
-                            <li>Rechargez la page et réessayez</li>
-                        </ol>
-                    </div>
-                    
-                    <div style="background: #e3f2fd; padding: 15px; border-radius: 8px;">
-                        <p style="color: #1565c0; font-weight: bold; margin-bottom: 10px;">💡 Solution alternative immédiate :</p>
-                        <p style="margin-bottom: 10px;">Utilisez la <strong>saisie manuelle</strong> du code-barres en haut de cette page :</p>
-                        <ul style="line-height: 1.8; margin-left: 20px;">
-                            <li>✅ Plus rapide et plus fiable</li>
-                            <li>✅ Pas besoin de caméra</li>
-                            <li>✅ Fonctionne à tous les coups</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div id="historiqueProduits" style="margin-top: 40px;">
-                    <h3 style="color: #667eea; margin-bottom: 15px;">📚 Mes produits scannés</h3>
-                    <div id="listeProduits"></div>
-                </div>
-            </div>
-
             <!-- Onglet Frigo (code existant minimal) -->
             <div id="frigo" class="tab-content">
                 <h2>🍳 Mon Frigo Virtuel & Suggestions de Recettes</h2>
@@ -1542,90 +803,6 @@
                     <p style="text-align: center; color: #555; font-size: 0.95em;">
                         L'app vous suggérera automatiquement des recettes adaptées à vos ingrédients disponibles !
                     </p>
-                </div>
-
-                <!-- Scanner pour le frigo -->
-                <div style="background: white; border: 3px solid #4caf50; border-radius: 10px; padding: 25px; margin-bottom: 20px;">
-                    <h3 style="color: #4caf50; margin-bottom: 20px;">📷 Scanner vos produits pour le frigo</h3>
-                    
-                    <!-- Méthode 1 : Scanner caméra -->
-                    <div style="background: linear-gradient(135deg, #e3f2fd 0%, #e1bee7 100%); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
-                        <h4 style="color: #667eea; margin-bottom: 15px; text-align: center;">📸 Méthode 1 : Scanner avec la caméra</h4>
-                        <p style="text-align: center; color: #666; margin-bottom: 15px;">
-                            Activez la caméra pour scanner automatiquement les codes-barres de vos produits
-                        </p>
-                        
-                        <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 15px;">
-                            <button id="startScanBtnFrigo" class="btn" onclick="demarrerScannerFrigo()" style="margin: 0; background: linear-gradient(135deg, #4caf50 0%, #45a049 100%); flex: 1; min-width: 150px;">
-                                📊 Scanner code-barres
-                            </button>
-                            <button class="btn" onclick="demarrerPhotoFrigo()" style="margin: 0; background: linear-gradient(135deg, #ff6ec7 0%, #ff006e 100%); flex: 1; min-width: 150px;">
-                                📷 Photo aliment
-                            </button>
-                            <button id="stopScanBtnFrigo" class="btn" onclick="arreterScannerFrigo()" style="margin: 0; display: none; background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);">
-                                ⏹️ Arrêter
-                            </button>
-                        </div>
-
-                        <!-- Zone de photo aliment -->
-                        <div id="photoFrigo" style="display: none; margin-bottom: 15px;">
-                            <div style="background: #f5f5f5; padding: 15px; border-radius: 10px; margin-bottom: 10px; text-align: center;">
-                                <p style="margin: 0 0 10px 0; color: #666;">📸 Prenez une photo claire de l'aliment</p>
-                                <video id="videoPhotoFrigo" style="width: 100%; max-width: 400px; border-radius: 10px; background: #000;" autoplay playsinline></video>
-                            </div>
-                            <div style="display: flex; gap: 10px;">
-                                <button onclick="capturerPhotoFrigo()" class="btn" style="flex: 1; background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);">
-                                    📸 Capturer
-                                </button>
-                                <button onclick="arreterPhotoFrigo()" class="btn" style="flex: 1; background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);">
-                                    🛑 Annuler
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Zone de scan -->
-                        <div id="scanPlaceholderFrigo" style="background: #f0f0f0; height: 300px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #999; font-size: 1.2em; text-align: center; padding: 20px;">
-                            👆 Cliquez sur "Activer le scanner" pour commencer
-                        </div>
-                        <div id="interactiveFrigo" style="display: none; position: relative; width: 100%; max-width: 640px; height: 480px; margin: 0 auto; border-radius: 10px; overflow: hidden;"></div>
-
-                        <!-- Messages -->
-                        <div id="loadingScannerFrigo" style="display: none; text-align: center; padding: 15px; background: #e3f2fd; border-radius: 8px; margin-top: 15px;">
-                            <p style="color: #1565c0; margin: 0;">🔍 Recherche du produit en cours...</p>
-                        </div>
-
-                        <div id="erreurPermissionFrigo" style="display: none; background: #fff3cd; border: 2px solid #ffc107; color: #856404; padding: 15px; border-radius: 10px; margin-top: 15px;">
-                            <h4 style="margin-bottom: 10px;">🚫 Accès caméra refusé</h4>
-                            <p style="margin: 0; font-size: 0.9em;">
-                                Veuillez autoriser l'accès à la caméra dans les paramètres de votre navigateur, puis réessayez.
-                                Sur Android : Paramètres → Applications → Navigateur → Permissions → Caméra → Autoriser
-                            </p>
-                        </div>
-
-                        <div id="produitScanneFrigo" style="display: none; background: #e8f5e9; border: 2px solid #4caf50; padding: 15px; border-radius: 10px; margin-top: 15px;">
-                            <div style="display: flex; align-items: center; gap: 15px;">
-                                <div style="font-size: 2em;">✅</div>
-                                <div style="flex: 1;">
-                                    <div style="font-weight: bold; color: #2e7d32; font-size: 1.1em;" id="nomProduitScanneFrigo"></div>
-                                    <div style="color: #666; font-size: 0.9em; margin-top: 5px;" id="infoProduitScanneFrigo"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Méthode 2 : Saisie manuelle -->
-                    <div style="background: #f8f9fa; padding: 15px; border-radius: 10px;">
-                        <h4 style="color: #667eea; margin-bottom: 10px; text-align: center;">⌨️ Méthode 2 : Saisie manuelle</h4>
-                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                            <input type="text" id="scanFrigoManual" placeholder="Saisissez le code-barres (13 chiffres)" style="flex: 1; padding: 12px; border: 2px solid #4caf50; border-radius: 8px; min-width: 200px;" inputmode="numeric">
-                            <button class="btn" onclick="scannerPourFrigoManuel()" style="margin: 0; background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);">
-                                🔍 Rechercher
-                            </button>
-                        </div>
-                        <p style="color: #666; font-size: 0.85em; text-align: center; margin-top: 10px;">
-                            💡 Le code-barres se trouve au dos du produit
-                        </p>
-                    </div>
                 </div>
 
                 <!-- Mon Frigo -->
@@ -1647,6 +824,121 @@
                 <!-- Résultat suggestions -->
                 <div id="suggestionRecettes" style="display: none; margin-top: 30px;"></div>
 
+                <!-- NOUVELLE SECTION : Galerie de Photos d'Aliments -->
+                <div style="margin-top: 40px;">
+                    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 25px; border-radius: 15px; margin-bottom: 30px; text-align: center;">
+                        <div style="font-size: 3em; margin-bottom: 15px;">📸</div>
+                        <h3 style="font-size: 1.8em; margin-bottom: 15px;">Galerie de Photos d'Aliments</h3>
+                        <p style="font-size: 1.1em; opacity: 0.95; line-height: 1.6;">
+                            Prenez des photos de vos aliments pour mieux gérer votre frigo !
+                        </p>
+                    </div>
+
+                    <!-- Statistiques Photos -->
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px;">
+                        <div style="background: white; padding: 20px; border-radius: 15px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                            <div style="font-size: 2.5em; color: #667eea;">📸</div>
+                            <div style="font-size: 2em; font-weight: bold; color: #667eea; margin: 10px 0;" id="compteurPhotosAliments">0</div>
+                            <div style="color: #666;">Photos enregistrées</div>
+                        </div>
+                        
+                        <div style="background: white; padding: 20px; border-radius: 15px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                            <div style="font-size: 2.5em; color: #4caf50;">🌍</div>
+                            <div style="font-size: 2em; font-weight: bold; color: #4caf50; margin: 10px 0;" id="compteurPhotosCloud">0</div>
+                            <div style="color: #666;">Synchronisées cloud</div>
+                        </div>
+                    </div>
+
+                    <!-- Upload de Photo -->
+                    <div style="background: white; border: 3px solid #667eea; border-radius: 15px; padding: 25px; margin-bottom: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                        <h3 style="color: #667eea; margin-bottom: 20px;">📸 Ajouter une nouvelle photo</h3>
+                        
+                        <div class="form-group">
+                            <label>🏷️ Nom de l'aliment *</label>
+                            <input type="text" id="nomAlimentPhoto" placeholder="Ex: Steak de boeuf, Tomates cerises..." required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>📁 Catégorie</label>
+                            <select id="categorieAlimentPhoto" style="width: 100%; padding: 12px; border: 2px solid #667eea; border-radius: 8px; font-size: 1em;">
+                                <option value="fruits">🍎 Fruits</option>
+                                <option value="legumes">🥕 Légumes</option>
+                                <option value="viandes">🥩 Viandes & Poissons</option>
+                                <option value="produits_laitiers">🥛 Produits laitiers</option>
+                                <option value="feculents">🍞 Féculents</option>
+                                <option value="conserves">🥫 Conserves</option>
+                                <option value="condiments">🧂 Condiments</option>
+                                <option value="autre">📦 Autre</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>📅 Date de péremption (optionnel)</label>
+                            <input type="date" id="datePeremptionPhoto" style="width: 100%; padding: 12px; border: 2px solid #667eea; border-radius: 8px; font-size: 1em;">
+                        </div>
+
+                        <div class="form-group">
+                            <label>📝 Notes (optionnel)</label>
+                            <textarea id="notesAlimentPhoto" placeholder="Ex: Acheté chez Carrefour, bio..." style="width: 100%; padding: 12px; border: 2px solid #667eea; border-radius: 8px; font-size: 1em; min-height: 80px;"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>📷 Sélectionner une photo *</label>
+                            <input type="file" id="fileInputPhoto" accept="image/*" capture="environment" style="width: 100%; padding: 12px; border: 2px solid #667eea; border-radius: 8px; font-size: 1em;">
+                            <p style="font-size: 0.85em; color: #666; margin-top: 5px;">
+                                💡 Formats acceptés : JPG, PNG, WEBP (max 5 Mo)
+                            </p>
+                        </div>
+
+                        <!-- Prévisualisation -->
+                        <div id="previewPhoto" style="display: none; margin-bottom: 20px;">
+                            <p style="color: #667eea; font-weight: bold; margin-bottom: 10px;">Aperçu :</p>
+                            <img id="previewImage" style="max-width: 100%; max-height: 300px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+                        </div>
+
+                        <button class="btn" onclick="uploadPhotoAliment()" style="background: linear-gradient(135deg, #4caf50 0%, #45a049 100%); font-size: 1.1em;">
+                            📤 Enregistrer la photo
+                        </button>
+                    </div>
+
+                    <!-- Barre de recherche et filtres -->
+                    <div style="background: white; padding: 20px; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                        <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px;">
+                            <input type="text" id="recherchePhotos" placeholder="🔍 Rechercher une photo..." style="flex: 1; min-width: 200px; padding: 12px; border: 2px solid #667eea; border-radius: 8px; font-size: 1em;" oninput="filtrerPhotosAliments()">
+                            
+                            <select id="filtreCategorie" style="padding: 12px; border: 2px solid #667eea; border-radius: 8px; font-size: 1em;" onchange="filtrerPhotosAliments()">
+                                <option value="">Toutes les catégories</option>
+                                <option value="fruits">🍎 Fruits</option>
+                                <option value="legumes">🥕 Légumes</option>
+                                <option value="viandes">🥩 Viandes & Poissons</option>
+                                <option value="produits_laitiers">🥛 Produits laitiers</option>
+                                <option value="feculents">🍞 Féculents</option>
+                                <option value="conserves">🥫 Conserves</option>
+                                <option value="condiments">🧂 Condiments</option>
+                                <option value="autre">📦 Autre</option>
+                            </select>
+                        </div>
+
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <button onclick="synchroniserPhotosAliments()" class="btn" style="margin: 0; background: linear-gradient(135deg, #4caf50 0%, #45a049 100%); padding: 10px 20px;">
+                                🔄 Synchroniser
+                            </button>
+                            <button onclick="afficherToutesPhotos()" class="btn" style="margin: 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 10px 20px;">
+                                👁️ Afficher tout
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Galerie de photos -->
+                    <div id="galeriePhotosAliments" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px;">
+                        <div style="text-align: center; padding: 60px; color: #999; grid-column: 1 / -1;">
+                            <div style="font-size: 5em; margin-bottom: 20px;">📸</div>
+                            <p style="font-size: 1.2em;">Aucune photo pour le moment</p>
+                            <p style="font-size: 0.9em; margin-top: 10px;">Ajoutez votre première photo d'aliment ci-dessus !</p>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Produits disponibles pour ajout rapide -->
                 <div style="margin-top: 30px;">
                     <h3 style="color: #667eea; margin-bottom: 15px;">⚡ Ajouter rapidement au frigo</h3>
@@ -1662,87 +954,11 @@
             </div>
 
             <!-- Onglet Ma Base Perso (code existant) -->
-            <div id="baseperso" class="tab-content">
-                <h2>Ma Base de Données Personnelle</h2>
-                
-                <div style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
-                    <p style="text-align: center; color: #333; font-size: 1.1em; margin-bottom: 10px;">
-                        📝 Créez votre propre base de produits avec codes-barres
-                    </p>
-                    <p style="text-align: center; color: #555; font-size: 0.95em;">
-                        Ajoutez des produits qui ne sont pas dans OpenFoodFacts et retrouvez-les instantanément lors du scan !
-                    </p>
-                    <p style="text-align: center; color: #667eea; font-size: 0.9em; margin-top: 10px; font-weight: 600;">
-                        ✨ Vos produits perso sont automatiquement disponibles partout dans l'app !
-                    </p>
-                </div>
-
-                <div style="background: white; border: 3px solid #667eea; border-radius: 10px; padding: 25px; margin-bottom: 20px;">
-                    <h3 style="color: #667eea; margin-bottom: 20px;">➕ Ajouter un nouveau produit</h3>
-                    
-                    <div class="form-group">
-                        <label>📦 Nom du produit *</label>
-                        <input type="text" id="nomProduitPerso" placeholder="Ex: Mon yaourt maison, Pizza du restaurant..." required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>🏷️ Marque (optionnel)</label>
-                        <input type="text" id="marqueProduitPerso" placeholder="Ex: Marque maison">
-                    </div>
-
-                    <div class="form-group">
-                        <label>📊 Code-barres (13 chiffres) *</label>
-                        <input type="text" id="codebarreProduitPerso" placeholder="3017620422003" maxlength="13" pattern="[0-9]{13}">
-                        <p style="font-size: 0.85em; color: #666; margin-top: 5px;">
-                            💡 Si le produit n'a pas de code-barres, vous pouvez en générer un fictif (ex: 9999999999901)
-                        </p>
-                    </div>
-
-                    <div style="background: linear-gradient(135deg, #e3f2fd 0%, #e1bee7 100%); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
-                        <h4 style="color: #667eea; margin-bottom: 10px;">📊 Valeurs nutritionnelles pour 100g *</h4>
-                        
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                            <div class="form-group" style="margin-bottom: 0;">
-                                <label>🔥 Calories (kcal)</label>
-                                <input type="number" id="caloriesProduitPerso" placeholder="250" min="0" step="1" required>
-                            </div>
-
-                            <div class="form-group" style="margin-bottom: 0;">
-                                <label>💪 Protéines (g)</label>
-                                <input type="number" id="proteinesProduitPerso" placeholder="10" min="0" step="0.1" required>
-                            </div>
-
-                            <div class="form-group" style="margin-bottom: 0;">
-                                <label>🍞 Glucides (g)</label>
-                                <input type="number" id="glucidesProduitPerso" placeholder="30" min="0" step="0.1" required>
-                            </div>
-
-                            <div class="form-group" style="margin-bottom: 0;">
-                                <label>🧈 Lipides (g)</label>
-                                <input type="number" id="lipidesProduitPerso" placeholder="5" min="0" step="0.1" required>
-                            </div>
-                        </div>
-                    </div>
-
-                    <button class="btn" onclick="ajouterProduitPerso()">💾 Enregistrer ce produit</button>
-                </div>
-
-                <div style="margin-top: 30px;">
-                    <h3 style="color: #667eea; margin-bottom: 15px;">📚 Mes produits personnalisés (<span id="compteurProduitsPerso">0</span>)</h3>
-                    
-                    <div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #ffc107;">
-                        <p style="color: #856404; font-size: 0.95em; margin: 0;">
-                            💡 <strong>Astuce :</strong> Quand vous scannerez un code-barres, l'application cherchera d'abord dans votre base personnelle avant d'interroger OpenFoodFacts !
-                        </p>
-                    </div>
-
-                    <div id="listeProduitsPerso"></div>
-                </div>
-            </div>
-
             <!-- Onglet Ma Base Perso (code existant) -->
             <div id="baseperso" class="tab-content">
-                <h2>Ma Base de Données Personnelle</h2>
+                <h2>📦 Mes Bases de Données</h2>
+                
+                <h3 style="color: #667eea; font-size: 1.8em; margin-bottom: 20px;">📝 Ma Base Personnelle</h3>
                 
                 <div style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
                     <p style="text-align: center; color: #333; font-size: 1.1em; margin-bottom: 10px;">
@@ -1816,188 +1032,69 @@
                     </div>
 
                     <div id="listeProduitsPerso"></div>
+                </div>
+
+                <!-- Base Communautaire -->
+                <div style="margin-top: 50px; padding-top: 40px; border-top: 4px solid #4caf50;">
+                    <h3 style="color: #4caf50; font-size: 1.8em; margin-bottom: 20px;">🌍 Base Communautaire</h3>
+                    
+                    <div style="background: linear-gradient(135deg, #4caf50 0%, #45a049 100%); color: white; padding: 30px; border-radius: 15px; margin-bottom: 30px; text-align: center;">
+                        <div style="font-size: 4em; margin-bottom: 15px;">🌍</div>
+                        <h4 style="font-size: 1.5em; margin-bottom: 15px;">Produits Partagés par la Communauté</h4>
+                        <p style="font-size: 1.1em; opacity: 0.95; line-height: 1.6;">
+                            Découvrez tous les produits ajoutés et partagés par les membres de la communauté !
+                        </p>
+                    </div>
+
+                    <!-- Statistiques -->
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px;">
+                        <div style="background: white; padding: 20px; border-radius: 15px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                            <div style="font-size: 2.5em; color: #4caf50;">📦</div>
+                            <div style="font-size: 2em; font-weight: bold; color: #4caf50; margin: 10px 0;" id="compteurBaseCommunautaire">0</div>
+                            <div style="color: #666;">Produits partagés</div>
+                        </div>
+                        
+                        <div style="background: white; padding: 20px; border-radius: 15px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                            <div style="font-size: 2.5em; color: #667eea;">👥</div>
+                            <div style="font-size: 2em; font-weight: bold; color: #667eea; margin: 10px 0;" id="compteurContributeurs">0</div>
+                            <div style="color: #666;">Contributeurs</div>
+                        </div>
+                        
+                        <div style="background: white; padding: 20px; border-radius: 15px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                            <div style="font-size: 2.5em; color: #ff9800;">⏰</div>
+                            <div style="font-size: 1em; font-weight: bold; color: #ff9800; margin: 10px 0;" id="derniereSyncCommunautaire">Jamais</div>
+                            <div style="color: #666;">Dernière synchro</div>
+                        </div>
+                    </div>
+
+                    <!-- Bouton de synchronisation -->
+                    <div style="text-align: center; margin-bottom: 25px;">
+                        <button onclick="synchroniserBaseCommunautaire()" class="btn" style="background: linear-gradient(135deg, #4caf50 0%, #45a049 100%); padding: 15px 30px; font-size: 1.1em;">
+                            🔄 Synchroniser maintenant
+                        </button>
+                    </div>
+
+                    <!-- Barre de recherche -->
+                    <div style="background: white; padding: 20px; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                        <h4 style="color: #4caf50; margin-bottom: 15px;">🔍 Rechercher dans la base</h4>
+                        <input type="text" id="rechercheCommunautaire" placeholder="Rechercher un produit..." style="width: 100%; padding: 12px; border: 2px solid #4caf50; border-radius: 8px; font-size: 1em;" oninput="filtrerProduitsCommunautaires()">
+                    </div>
+
+                    <!-- Liste des produits -->
+                    <div style="background: white; padding: 20px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                        <h4 style="color: #4caf50; margin-bottom: 20px;">📋 Tous les produits (<span id="compteurFiltres">0</span>)</h4>
+                        
+                        <div id="listeProduitsCommunautaires" style="max-height: 600px; overflow-y: auto;">
+                            <div style="text-align: center; padding: 40px; color: #999;">
+                                <div style="font-size: 3em; margin-bottom: 15px;">📦</div>
+                                <p>Cliquez sur "🔄 Synchroniser maintenant" pour charger les produits</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <!-- Onglet Base Communautaire -->
-            <div id="basecommunautaire" class="tab-content">
-                <h2>📦 Base Communautaire</h2>
-                
-                <div style="background: linear-gradient(135deg, #4caf50 0%, #45a049 100%); color: white; padding: 30px; border-radius: 15px; margin-bottom: 30px; text-align: center;">
-                    <div style="font-size: 4em; margin-bottom: 15px;">🌍</div>
-                    <h3 style="font-size: 1.8em; margin-bottom: 15px;">Produits Partagés par la Communauté</h3>
-                    <p style="font-size: 1.1em; opacity: 0.95; line-height: 1.6;">
-                        Découvrez tous les produits ajoutés et partagés par les membres de la communauté !
-                    </p>
-                </div>
-
-                <!-- Statistiques -->
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px;">
-                    <div style="background: white; padding: 20px; border-radius: 15px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
-                        <div style="font-size: 2.5em; color: #4caf50;">📦</div>
-                        <div style="font-size: 2em; font-weight: bold; color: #4caf50; margin: 10px 0;" id="compteurBaseCommunautaire">0</div>
-                        <div style="color: #666;">Produits partagés</div>
-                    </div>
-                    
-                    <div style="background: white; padding: 20px; border-radius: 15px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
-                        <div style="font-size: 2.5em; color: #667eea;">👥</div>
-                        <div style="font-size: 2em; font-weight: bold; color: #667eea; margin: 10px 0;" id="compteurContributeurs">0</div>
-                        <div style="color: #666;">Contributeurs</div>
-                    </div>
-                    
-                    <div style="background: white; padding: 20px; border-radius: 15px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
-                        <div style="font-size: 2.5em; color: #ff9800;">⏰</div>
-                        <div style="font-size: 1em; font-weight: bold; color: #ff9800; margin: 10px 0;" id="derniereSyncCommunautaire">Jamais</div>
-                        <div style="color: #666;">Dernière synchro</div>
-                    </div>
-                </div>
-
-                <!-- Bouton de synchronisation -->
-                <div style="text-align: center; margin-bottom: 25px;">
-                    <button onclick="synchroniserBaseCommunautaire()" class="btn" style="background: linear-gradient(135deg, #4caf50 0%, #45a049 100%); padding: 15px 30px; font-size: 1.1em;">
-                        🔄 Synchroniser maintenant
-                    </button>
-                </div>
-
-                <!-- Barre de recherche -->
-                <div style="background: white; padding: 20px; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
-                    <h3 style="color: #4caf50; margin-bottom: 15px;">🔍 Rechercher dans la base</h3>
-                    <input type="text" id="rechercheCommunautaire" placeholder="Rechercher un produit..." style="width: 100%; padding: 12px; border: 2px solid #4caf50; border-radius: 8px; font-size: 1em;" oninput="filtrerProduitsCommunautaires()">
-                </div>
-
-                <!-- Liste des produits -->
-                <div style="background: white; padding: 20px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
-                    <h3 style="color: #4caf50; margin-bottom: 20px;">📋 Tous les produits (<span id="compteurFiltres">0</span>)</h3>
-                    
-                    <div id="listeProduitsCommunautaires" style="max-height: 600px; overflow-y: auto;">
-                        <div style="text-align: center; padding: 40px; color: #999;">
-                            <div style="font-size: 3em; margin-bottom: 15px;">📦</div>
-                            <p>Cliquez sur "🔄 Synchroniser maintenant" pour charger les produits</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Onglet Communauté -->
-            <div id="telegram" class="tab-content">
-                <h2>💬 Rejoignez la Communauté</h2>
-                
-                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 15px; margin-bottom: 30px; text-align: center;">
-                    <div style="font-size: 4em; margin-bottom: 15px;">🌍</div>
-                    <h3 style="font-size: 1.8em; margin-bottom: 15px;">Rejoignez-nous sur Facebook & Telegram !</h3>
-                    <p style="font-size: 1.1em; opacity: 0.95; line-height: 1.6;">
-                        Partagez votre progression, échangez des recettes, posez vos questions et restez motivé(e) avec la communauté !
-                    </p>
-                </div>
-
-                <!-- GROUPE FACEBOOK -->
-                <div style="background: white; border: 3px solid #1877f2; border-radius: 15px; padding: 25px; margin-bottom: 25px; box-shadow: 0 5px 20px rgba(24,119,242,0.2);">
-                    <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px;">
-                        <div style="font-size: 3.5em;">👥</div>
-                        <div style="flex: 1;">
-                            <h3 style="color: #1877f2; margin-bottom: 5px; font-size: 1.4em;">Page Facebook Principale</h3>
-                            <p style="color: #666; margin: 0; font-size: 1.05em;">
-                                <strong>Catjer La Chatte Qui Rugit En Cuisine</strong><br>
-                                Suivez notre page Facebook pour les dernières actualités et partager avec la communauté !
-                            </p>
-                        </div>
-                    </div>
-                    <div style="background: #f0f2f5; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
-                        <p style="margin: 0; color: #666;">
-                            ✨ <strong>Ce que vous y trouverez :</strong><br>
-                            • Testez l'app et donnez vos avis<br>
-                            • Signalez les bugs et proposez des améliorations<br>
-                            • Partagez vos découvertes de produits<br>
-                            • Échangez avec la communauté<br>
-                            • Contribuez au développement de l'app
-                        </p>
-                    </div>
-                    <a href="https://www.facebook.com/profile.php?id=61584460911716" target="_blank" rel="noopener noreferrer" class="btn" style="display: inline-block; text-decoration: none; background: linear-gradient(135deg, #1877f2 0%, #0c5fcd 100%); font-size: 1.1em; padding: 15px 30px;">
-                        <span style="font-size: 1.2em;">👍</span> Suivre la page Facebook
-                    </a>
-                </div>
-
-                <!-- Canal Telegram -->
-                <div style="background: white; border-radius: 15px; padding: 25px; margin-bottom: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
-                    <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px;">
-                        <div style="font-size: 3em;">✈️</div>
-                        <div style="flex: 1;">
-                            <h3 style="color: #0088cc; margin-bottom: 5px;">Communauté Telegram</h3>
-                            <p style="color: #666; margin: 0;">Canal alternatif pour suivre les actualités et échanger rapidement</p>
-                        </div>
-                    </div>
-                    <a href="https://t.me/+GYg6ymUmOu01M2Nk" target="_blank" rel="noopener noreferrer" class="btn" style="display: inline-block; text-decoration: none; background: linear-gradient(135deg, #0088cc 0%, #006699 100%);">
-                        ✈️ Rejoindre Telegram
-                    </a>
-                </div>
-
-                <!-- Groupe d'entraide -->
-                <div style="background: white; border-radius: 15px; padding: 25px; margin-bottom: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
-                    <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px;">
-                        <div style="font-size: 3em;">💪</div>
-                        <div style="flex: 1;">
-                            <h3 style="color: #667eea; margin-bottom: 5px;">Entraide & Motivation</h3>
-                            <p style="color: #666; margin: 0;">Échangez avec la communauté, partagez vos réussites et défis quotidiens</p>
-                        </div>
-                    </div>
-                    <a href="https://t.me/+GYg6ymUmOu01M2Nk" target="_blank" rel="noopener noreferrer" class="btn" style="display: inline-block; text-decoration: none; background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);">
-                        💬 Rejoindre le groupe
-                    </a>
-                </div>
-
-                <!-- Recettes -->
-                <div style="background: white; border-radius: 15px; padding: 25px; margin-bottom: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
-                    <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px;">
-                        <div style="font-size: 3em;">🍳</div>
-                        <div style="flex: 1;">
-                            <h3 style="color: #667eea; margin-bottom: 5px;">Recettes & Astuces</h3>
-                            <p style="color: #666; margin: 0;">Des centaines de recettes saines et délicieuses partagées par la communauté</p>
-                        </div>
-                    </div>
-                    <a href="https://t.me/+GYg6ymUmOu01M2Nk" target="_blank" rel="noopener noreferrer" class="btn" style="display: inline-block; text-decoration: none; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
-                        🍽️ Voir les recettes
-                    </a>
-                </div>
-
-                <!-- Support technique -->
-                <div style="background: white; border-radius: 15px; padding: 25px; margin-bottom: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
-                    <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px;">
-                        <div style="font-size: 3em;">🛠️</div>
-                        <div style="flex: 1;">
-                            <h3 style="color: #667eea; margin-bottom: 5px;">Support & Aide</h3>
-                            <p style="color: #666; margin: 0;">Besoin d'aide ? Contactez la communauté directement</p>
-                        </div>
-                    </div>
-                    <a href="https://t.me/+GYg6ymUmOu01M2Nk" target="_blank" rel="noopener noreferrer" class="btn" style="display: inline-block; text-decoration: none; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                        🆘 Obtenir de l'aide
-                    </a>
-                </div>
-
-                <!-- Avantages -->
-                <div style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); padding: 25px; border-radius: 15px;">
-                    <h3 style="color: #333; margin-bottom: 20px; text-align: center;">🎁 Avantages de rejoindre la communauté</h3>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
-                        <div class="conseil-card" style="background: white; padding: 15px; border-radius: 10px;">
-                            <h4 style="color: #667eea; margin-bottom: 10px;">💪 Motivation</h4>
-                            <p style="color: #555; margin: 0;">Restez motivé(e) grâce au soutien de la communauté</p>
-                        </div>
-                        <div class="conseil-card" style="background: white; padding: 15px; border-radius: 10px;">
-                            <h4 style="color: #667eea; margin-bottom: 10px;">🍽️ Recettes</h4>
-                            <p style="color: #555; margin: 0;">Découvrez de nouvelles recettes saines chaque jour</p>
-                        </div>
-                        <div class="conseil-card" style="background: white; padding: 15px; border-radius: 10px;">
-                            <h4 style="color: #667eea; margin-bottom: 10px;">📊 Conseils</h4>
-                            <p style="color: #555; margin: 0;">Des conseils d'experts en nutrition et fitness</p>
-                        </div>
-                        <div class="conseil-card" style="background: white; padding: 15px; border-radius: 10px;">
-                            <h4 style="color: #667eea; margin-bottom: 10px;">🎯 Défis</h4>
-                            <p style="color: #555; margin: 0;">Participez à des défis communautaires</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Onglet Coach IA (simplifié) -->
             <div id="coachai" class="tab-content">
                 <h2>🤖 Votre Coach Personnel Intelligent</h2>
                 
@@ -2182,6 +1279,43 @@
                 <div class="conseil-card">
                     <h4>⏰ Règle n°3 : Les horaires réguliers</h4>
                     <p>Mangez à heures fixes pour réguler votre métabolisme. Idéalement : petit-déjeuner avant 9h, déjeuner entre 12h et 13h, dîner avant 20h. Évitez de grignoter entre les repas.</p>
+                </div>
+
+                <!-- Fruits et Légumes de Saison -->
+                <div style="margin-top: 40px;">
+                    <h3 style="color: #4caf50; font-size: 1.8em; margin-bottom: 25px; text-align: center;">
+                        🍎🥕 Fruits & Légumes de Saison
+                    </h3>
+
+                    <div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 20px; border-radius: 15px; margin-bottom: 30px;">
+                        <p style="text-align: center; color: #2e7d32; font-size: 1.1em; line-height: 1.6;">
+                            <strong>🌱 Manger de saison, c'est :</strong><br>
+                            Plus de saveur • Plus de nutriments • Meilleur pour l'environnement • Moins cher
+                        </p>
+                    </div>
+
+                    <!-- Boutons de sélection du mois -->
+                    <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 30px;">
+                        <button onclick="afficherMoisSaison('janvier')" class="btn" style="background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%); padding: 10px 20px;">Janvier</button>
+                        <button onclick="afficherMoisSaison('fevrier')" class="btn" style="background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%); padding: 10px 20px;">Février</button>
+                        <button onclick="afficherMoisSaison('mars')" class="btn" style="background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%); padding: 10px 20px;">Mars</button>
+                        <button onclick="afficherMoisSaison('avril')" class="btn" style="background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%); padding: 10px 20px;">Avril</button>
+                        <button onclick="afficherMoisSaison('mai')" class="btn" style="background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%); padding: 10px 20px;">Mai</button>
+                        <button onclick="afficherMoisSaison('juin')" class="btn" style="background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%); padding: 10px 20px;">Juin</button>
+                        <button onclick="afficherMoisSaison('juillet')" class="btn" style="background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%); padding: 10px 20px;">Juillet</button>
+                        <button onclick="afficherMoisSaison('aout')" class="btn" style="background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%); padding: 10px 20px;">Août</button>
+                        <button onclick="afficherMoisSaison('septembre')" class="btn" style="background: linear-gradient(135deg, #ff5722 0%, #e64a19 100%); padding: 10px 20px;">Septembre</button>
+                        <button onclick="afficherMoisSaison('octobre')" class="btn" style="background: linear-gradient(135deg, #ff5722 0%, #e64a19 100%); padding: 10px 20px;">Octobre</button>
+                        <button onclick="afficherMoisSaison('novembre')" class="btn" style="background: linear-gradient(135deg, #ff5722 0%, #e64a19 100%); padding: 10px 20px;">Novembre</button>
+                        <button onclick="afficherMoisSaison('decembre')" class="btn" style="background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%); padding: 10px 20px;">Décembre</button>
+                    </div>
+
+                    <!-- Zone d'affichage des fruits et légumes -->
+                    <div id="affichageSaison" style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                        <p style="text-align: center; color: #999; font-size: 1.1em;">
+                            Sélectionnez un mois pour voir les fruits et légumes de saison 🗓️
+                        </p>
+                    </div>
                 </div>
             </div>
 
@@ -2696,6 +1830,132 @@
         // SYSTÈME DE SYNCHRONISATION GLOBALE
         // ==============================================
 
+        // ==============================================
+        // FRUITS ET LÉGUMES DE SAISON
+        // ==============================================
+
+        const fruitsDeSaison = {
+            janvier: {
+                fruits: ["🍊 Clémentine", "🍊 Mandarine", "🍊 Orange", "🍋 Citron", "🍊 Pamplemousse", "🍎 Pomme", "🍐 Poire", "🥝 Kiwi"],
+                legumes: ["🥕 Carotte", "🥬 Chou", "🥬 Chou de Bruxelles", "🥬 Chou-fleur", "🥬 Endive", "🥬 Poireau", "🥔 Pomme de terre", "🎃 Potiron", "🍠 Patate douce", "🧅 Oignon", "🥬 Mâche", "🥬 Épinard"]
+            },
+            fevrier: {
+                fruits: ["🍊 Clémentine", "🍊 Orange", "🍋 Citron", "🍊 Pamplemousse", "🍎 Pomme", "🍐 Poire", "🥝 Kiwi"],
+                legumes: ["🥕 Carotte", "🥬 Chou", "🥬 Chou de Bruxelles", "🥬 Chou-fleur", "🥬 Endive", "🥬 Poireau", "🥔 Pomme de terre", "🎃 Potiron", "🍠 Patate douce", "🧅 Oignon", "🥬 Mâche", "🥬 Épinard", "🥬 Cresson"]
+            },
+            mars: {
+                fruits: ["🍊 Orange", "🍋 Citron", "🍊 Pamplemousse", "🍎 Pomme", "🍐 Poire", "🥝 Kiwi"],
+                legumes: ["🥕 Carotte", "🥬 Chou-fleur", "🥬 Endive", "🥬 Poireau", "🥔 Pomme de terre", "🧅 Oignon", "🥬 Mâche", "🥬 Épinard", "🥬 Cresson", "🥗 Laitue", "🥒 Concombre", "🍅 Tomate (serre)"]
+            },
+            avril: {
+                fruits: ["🍎 Pomme", "🍐 Poire", "🍓 Fraise (début)"],
+                legumes: ["🥕 Carotte", "🥬 Chou-fleur", "🥬 Endive", "🥬 Poireau", "🥔 Pomme de terre", "🧅 Oignon", "🥬 Épinard", "🥬 Cresson", "🥗 Laitue", "🥒 Concombre", "🍅 Tomate (serre)", "🫛 Petit pois", "🫘 Asperge", "🥕 Radis"]
+            },
+            mai: {
+                fruits: ["🍓 Fraise", "🍒 Cerise (fin)", "🍐 Poire", "🍎 Pomme"],
+                legumes: ["🥕 Carotte", "🥔 Pomme de terre", "🧅 Oignon", "🥬 Épinard", "🥗 Laitue", "🥒 Concombre", "🍅 Tomate", "🫛 Petit pois", "🫘 Asperge", "🥕 Radis", "🥬 Roquette", "🥒 Courgette (début)", "🫘 Fève", "🫘 Haricot vert (début)"]
+            },
+            juin: {
+                fruits: ["🍓 Fraise", "🍒 Cerise", "🍑 Abricot", "🍑 Nectarine", "🍑 Pêche (début)", "🍉 Melon", "🫐 Myrtille", "🍇 Groseille", "🍇 Cassis"],
+                legumes: ["🥕 Carotte", "🥔 Pomme de terre", "🧅 Oignon", "🥗 Laitue", "🥒 Concombre", "🍅 Tomate", "🥕 Radis", "🥬 Roquette", "🥒 Courgette", "🫘 Haricot vert", "🌶️ Poivron", "🍆 Aubergine", "🧄 Ail"]
+            },
+            juillet: {
+                fruits: ["🍓 Fraise", "🍒 Cerise", "🍑 Abricot", "🍑 Nectarine", "🍑 Pêche", "🍉 Melon", "🍉 Pastèque", "🫐 Myrtille", "🍇 Cassis", "🍇 Groseille", "🍇 Framboise", "🍇 Mûre (début)", "🍑 Prune (début)"],
+                legumes: ["🥕 Carotte", "🥔 Pomme de terre", "🧅 Oignon", "🥗 Laitue", "🥒 Concombre", "🍅 Tomate", "🥕 Radis", "🥬 Roquette", "🥒 Courgette", "🫘 Haricot vert", "🌶️ Poivron", "🍆 Aubergine", "🧄 Ail", "🌽 Maïs"]
+            },
+            aout: {
+                fruits: ["🍑 Abricot", "🍑 Nectarine", "🍑 Pêche", "🍉 Melon", "🍉 Pastèque", "🫐 Myrtille", "🍇 Raisin (début)", "🍇 Framboise", "🍇 Mûre", "🍑 Prune", "🍇 Figue (début)", "🍐 Poire (début)"],
+                legumes: ["🥕 Carotte", "🥔 Pomme de terre", "🧅 Oignon", "🥗 Laitue", "🥒 Concombre", "🍅 Tomate", "🥕 Radis", "🥬 Roquette", "🥒 Courgette", "🫘 Haricot vert", "🌶️ Poivron", "🍆 Aubergine", "🧄 Ail", "🌽 Maïs", "🥬 Blette"]
+            },
+            septembre: {
+                fruits: ["🍑 Pêche", "🍇 Raisin", "🍇 Mûre", "🍑 Prune", "🍇 Figue", "🍐 Poire", "🍎 Pomme", "🍉 Melon", "🥝 Kiwi (fin)"],
+                legumes: ["🥕 Carotte", "🥔 Pomme de terre", "🧅 Oignon", "🥗 Laitue", "🥒 Concombre", "🍅 Tomate", "🥕 Radis", "🥒 Courgette", "🫘 Haricot vert", "🌶️ Poivron", "🍆 Aubergine", "🥬 Blette", "🥬 Épinard", "🥬 Chou", "🥬 Poireau", "🎃 Courge", "🎃 Potiron"]
+            },
+            octobre: {
+                fruits: ["🍇 Raisin", "🍇 Figue", "🍐 Poire", "🍎 Pomme", "🥝 Kiwi", "🍊 Coing", "🌰 Châtaigne", "🌰 Noix"],
+                legumes: ["🥕 Carotte", "🥔 Pomme de terre", "🧅 Oignon", "🥕 Radis", "🥬 Blette", "🥬 Épinard", "🥬 Chou", "🥬 Chou-fleur", "🥬 Poireau", "🎃 Courge", "🎃 Potiron", "🍠 Patate douce", "🥬 Mâche", "🥬 Endive"]
+            },
+            novembre: {
+                fruits: ["🍐 Poire", "🍎 Pomme", "🥝 Kiwi", "🍊 Coing", "🌰 Châtaigne", "🌰 Noix", "🍊 Clémentine (fin)", "🍊 Mandarine (fin)"],
+                legumes: ["🥕 Carotte", "🥔 Pomme de terre", "🧅 Oignon", "🥬 Blette", "🥬 Épinard", "🥬 Chou", "🥬 Chou de Bruxelles", "🥬 Chou-fleur", "🥬 Poireau", "🎃 Courge", "🎃 Potiron", "🍠 Patate douce", "🥬 Mâche", "🥬 Endive", "🥬 Cresson"]
+            },
+            decembre: {
+                fruits: ["🍊 Clémentine", "🍊 Mandarine", "🍊 Orange", "🍋 Citron", "🍊 Pamplemousse", "🍎 Pomme", "🍐 Poire", "🥝 Kiwi", "🌰 Châtaigne", "🌰 Noix"],
+                legumes: ["🥕 Carotte", "🥬 Chou", "🥬 Chou de Bruxelles", "🥬 Chou-fleur", "🥬 Endive", "🥬 Poireau", "🥔 Pomme de terre", "🎃 Potiron", "🍠 Patate douce", "🧅 Oignon", "🥬 Mâche", "🥬 Épinard"]
+            }
+        };
+
+        function afficherMoisSaison(mois) {
+            const zone = document.getElementById('affichageSaison');
+            const data = fruitsDeSaison[mois];
+            
+            if (!data) {
+                zone.innerHTML = '<p style="text-align: center; color: #999;">Mois non trouvé</p>';
+                return;
+            }
+
+            const moisNom = {
+                'janvier': 'Janvier',
+                'fevrier': 'Février',
+                'mars': 'Mars',
+                'avril': 'Avril',
+                'mai': 'Mai',
+                'juin': 'Juin',
+                'juillet': 'Juillet',
+                'aout': 'Août',
+                'septembre': 'Septembre',
+                'octobre': 'Octobre',
+                'novembre': 'Novembre',
+                'decembre': 'Décembre'
+            };
+
+            zone.innerHTML = `
+                <h3 style="color: #4caf50; font-size: 1.5em; margin-bottom: 25px; text-align: center;">
+                    📅 ${moisNom[mois]}
+                </h3>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                    <!-- Fruits -->
+                    <div>
+                        <h4 style="color: #ff9800; font-size: 1.3em; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 3px solid #ff9800;">
+                            🍎 Fruits
+                        </h4>
+                        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                            ${data.fruits.map(fruit => `
+                                <div style="background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); padding: 12px 20px; border-radius: 25px; font-size: 1em; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                                    ${fruit}
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <!-- Légumes -->
+                    <div>
+                        <h4 style="color: #4caf50; font-size: 1.3em; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 3px solid #4caf50;">
+                            🥕 Légumes
+                        </h4>
+                        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                            ${data.legumes.map(legume => `
+                                <div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 12px 20px; border-radius: 25px; font-size: 1em; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                                    ${legume}
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: #e3f2fd; padding: 20px; border-radius: 10px; margin-top: 30px; border-left: 4px solid #2196f3;">
+                    <p style="color: #1565c0; margin: 0; font-size: 1em;">
+                        💡 <strong>Astuce :</strong> Privilégiez les fruits et légumes de saison pour plus de saveur, de nutriments et un meilleur impact environnemental !
+                    </p>
+                </div>
+            `;
+        }
+
+        // ==============================================
+        // FIN FRUITS ET LÉGUMES DE SAISON
+        // ==============================================
+
         // Citations motivantes
         const citations = [
             { texte: "Le succès, c'est la somme de petits efforts répétés jour après jour.", auteur: "Robert Collier" },
@@ -2922,40 +2182,208 @@
 
 
         // Base de données d'aliments (calories pour 100g)
+        // BASE DE DONNÉES ÉTENDUE - ALIMENTS PEU CALORIQUES
         const baseAliments = [
-            { nom: "Poulet", categorie: "Viande", calories: 165, proteines: 31, glucides: 0, lipides: 3.6 },
-            { nom: "Bœuf", categorie: "Viande", calories: 250, proteines: 26, glucides: 0, lipides: 17 },
-            { nom: "Porc", categorie: "Viande", calories: 242, proteines: 27, glucides: 0, lipides: 14 },
-            { nom: "Dinde", categorie: "Viande", calories: 135, proteines: 29, glucides: 0, lipides: 1.5 },
-            { nom: "Jambon blanc", categorie: "Charcuterie", calories: 145, proteines: 21, glucides: 1, lipides: 6 },
-            { nom: "Saumon", categorie: "Poisson", calories: 208, proteines: 20, glucides: 0, lipides: 13 },
-            { nom: "Thon", categorie: "Poisson", calories: 130, proteines: 29, glucides: 0, lipides: 1 },
-            { nom: "Cabillaud", categorie: "Poisson", calories: 82, proteines: 18, glucides: 0, lipides: 0.7 },
-            { nom: "Œuf", categorie: "Œuf", calories: 155, proteines: 13, glucides: 1.1, lipides: 11 },
-            { nom: "Lait entier", categorie: "Laitier", calories: 61, proteines: 3.2, glucides: 4.8, lipides: 3.3 },
-            { nom: "Yaourt nature", categorie: "Laitier", calories: 59, proteines: 3.5, glucides: 4, lipides: 3.3 },
-            { nom: "Fromage blanc 0%", categorie: "Laitier", calories: 44, proteines: 7.5, glucides: 4, lipides: 0.2 },
-            { nom: "Riz blanc cuit", categorie: "Féculent", calories: 130, proteines: 2.7, glucides: 28, lipides: 0.3 },
-            { nom: "Riz complet cuit", categorie: "Féculent", calories: 112, proteines: 2.6, glucides: 24, lipides: 0.9 },
-            { nom: "Pâtes cuites", categorie: "Féculent", calories: 131, proteines: 5, glucides: 25, lipides: 1.1 },
-            { nom: "Quinoa cuit", categorie: "Féculent", calories: 120, proteines: 4.4, glucides: 21, lipides: 1.9 },
-            { nom: "Pain blanc", categorie: "Pain", calories: 265, proteines: 9, glucides: 49, lipides: 3.2 },
-            { nom: "Pomme de terre cuite", categorie: "Féculent", calories: 77, proteines: 2, glucides: 17, lipides: 0.1 },
-            { nom: "Lentilles cuites", categorie: "Légumineuse", calories: 116, proteines: 9, glucides: 20, lipides: 0.4 },
-            { nom: "Pois chiches cuits", categorie: "Légumineuse", calories: 164, proteines: 8.9, glucides: 27, lipides: 2.6 },
-            { nom: "Tomate", categorie: "Légume", calories: 18, proteines: 0.9, glucides: 3.9, lipides: 0.2 },
-            { nom: "Carotte", categorie: "Légume", calories: 41, proteines: 0.9, glucides: 10, lipides: 0.2 },
-            { nom: "Brocoli", categorie: "Légume", calories: 34, proteines: 2.8, glucides: 7, lipides: 0.4 },
+            // LÉGUMES (très peu caloriques - 10-50 kcal/100g)
+            { nom: "Concombre", categorie: "Légume", calories: 12, proteines: 0.6, glucides: 2.2, lipides: 0.1 },
+            { nom: "Céleri", categorie: "Légume", calories: 14, proteines: 0.7, glucides: 3, lipides: 0.2 },
+            { nom: "Laitue", categorie: "Légume", calories: 13, proteines: 1.2, glucides: 2.3, lipides: 0.2 },
+            { nom: "Radis", categorie: "Légume", calories: 16, proteines: 0.7, glucides: 3.4, lipides: 0.1 },
             { nom: "Courgette", categorie: "Légume", calories: 17, proteines: 1.2, glucides: 3.1, lipides: 0.3 },
-            { nom: "Salade verte", categorie: "Légume", calories: 15, proteines: 1.4, glucides: 2.9, lipides: 0.2 },
+            { nom: "Tomate", categorie: "Légume", calories: 18, proteines: 0.9, glucides: 3.9, lipides: 0.2 },
+            { nom: "Champignon", categorie: "Légume", calories: 22, proteines: 3.1, glucides: 3.3, lipides: 0.3 },
             { nom: "Épinards", categorie: "Légume", calories: 23, proteines: 2.9, glucides: 3.6, lipides: 0.4 },
-            { nom: "Pomme", categorie: "Fruit", calories: 52, proteines: 0.3, glucides: 14, lipides: 0.2 },
-            { nom: "Banane", categorie: "Fruit", calories: 89, proteines: 1.1, glucides: 23, lipides: 0.3 },
-            { nom: "Orange", categorie: "Fruit", calories: 47, proteines: 0.9, glucides: 12, lipides: 0.1 },
+            { nom: "Chou-fleur", categorie: "Légume", calories: 25, proteines: 1.9, glucides: 5, lipides: 0.3 },
+            { nom: "Asperge", categorie: "Légume", calories: 20, proteines: 2.2, glucides: 3.9, lipides: 0.1 },
+            { nom: "Poivron rouge", categorie: "Légume", calories: 31, proteines: 1, glucides: 6, lipides: 0.3 },
+            { nom: "Poivron vert", categorie: "Légume", calories: 20, proteines: 0.9, glucides: 4.6, lipides: 0.2 },
+            { nom: "Aubergine", categorie: "Légume", calories: 25, proteines: 1, glucides: 6, lipides: 0.2 },
+            { nom: "Haricot vert", categorie: "Légume", calories: 31, proteines: 1.8, glucides: 7, lipides: 0.1 },
+            { nom: "Brocoli", categorie: "Légume", calories: 34, proteines: 2.8, glucides: 7, lipides: 0.4 },
+            { nom: "Chou blanc", categorie: "Légume", calories: 25, proteines: 1.3, glucides: 5.8, lipides: 0.1 },
+            { nom: "Chou rouge", categorie: "Légume", calories: 31, proteines: 1.4, glucides: 7.4, lipides: 0.2 },
+            { nom: "Endive", categorie: "Légume", calories: 17, proteines: 0.9, glucides: 3.4, lipides: 0.1 },
+            { nom: "Fenouil", categorie: "Légume", calories: 31, proteines: 1.2, glucides: 7.3, lipides: 0.2 },
+            { nom: "Navet", categorie: "Légume", calories: 28, proteines: 0.9, glucides: 6.4, lipides: 0.1 },
+            { nom: "Betterave", categorie: "Légume", calories: 43, proteines: 1.6, glucides: 9.6, lipides: 0.2 },
+            { nom: "Carotte", categorie: "Légume", calories: 41, proteines: 0.9, glucides: 10, lipides: 0.2 },
+            { nom: "Citrouille", categorie: "Légume", calories: 26, proteines: 1, glucides: 6.5, lipides: 0.1 },
+            { nom: "Potiron", categorie: "Légume", calories: 20, proteines: 0.7, glucides: 4.9, lipides: 0.1 },
+            { nom: "Butternut", categorie: "Légume", calories: 45, proteines: 1, glucides: 11.7, lipides: 0.1 },
+            { nom: "Salade verte", categorie: "Légume", calories: 15, proteines: 1.4, glucides: 2.9, lipides: 0.2 },
+            { nom: "Mâche", categorie: "Légume", calories: 21, proteines: 2, glucides: 3.6, lipides: 0.4 },
+            { nom: "Roquette", categorie: "Légume", calories: 25, proteines: 2.6, glucides: 3.7, lipides: 0.7 },
+            { nom: "Cresson", categorie: "Légume", calories: 11, proteines: 2.3, glucides: 1.3, lipides: 0.1 },
+            
+            // FRUITS (peu caloriques - 30-80 kcal/100g)
+            { nom: "Pastèque", categorie: "Fruit", calories: 30, proteines: 0.6, glucides: 7.6, lipides: 0.2 },
             { nom: "Fraise", categorie: "Fruit", calories: 32, proteines: 0.7, glucides: 7.7, lipides: 0.3 },
+            { nom: "Melon", categorie: "Fruit", calories: 34, proteines: 0.8, glucides: 8.2, lipides: 0.2 },
+            { nom: "Pamplemousse", categorie: "Fruit", calories: 42, proteines: 0.8, glucides: 11, lipides: 0.1 },
+            { nom: "Framboise", categorie: "Fruit", calories: 52, proteines: 1.2, glucides: 12, lipides: 0.7 },
+            { nom: "Citron", categorie: "Fruit", calories: 29, proteines: 1.1, glucides: 9.3, lipides: 0.3 },
+            { nom: "Orange", categorie: "Fruit", calories: 47, proteines: 0.9, glucides: 12, lipides: 0.1 },
+            { nom: "Mandarine", categorie: "Fruit", calories: 53, proteines: 0.8, glucides: 13.3, lipides: 0.3 },
+            { nom: "Clémentine", categorie: "Fruit", calories: 47, proteines: 0.9, glucides: 12, lipides: 0.2 },
+            { nom: "Pêche", categorie: "Fruit", calories: 39, proteines: 0.9, glucides: 9.5, lipides: 0.3 },
+            { nom: "Nectarine", categorie: "Fruit", calories: 44, proteines: 1.1, glucides: 10.6, lipides: 0.3 },
+            { nom: "Abricot", categorie: "Fruit", calories: 48, proteines: 1.4, glucides: 11.1, lipides: 0.4 },
+            { nom: "Prune", categorie: "Fruit", calories: 46, proteines: 0.7, glucides: 11.4, lipides: 0.3 },
+            { nom: "Pomme", categorie: "Fruit", calories: 52, proteines: 0.3, glucides: 14, lipides: 0.2 },
+            { nom: "Poire", categorie: "Fruit", calories: 57, proteines: 0.4, glucides: 15.2, lipides: 0.1 },
             { nom: "Kiwi", categorie: "Fruit", calories: 61, proteines: 1.1, glucides: 15, lipides: 0.5 },
-            { nom: "Amande", categorie: "Noix", calories: 579, proteines: 21, glucides: 22, lipides: 50 },
-            { nom: "Noix", categorie: "Noix", calories: 654, proteines: 15, glucides: 14, lipides: 65 }
+            { nom: "Ananas", categorie: "Fruit", calories: 50, proteines: 0.5, glucides: 13.1, lipides: 0.1 },
+            { nom: "Papaye", categorie: "Fruit", calories: 43, proteines: 0.5, glucides: 11, lipides: 0.3 },
+            { nom: "Mangue", categorie: "Fruit", calories: 60, proteines: 0.8, glucides: 15, lipides: 0.4 },
+            { nom: "Myrtille", categorie: "Fruit", calories: 57, proteines: 0.7, glucides: 14.5, lipides: 0.3 },
+            { nom: "Mûre", categorie: "Fruit", calories: 43, proteines: 1.4, glucides: 9.6, lipides: 0.5 },
+            { nom: "Cerise", categorie: "Fruit", calories: 63, proteines: 1, glucides: 16, lipides: 0.2 },
+            { nom: "Raisin", categorie: "Fruit", calories: 69, proteines: 0.7, glucides: 18.1, lipides: 0.2 },
+            { nom: "Banane", categorie: "Fruit", calories: 89, proteines: 1.1, glucides: 23, lipides: 0.3 },
+            { nom: "Figue", categorie: "Fruit", calories: 74, proteines: 0.8, glucides: 19.2, lipides: 0.3 },
+            { nom: "Grenade", categorie: "Fruit", calories: 83, proteines: 1.7, glucides: 18.7, lipides: 1.2 },
+            
+            // POISSONS MAIGRES (70-120 kcal/100g)
+            { nom: "Cabillaud", categorie: "Poisson", calories: 82, proteines: 18, glucides: 0, lipides: 0.7 },
+            { nom: "Colin", categorie: "Poisson", calories: 86, proteines: 17.5, glucides: 0, lipides: 1.3 },
+            { nom: "Lieu noir", categorie: "Poisson", calories: 74, proteines: 17, glucides: 0, lipides: 0.6 },
+            { nom: "Merlan", categorie: "Poisson", calories: 78, proteines: 18, glucides: 0, lipides: 0.8 },
+            { nom: "Sole", categorie: "Poisson", calories: 86, proteines: 18.8, glucides: 0, lipides: 1.2 },
+            { nom: "Limande", categorie: "Poisson", calories: 73, proteines: 16, glucides: 0, lipides: 0.9 },
+            { nom: "Raie", categorie: "Poisson", calories: 89, proteines: 20, glucides: 0, lipides: 0.9 },
+            { nom: "Lotte", categorie: "Poisson", calories: 76, proteines: 17.8, glucides: 0, lipides: 0.5 },
+            { nom: "Bar", categorie: "Poisson", calories: 97, proteines: 19.4, glucides: 0, lipides: 2.1 },
+            { nom: "Dorade", categorie: "Poisson", calories: 96, proteines: 20.5, glucides: 0, lipides: 1.2 },
+            { nom: "Thon", categorie: "Poisson", calories: 130, proteines: 29, glucides: 0, lipides: 1 },
+            { nom: "Truite", categorie: "Poisson", calories: 119, proteines: 20, glucides: 0, lipides: 3.5 },
+            { nom: "Sardine", categorie: "Poisson", calories: 135, proteines: 21, glucides: 0, lipides: 5.2 },
+            { nom: "Maquereau", categorie: "Poisson", calories: 139, proteines: 19, glucides: 0, lipides: 7 },
+            { nom: "Crevette", categorie: "Fruit de mer", calories: 99, proteines: 21, glucides: 0, lipides: 1.5 },
+            { nom: "Crabe", categorie: "Fruit de mer", calories: 87, proteines: 18, glucides: 0, lipides: 1.1 },
+            { nom: "Moules", categorie: "Fruit de mer", calories: 86, proteines: 11.9, glucides: 3.7, lipides: 2.2 },
+            { nom: "Calamar", categorie: "Fruit de mer", calories: 92, proteines: 15.6, glucides: 3.1, lipides: 1.4 },
+            
+            // VIANDES MAIGRES (100-165 kcal/100g)
+            { nom: "Blanc de poulet", categorie: "Viande", calories: 110, proteines: 23, glucides: 0, lipides: 1.2 },
+            { nom: "Escalope de dinde", categorie: "Viande", calories: 105, proteines: 24, glucides: 0, lipides: 0.7 },
+            { nom: "Dinde", categorie: "Viande", calories: 135, proteines: 29, glucides: 0, lipides: 1.5 },
+            { nom: "Poulet", categorie: "Viande", calories: 165, proteines: 31, glucides: 0, lipides: 3.6 },
+            { nom: "Lapin", categorie: "Viande", calories: 137, proteines: 21.2, glucides: 0, lipides: 5.5 },
+            { nom: "Veau", categorie: "Viande", calories: 109, proteines: 20.7, glucides: 0, lipides: 2.4 },
+            { nom: "Filet de boeuf", categorie: "Viande", calories: 158, proteines: 28.6, glucides: 0, lipides: 4.5 },
+            { nom: "Jambon blanc", categorie: "Charcuterie", calories: 107, proteines: 20, glucides: 0.5, lipides: 2.5 },
+            { nom: "Jambon de dinde", categorie: "Charcuterie", calories: 95, proteines: 18, glucides: 1, lipides: 2 },
+            
+            // PRODUITS LAITIERS 0% (30-60 kcal/100g)
+            { nom: "Fromage blanc 0%", categorie: "Laitier", calories: 44, proteines: 7.5, glucides: 4, lipides: 0.2 },
+            { nom: "Yaourt nature 0%", categorie: "Laitier", calories: 45, proteines: 4.3, glucides: 5.2, lipides: 0.1 },
+            { nom: "Skyr nature", categorie: "Laitier", calories: 57, proteines: 11, glucides: 4, lipides: 0.2 },
+            { nom: "Petits-suisses 0%", categorie: "Laitier", calories: 49, proteines: 7, glucides: 5.6, lipides: 0.1 },
+            { nom: "Lait écrémé", categorie: "Laitier", calories: 34, proteines: 3.4, glucides: 4.8, lipides: 0.1 },
+            { nom: "Faisselle 0%", categorie: "Laitier", calories: 47, proteines: 7.8, glucides: 3.2, lipides: 0.5 },
+            
+            // LÉGUMINEUSES CUITES (100-150 kcal/100g)
+            { nom: "Lentilles vertes cuites", categorie: "Légumineuse", calories: 114, proteines: 9, glucides: 20, lipides: 0.4 },
+            { nom: "Lentilles corail cuites", categorie: "Légumineuse", calories: 101, proteines: 7.6, glucides: 17.5, lipides: 0.4 },
+            { nom: "Haricots blancs cuits", categorie: "Légumineuse", calories: 118, proteines: 8.2, glucides: 21, lipides: 0.5 },
+            { nom: "Haricots rouges cuits", categorie: "Légumineuse", calories: 127, proteines: 8.7, glucides: 22.8, lipides: 0.5 },
+            { nom: "Pois cassés cuits", categorie: "Légumineuse", calories: 118, proteines: 8.3, glucides: 21.1, lipides: 0.4 },
+            { nom: "Pois chiches cuits", categorie: "Légumineuse", calories: 164, proteines: 8.9, glucides: 27, lipides: 2.6 },
+            { nom: "Fèves cuites", categorie: "Légumineuse", calories: 110, proteines: 7.6, glucides: 19.7, lipides: 0.4 },
+            { nom: "Edamame", categorie: "Légumineuse", calories: 122, proteines: 11, glucides: 10, lipides: 5.2 },
+            
+            // FÉCULENTS COMPLETS CUITS (100-140 kcal/100g)
+            { nom: "Quinoa cuit", categorie: "Féculent", calories: 120, proteines: 4.4, glucides: 21, lipides: 1.9 },
+            { nom: "Boulgour cuit", categorie: "Féculent", calories: 83, proteines: 3.1, glucides: 18.6, lipides: 0.2 },
+            { nom: "Riz complet cuit", categorie: "Féculent", calories: 112, proteines: 2.6, glucides: 24, lipides: 0.9 },
+            { nom: "Riz basmati cuit", categorie: "Féculent", calories: 121, proteines: 3, glucides: 25, lipides: 0.4 },
+            { nom: "Pâtes complètes cuites", categorie: "Féculent", calories: 124, proteines: 5.3, glucides: 23.5, lipides: 1.4 },
+            { nom: "Semoule cuite", categorie: "Féculent", calories: 110, proteines: 3.8, glucides: 23, lipides: 0.2 },
+            { nom: "Couscous cuit", categorie: "Féculent", calories: 112, proteines: 3.8, glucides: 23, lipides: 0.2 },
+            { nom: "Sarrasin cuit", categorie: "Féculent", calories: 92, proteines: 3.4, glucides: 19.9, lipides: 0.6 },
+            { nom: "Polenta cuite", categorie: "Féculent", calories: 85, proteines: 2.1, glucides: 18.7, lipides: 0.5 },
+            { nom: "Pomme de terre cuite", categorie: "Féculent", calories: 77, proteines: 2, glucides: 17, lipides: 0.1 },
+            { nom: "Patate douce cuite", categorie: "Féculent", calories: 86, proteines: 1.6, glucides: 20.1, lipides: 0.1 },
+            { nom: "Igname cuit", categorie: "Féculent", calories: 118, proteines: 1.5, glucides: 27.9, lipides: 0.2 },
+            
+            // CONDIMENTS ET AROMATES (0-30 kcal/100g)
+            { nom: "Basilic frais", categorie: "Aromate", calories: 23, proteines: 3.2, glucides: 2.7, lipides: 0.6 },
+            { nom: "Persil frais", categorie: "Aromate", calories: 36, proteines: 3, glucides: 6.3, lipides: 0.8 },
+            { nom: "Coriandre fraîche", categorie: "Aromate", calories: 23, proteines: 2.1, glucides: 3.7, lipides: 0.5 },
+            { nom: "Menthe fraîche", categorie: "Aromate", calories: 44, proteines: 3.8, glucides: 8.4, lipides: 0.7 },
+            { nom: "Ciboulette", categorie: "Aromate", calories: 30, proteines: 3.3, glucides: 4.4, lipides: 0.7 },
+            { nom: "Ail", categorie: "Aromate", calories: 149, proteines: 6.4, glucides: 33.1, lipides: 0.5 },
+            { nom: "Oignon", categorie: "Légume", calories: 40, proteines: 1.1, glucides: 9.3, lipides: 0.1 },
+            { nom: "Échalote", categorie: "Légume", calories: 72, proteines: 2.5, glucides: 16.8, lipides: 0.1 },
+            { nom: "Gingembre", categorie: "Aromate", calories: 80, proteines: 1.8, glucides: 17.8, lipides: 0.8 },
+            { nom: "Citron vert", categorie: "Fruit", calories: 30, proteines: 0.7, glucides: 10.5, lipides: 0.2 },
+            
+            // ŒUFS ET ALTERNATIVES
+            { nom: "Blanc d'œuf", categorie: "Œuf", calories: 52, proteines: 11, glucides: 0.7, lipides: 0.2 },
+            { nom: "Œuf entier", categorie: "Œuf", calories: 155, proteines: 13, glucides: 1.1, lipides: 11 },
+            { nom: "Tofu nature", categorie: "Soja", calories: 76, proteines: 8, glucides: 1.9, lipides: 4.8 },
+            { nom: "Tempeh", categorie: "Soja", calories: 193, proteines: 20, glucides: 9, lipides: 11 },
+            
+            // GÂTEAUX ET DESSERTS LÉGERS (60-200 kcal/100g)
+            { nom: "Compote de pommes sans sucre", categorie: "Dessert", calories: 52, proteines: 0.3, glucides: 12.5, lipides: 0.2 },
+            { nom: "Sorbet fruits", categorie: "Dessert", calories: 95, proteines: 0.5, glucides: 24, lipides: 0.1 },
+            { nom: "Yaourt glacé 0%", categorie: "Dessert", calories: 105, proteines: 3.5, glucides: 21, lipides: 0.5 },
+            { nom: "Mousse au chocolat light", categorie: "Dessert", calories: 110, proteines: 4, glucides: 18, lipides: 2.5 },
+            { nom: "Flan nature", categorie: "Dessert", calories: 115, proteines: 3.8, glucides: 20, lipides: 2.3 },
+            { nom: "Crème dessert vanille 0%", categorie: "Dessert", calories: 67, proteines: 4.2, glucides: 11, lipides: 0.3 },
+            { nom: "Crème dessert chocolat 0%", categorie: "Dessert", calories: 72, proteines: 4.5, glucides: 12, lipides: 0.4 },
+            { nom: "Pudding nature", categorie: "Dessert", calories: 88, proteines: 3.2, glucides: 16, lipides: 1.4 },
+            { nom: "Île flottante", categorie: "Dessert", calories: 96, proteines: 4.5, glucides: 15, lipides: 2.1 },
+            { nom: "Panna cotta light", categorie: "Dessert", calories: 130, proteines: 3.8, glucides: 18, lipides: 4.5 },
+            { nom: "Tiramisu light", categorie: "Dessert", calories: 145, proteines: 5.2, glucides: 20, lipides: 4.8 },
+            { nom: "Cheesecake light", categorie: "Dessert", calories: 165, proteines: 6.5, glucides: 22, lipides: 5.5 },
+            { nom: "Muffin son d'avoine", categorie: "Gâteau", calories: 180, proteines: 5.8, glucides: 28, lipides: 5.2 },
+            { nom: "Cookie light", categorie: "Gâteau", calories: 195, proteines: 4.2, glucides: 32, lipides: 5.8 },
+            { nom: "Gâteau au yaourt light", categorie: "Gâteau", calories: 175, proteines: 5.5, glucides: 30, lipides: 3.8 },
+            { nom: "Brownie light", categorie: "Gâteau", calories: 200, proteines: 4.8, glucides: 35, lipides: 5.5 },
+            { nom: "Financier", categorie: "Gâteau", calories: 198, proteines: 5.2, glucides: 28, lipides: 7.5 },
+            { nom: "Madeleine nature", categorie: "Gâteau", calories: 185, proteines: 4.8, glucides: 26, lipides: 6.8 },
+            { nom: "Clafoutis aux fruits", categorie: "Gâteau", calories: 140, proteines: 4.2, glucides: 24, lipides: 3.2 },
+            { nom: "Crêpe nature", categorie: "Gâteau", calories: 195, proteines: 6.5, glucides: 28, lipides: 6.2 },
+            { nom: "Gaufre nature", categorie: "Gâteau", calories: 180, proteines: 5.8, glucides: 30, lipides: 4.5 },
+            { nom: "Cake citron light", categorie: "Gâteau", calories: 170, proteines: 4.5, glucides: 28, lipides: 4.8 },
+            { nom: "Biscuit cuillère", categorie: "Biscuit", calories: 172, proteines: 6.2, glucides: 32, lipides: 2.4 },
+            { nom: "Spéculoos", categorie: "Biscuit", calories: 168, proteines: 3.8, glucides: 28, lipides: 4.8 },
+            { nom: "Galette de riz soufflé", categorie: "Biscuit", calories: 387, proteines: 7.5, glucides: 82, lipides: 2.8 },
+            { nom: "Biscotte complète", categorie: "Biscuit", calories: 382, proteines: 11, glucides: 72, lipides: 4.5 },
+            
+            // BOISSONS (0-100 kcal/100ml)
+            { nom: "Eau plate", categorie: "Boisson", calories: 0, proteines: 0, glucides: 0, lipides: 0 },
+            { nom: "Eau gazeuse", categorie: "Boisson", calories: 0, proteines: 0, glucides: 0, lipides: 0 },
+            { nom: "Eau citronnée", categorie: "Boisson", calories: 2, proteines: 0, glucides: 0.5, lipides: 0 },
+            { nom: "Thé vert", categorie: "Boisson", calories: 1, proteines: 0, glucides: 0.3, lipides: 0 },
+            { nom: "Thé noir", categorie: "Boisson", calories: 1, proteines: 0, glucides: 0.3, lipides: 0 },
+            { nom: "Tisane", categorie: "Boisson", calories: 1, proteines: 0, glucides: 0.2, lipides: 0 },
+            { nom: "Café noir", categorie: "Boisson", calories: 2, proteines: 0.3, glucides: 0, lipides: 0 },
+            { nom: "Café au lait écrémé", categorie: "Boisson", calories: 22, proteines: 1.8, glucides: 2.5, lipides: 0.5 },
+            { nom: "Cappuccino écrémé", categorie: "Boisson", calories: 35, proteines: 2.5, glucides: 4.2, lipides: 0.8 },
+            { nom: "Bouillon de légumes", categorie: "Boisson", calories: 12, proteines: 0.8, glucides: 2.2, lipides: 0.2 },
+            { nom: "Bouillon de poulet", categorie: "Boisson", calories: 15, proteines: 1.5, glucides: 1.8, lipides: 0.4 },
+            { nom: "Jus de citron frais", categorie: "Boisson", calories: 25, proteines: 0.4, glucides: 6.9, lipides: 0.1 },
+            { nom: "Jus de tomate", categorie: "Boisson", calories: 17, proteines: 0.8, glucides: 3.5, lipides: 0.1 },
+            { nom: "Jus de carotte frais", categorie: "Boisson", calories: 40, proteines: 0.9, glucides: 9.2, lipides: 0.2 },
+            { nom: "Jus de concombre", categorie: "Boisson", calories: 15, proteines: 0.5, glucides: 3.2, lipides: 0.1 },
+            { nom: "Jus de céleri", categorie: "Boisson", calories: 16, proteines: 0.7, glucides: 3.5, lipides: 0.2 },
+            { nom: "Eau de coco", categorie: "Boisson", calories: 19, proteines: 0.7, glucides: 3.7, lipides: 0.2 },
+            { nom: "Jus de pomme sans sucre", categorie: "Boisson", calories: 46, proteines: 0.1, glucides: 11.3, lipides: 0.1 },
+            { nom: "Jus d'orange frais", categorie: "Boisson", calories: 45, proteines: 0.7, glucides: 10.4, lipides: 0.2 },
+            { nom: "Jus de pamplemousse", categorie: "Boisson", calories: 39, proteines: 0.5, glucides: 9.2, lipides: 0.1 },
+            { nom: "Jus d'ananas sans sucre", categorie: "Boisson", calories: 53, proteines: 0.4, glucides: 12.9, lipides: 0.1 },
+            { nom: "Smoothie vert léger", categorie: "Boisson", calories: 48, proteines: 1.2, glucides: 10.5, lipides: 0.3 },
+            { nom: "Smoothie fruits rouges", categorie: "Boisson", calories: 52, proteines: 0.8, glucides: 12.2, lipides: 0.2 },
+            { nom: "Lait d'amande non sucré", categorie: "Boisson", calories: 24, proteines: 1, glucides: 0.8, lipides: 2.3 },
+            { nom: "Lait de soja non sucré", categorie: "Boisson", calories: 33, proteines: 2.9, glucides: 1.2, lipides: 1.9 },
+            { nom: "Lait d'avoine", categorie: "Boisson", calories: 47, proteines: 1, glucides: 6.5, lipides: 1.5 },
+            { nom: "Lait de coco léger", categorie: "Boisson", calories: 19, proteines: 0.2, glucides: 1.8, lipides: 1.2 },
+            { nom: "Boisson isotonique", categorie: "Boisson", calories: 26, proteines: 0, glucides: 6.4, lipides: 0 },
+            { nom: "Coca-Cola Zero", categorie: "Boisson", calories: 0, proteines: 0, glucides: 0, lipides: 0 },
+            { nom: "Thé glacé light", categorie: "Boisson", calories: 8, proteines: 0, glucides: 2, lipides: 0 },
+            { nom: "Limonade light", categorie: "Boisson", calories: 7, proteines: 0, glucides: 1.8, lipides: 0 }
         ];
 
         // ==============================================
@@ -3838,7 +3266,8 @@
                 return;
             }
 
-            document.getElementById('graphiqueProgression').style.display = 'block';
+            // DÉSACTIVÉ - Graphiques de progression supprimés
+            // document.getElementById('graphiqueProgression').style.display = 'block';
 
             // Calculer les valeurs
             const poidsActuel = pesees.length > 0 ? pesees[pesees.length - 1].poids : userData.poids;
@@ -3855,15 +3284,15 @@
             const caloriesPerduees = Math.round(poidsPerdu * 7700);
             const deficitJour = 500; // Déficit recommandé
 
-            // Mise à jour des stats
-            document.getElementById('progressPoidsActuel').textContent = poidsActuel.toFixed(1) + ' kg';
-            document.getElementById('progressPoidsPerdu').textContent = poidsPerdu.toFixed(1) + ' kg';
-            document.getElementById('progressPoidsRestant').textContent = poidsRestant.toFixed(1) + ' kg';
-            document.getElementById('progressIMCActuel').textContent = imcActuel;
+            // DÉSACTIVÉ - Mise à jour des stats de progression supprimées
+            // document.getElementById('progressPoidsActuel').textContent = poidsActuel.toFixed(1) + ' kg';
+            // document.getElementById('progressPoidsPerdu').textContent = poidsPerdu.toFixed(1) + ' kg';
+            // document.getElementById('progressPoidsRestant').textContent = poidsRestant.toFixed(1) + ' kg';
+            // document.getElementById('progressIMCActuel').textContent = imcActuel;
 
-            document.getElementById('caloriesJournalieres').textContent = userData.calories;
-            document.getElementById('deficitJour').textContent = deficitJour + ' kcal';
-            document.getElementById('caloriesTotales').textContent = caloriesTotales.toLocaleString() + ' kcal';
+            // document.getElementById('caloriesJournalieres').textContent = userData.calories;
+            // document.getElementById('deficitJour').textContent = deficitJour + ' kcal';
+            // document.getElementById('caloriesTotales').textContent = caloriesTotales.toLocaleString() + ' kcal';
 
             // Timeline
             const aujourdhui = new Date();
@@ -3872,21 +3301,23 @@
             const dateFin = new Date(aujourdhui.getTime() + semaines * 7 * 24 * 60 * 60 * 1000);
             const dateFinFormatee = dateFin.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' });
 
-            document.getElementById('timelineDebut').textContent = dateDebut;
-            document.getElementById('timelineDuree').textContent = semaines + ' semaines';
-            document.getElementById('timelineFin').textContent = dateFinFormatee;
+            // DÉSACTIVÉ - Timeline supprimée
+            // document.getElementById('timelineDebut').textContent = dateDebut;
+            // document.getElementById('timelineDuree').textContent = semaines + ' semaines';
+            // document.getElementById('timelineFin').textContent = dateFinFormatee;
 
-            // Dessiner les graphiques
-            dessinerGraphiqueCalories();
-            dessinerGraphiqueProgressionPoids();
+            // DÉSACTIVÉ - Dessiner les graphiques supprimés
+            // dessinerGraphiqueCalories();
+            // dessinerGraphiqueProgressionPoids();
         }
 
-        function scrollToGraphiques() {
-            const element = document.getElementById('graphiqueProgression');
-            if (element) {
-                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        }
+        // FONCTION DÉSACTIVÉE - Graphiques détaillés supprimés pour simplifier
+        // function scrollToGraphiques() {
+        //     const element = document.getElementById('graphiqueProgression');
+        //     if (element) {
+        //         element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        //     }
+        // }
 
         function dessinerGraphiqueCalories() {
             const canvas = document.getElementById('graphiqueCalories');
@@ -4675,6 +4106,11 @@
         function afficherListeProduits() {
             const liste = document.getElementById('listeProduits');
             
+            // Si l'élément n'existe pas (onglet scanner supprimé), ne rien faire
+            if (!liste) {
+                return;
+            }
+            
             if (produitsSauvegardes.length === 0) {
                 liste.innerHTML = `
                     <div style="text-align: center; padding: 40px; background: #f8f9fa; border-radius: 10px;">
@@ -4820,6 +4256,9 @@
                             <div style="color: #999; font-size: 0.85em; margin-top: 5px;">Code: ${produit.barcode}</div>
                         </div>
                         <div style="display: flex; gap: 10px;">
+                            <button onclick="modifierProduitPerso(${index})" style="margin: 0; padding: 8px 15px; font-size: 0.85em; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">
+                                ✏️ Modifier
+                            </button>
                             <button class="btn" onclick="partagerProduitCommunaute(produitsPerso[${index}])" style="margin: 0; padding: 8px 15px; font-size: 0.85em; background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);">
                                 🌍 Partager
                             </button>
@@ -4857,6 +4296,155 @@
                 afficherProduitsPerso();
                 afficherSyncIndicator('✅ Produit retiré !');
             }
+        }
+
+        function modifierProduitPerso(index) {
+            const produit = produitsPerso[index];
+            
+            // Créer le modal d'édition
+            const modalHtml = `
+                <div id="modalModificationProduitPerso" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 10000; animation: fadeIn 0.3s;">
+                    <div style="background: white; padding: 30px; border-radius: 15px; max-width: 600px; width: 90%; max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
+                        <h3 style="color: #667eea; margin-bottom: 20px; font-size: 1.5em;">✏️ Modifier votre produit</h3>
+                        
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                            <p style="margin: 0; color: #666; font-size: 0.95em;">
+                                <strong>Code-barres:</strong> ${produit.barcode}
+                            </p>
+                        </div>
+
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; margin-bottom: 5px; color: #333; font-weight: bold;">📦 Nom du produit *</label>
+                            <input type="text" id="editNomProduitPerso" value="${produit.nom.replace(/"/g, '&quot;')}" style="width: 100%; padding: 12px; border: 2px solid #667eea; border-radius: 8px; font-size: 1em;">
+                        </div>
+
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; margin-bottom: 5px; color: #333; font-weight: bold;">🏷️ Marque</label>
+                            <input type="text" id="editMarqueProduitPerso" value="${(produit.marque || '').replace(/"/g, '&quot;')}" style="width: 100%; padding: 12px; border: 2px solid #667eea; border-radius: 8px; font-size: 1em;">
+                        </div>
+
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; margin-bottom: 5px; color: #333; font-weight: bold;">📊 Code-barres *</label>
+                            <input type="text" id="editBarcodeProduitPerso" value="${produit.barcode}" maxlength="13" pattern="[0-9]{13}" style="width: 100%; padding: 12px; border: 2px solid #667eea; border-radius: 8px; font-size: 1em;">
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                            <div>
+                                <label style="display: block; margin-bottom: 5px; color: #667eea; font-weight: bold;">🔥 Calories (kcal) *</label>
+                                <input type="number" id="editCaloriesPerso" value="${produit.calories}" step="1" min="0" style="width: 100%; padding: 12px; border: 2px solid #667eea; border-radius: 8px; font-size: 1em;">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 5px; color: #f5576c; font-weight: bold;">💪 Protéines (g) *</label>
+                                <input type="number" id="editProteinesPerso" value="${produit.proteines}" step="0.1" min="0" style="width: 100%; padding: 12px; border: 2px solid #f5576c; border-radius: 8px; font-size: 1em;">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 5px; color: #00f2fe; font-weight: bold;">🍞 Glucides (g) *</label>
+                                <input type="number" id="editGlucidesPerso" value="${produit.glucides}" step="0.1" min="0" style="width: 100%; padding: 12px; border: 2px solid #00f2fe; border-radius: 8px; font-size: 1em;">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 5px; color: #38f9d7; font-weight: bold;">🧈 Lipides (g) *</label>
+                                <input type="number" id="editLipidesPerso" value="${produit.lipides}" step="0.1" min="0" style="width: 100%; padding: 12px; border: 2px solid #38f9d7; border-radius: 8px; font-size: 1em;">
+                            </div>
+                        </div>
+
+                        <div style="background: #e3f2fd; border: 1px solid #2196f3; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                            <p style="margin: 0; color: #1565c0; font-size: 0.9em;">
+                                💡 <strong>Info :</strong> Ces modifications ne concernent que VOTRE base personnelle.
+                            </p>
+                        </div>
+
+                        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                            <button onclick="fermerModalModificationPerso()" style="padding: 12px 25px; background: #ccc; color: #333; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1em;">
+                                Annuler
+                            </button>
+                            <button onclick="sauvegarderModificationProduitPerso(${index})" style="padding: 12px 25px; background: linear-gradient(135deg, #4caf50 0%, #45a049 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1em;">
+                                💾 Sauvegarder
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Ajouter le modal au body
+            const modalDiv = document.createElement('div');
+            modalDiv.innerHTML = modalHtml;
+            document.body.appendChild(modalDiv);
+        }
+
+        function fermerModalModificationPerso() {
+            const modal = document.getElementById('modalModificationProduitPerso');
+            if (modal && modal.parentElement) {
+                modal.parentElement.style.animation = 'fadeOut 0.3s';
+                setTimeout(() => {
+                    if (modal.parentElement && modal.parentElement.parentElement) {
+                        modal.parentElement.parentElement.removeChild(modal.parentElement);
+                    }
+                }, 300);
+            }
+        }
+
+        function sauvegarderModificationProduitPerso(index) {
+            // Récupérer les valeurs
+            const nom = document.getElementById('editNomProduitPerso').value.trim();
+            const marque = document.getElementById('editMarqueProduitPerso').value.trim();
+            const barcode = document.getElementById('editBarcodeProduitPerso').value.trim();
+            const calories = parseFloat(document.getElementById('editCaloriesPerso').value);
+            const proteines = parseFloat(document.getElementById('editProteinesPerso').value);
+            const glucides = parseFloat(document.getElementById('editGlucidesPerso').value);
+            const lipides = parseFloat(document.getElementById('editLipidesPerso').value);
+
+            // Validation
+            if (!nom) {
+                alert('❌ Le nom du produit est obligatoire');
+                return;
+            }
+
+            if (!barcode || barcode.length !== 13 || !/^[0-9]+$/.test(barcode)) {
+                alert('❌ Le code-barres doit contenir exactement 13 chiffres');
+                return;
+            }
+
+            if (isNaN(calories) || isNaN(proteines) || isNaN(glucides) || isNaN(lipides)) {
+                alert('❌ Toutes les valeurs nutritionnelles doivent être des nombres valides');
+                return;
+            }
+
+            if (calories < 0 || proteines < 0 || glucides < 0 || lipides < 0) {
+                alert('❌ Les valeurs nutritionnelles ne peuvent pas être négatives');
+                return;
+            }
+
+            // Vérifier si le code-barres existe déjà (pour un autre produit)
+            const barcodeExiste = produitsPerso.some((p, i) => i !== index && p.barcode === barcode);
+            if (barcodeExiste) {
+                alert('❌ Ce code-barres existe déjà pour un autre produit de votre base');
+                return;
+            }
+
+            // Mettre à jour le produit
+            produitsPerso[index] = {
+                nom: nom,
+                marque: marque || '',
+                barcode: barcode,
+                calories: calories,
+                proteines: proteines,
+                glucides: glucides,
+                lipides: lipides
+            };
+
+            // Sauvegarder dans localStorage
+            localStorage.setItem('produitsPerso', JSON.stringify(produitsPerso));
+
+            // Afficher notification
+            afficherSyncIndicator('✅ Produit modifié avec succès !');
+
+            // Fermer le modal
+            fermerModalModificationPerso();
+
+            // Réafficher la liste
+            afficherProduitsPerso();
+
+            console.log('✏️ Produit perso modifié:', nom);
         }
 
         // ==============================================
@@ -6823,6 +6411,400 @@ Réponds de manière personnalisée, encourageante et professionnelle. Donne des
             `;
 
             window.scrollTo({ top: container.offsetTop - 100, behavior: 'smooth' });
+        }
+
+        // ==============================================
+        // GALERIE DE PHOTOS D'ALIMENTS
+        // ==============================================
+
+        let photosAliments = [];
+        let photosAlimentsOriginal = [];
+
+        // Prévisualisation de l'image avant upload
+        document.addEventListener('DOMContentLoaded', function() {
+            const fileInput = document.getElementById('fileInputPhoto');
+            if (fileInput) {
+                fileInput.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        // Vérifier la taille (max 5 Mo)
+                        if (file.size > 5 * 1024 * 1024) {
+                            alert('❌ La photo est trop volumineuse ! Maximum 5 Mo.');
+                            e.target.value = '';
+                            return;
+                        }
+
+                        // Afficher la prévisualisation
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            document.getElementById('previewPhoto').style.display = 'block';
+                            document.getElementById('previewImage').src = event.target.result;
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+        });
+
+        async function uploadPhotoAliment() {
+            if (!currentUser) {
+                alert('❌ Vous devez être connecté pour ajouter des photos');
+                return;
+            }
+
+            const nom = document.getElementById('nomAlimentPhoto').value.trim();
+            const categorie = document.getElementById('categorieAlimentPhoto').value;
+            const datePeremption = document.getElementById('datePeremptionPhoto').value;
+            const notes = document.getElementById('notesAlimentPhoto').value.trim();
+            const fileInput = document.getElementById('fileInputPhoto');
+            const file = fileInput.files[0];
+
+            // Validation
+            if (!nom) {
+                alert('❌ Le nom de l\'aliment est obligatoire');
+                return;
+            }
+
+            if (!file) {
+                alert('❌ Veuillez sélectionner une photo');
+                return;
+            }
+
+            if (file.size > 5 * 1024 * 1024) {
+                alert('❌ La photo est trop volumineuse ! Maximum 5 Mo.');
+                return;
+            }
+
+            try {
+                afficherNotification('⏳ Upload en cours...', 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)');
+
+                // Créer un nom de fichier unique
+                const timestamp = Date.now();
+                const fileName = `photos_aliments/${currentUser.uid}/${timestamp}_${file.name}`;
+
+                // Upload vers Firebase Storage
+                const storageRef = firebase.storage().ref();
+                const fileRef = storageRef.child(fileName);
+                
+                await fileRef.put(file);
+                const downloadURL = await fileRef.getDownloadURL();
+
+                // Sauvegarder les métadonnées dans Firestore
+                const photoData = {
+                    nom: nom,
+                    categorie: categorie,
+                    datePeremption: datePeremption || null,
+                    notes: notes || '',
+                    photoURL: downloadURL,
+                    fileName: fileName,
+                    utilisateurUid: currentUser.uid,
+                    utilisateurNom: currentUser.displayName || currentUser.email || 'Anonyme',
+                    dateAjout: firebase.firestore.FieldValue.serverTimestamp(),
+                    taille: file.size
+                };
+
+                const docRef = await db.collection('photosAliments').add(photoData);
+
+                afficherNotification('✅ Photo enregistrée avec succès !', 'linear-gradient(135deg, #4caf50 0%, #45a049 100%)');
+
+                // Réinitialiser le formulaire
+                document.getElementById('nomAlimentPhoto').value = '';
+                document.getElementById('categorieAlimentPhoto').value = 'fruits';
+                document.getElementById('datePeremptionPhoto').value = '';
+                document.getElementById('notesAlimentPhoto').value = '';
+                fileInput.value = '';
+                document.getElementById('previewPhoto').style.display = 'none';
+
+                // Resynchroniser
+                await synchroniserPhotosAliments();
+
+                console.log('📸 Photo ajoutée:', nom, 'ID:', docRef.id);
+
+            } catch (error) {
+                console.error('❌ Erreur upload photo:', error);
+                afficherNotification('❌ Erreur lors de l\'upload : ' + error.message, 'linear-gradient(135deg, #f5576c 0%, #f093fb 100%)');
+            }
+        }
+
+        async function synchroniserPhotosAliments() {
+            if (!currentUser) {
+                afficherNotification('⚠️ Connectez-vous pour synchroniser vos photos', 'linear-gradient(135deg, #ff9800 0%, #f57c00 100%)');
+                return;
+            }
+
+            try {
+                afficherNotification('🔄 Synchronisation en cours...', 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)');
+
+                const snapshot = await db.collection('photosAliments')
+                    .where('utilisateurUid', '==', currentUser.uid)
+                    .orderBy('dateAjout', 'desc')
+                    .get();
+
+                photosAliments = [];
+                photosAlimentsOriginal = [];
+
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const photo = {
+                        id: doc.id,
+                        ...data
+                    };
+                    photosAliments.push(photo);
+                    photosAlimentsOriginal.push(photo);
+                });
+
+                // Mettre à jour les compteurs
+                document.getElementById('compteurPhotosAliments').textContent = photosAliments.length;
+                document.getElementById('compteurPhotosCloud').textContent = photosAliments.length;
+
+                afficherNotification('✅ Synchronisation terminée !', 'linear-gradient(135deg, #4caf50 0%, #45a049 100%)');
+
+                // Afficher la galerie
+                afficherGaleriePhotos();
+
+                console.log('🔄 Photos synchronisées:', photosAliments.length);
+
+            } catch (error) {
+                console.error('❌ Erreur synchronisation photos:', error);
+                afficherNotification('❌ Erreur de synchronisation', 'linear-gradient(135deg, #f5576c 0%, #f093fb 100%)');
+            }
+        }
+
+        function afficherToutesPhotos() {
+            synchroniserPhotosAliments();
+        }
+
+        function afficherGaleriePhotos() {
+            const galerie = document.getElementById('galeriePhotosAliments');
+
+            if (photosAliments.length === 0) {
+                galerie.innerHTML = `
+                    <div style="text-align: center; padding: 60px; color: #999; grid-column: 1 / -1;">
+                        <div style="font-size: 5em; margin-bottom: 20px;">📸</div>
+                        <p style="font-size: 1.2em;">Aucune photo pour le moment</p>
+                        <p style="font-size: 0.9em; margin-top: 10px;">Ajoutez votre première photo d'aliment ci-dessus !</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const categorieEmojis = {
+                'fruits': '🍎',
+                'legumes': '🥕',
+                'viandes': '🥩',
+                'produits_laitiers': '🥛',
+                'feculents': '🍞',
+                'conserves': '🥫',
+                'condiments': '🧂',
+                'autre': '📦'
+            };
+
+            galerie.innerHTML = photosAliments.map(photo => {
+                const dateAjout = photo.dateAjout ? new Date(photo.dateAjout.seconds * 1000).toLocaleDateString('fr-FR') : 'Date inconnue';
+                const datePeremption = photo.datePeremption ? new Date(photo.datePeremption).toLocaleDateString('fr-FR') : null;
+                const emoji = categorieEmojis[photo.categorie] || '📦';
+
+                // Vérifier si périmé
+                let alerte = '';
+                if (photo.datePeremption) {
+                    const aujourdhui = new Date();
+                    aujourdhui.setHours(0,0,0,0);
+                    const dateP = new Date(photo.datePeremption);
+                    dateP.setHours(0,0,0,0);
+                    const diffJours = Math.ceil((dateP - aujourdhui) / (1000 * 60 * 60 * 24));
+                    
+                    if (diffJours < 0) {
+                        alerte = '<div style="background: #f44336; color: white; padding: 5px 10px; border-radius: 5px; font-size: 0.85em; margin-top: 5px;">⚠️ PÉRIMÉ</div>';
+                    } else if (diffJours <= 3) {
+                        alerte = `<div style="background: #ff9800; color: white; padding: 5px 10px; border-radius: 5px; font-size: 0.85em; margin-top: 5px;">⏰ ${diffJours} jour(s) restant(s)</div>`;
+                    }
+                }
+
+                return `
+                    <div style="background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <div style="position: relative; width: 100%; padding-top: 75%; background: #f5f5f5;">
+                            <img src="${photo.photoURL}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
+                            <div style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.7); color: white; padding: 5px 10px; border-radius: 20px; font-size: 1.2em;">
+                                ${emoji}
+                            </div>
+                        </div>
+                        <div style="padding: 15px;">
+                            <h4 style="color: #333; margin: 0 0 10px 0; font-size: 1.1em;">${photo.nom}</h4>
+                            
+                            <div style="font-size: 0.85em; color: #666; margin-bottom: 8px;">
+                                <div>👤 ${photo.utilisateurNom}</div>
+                                <div>📅 ${dateAjout}</div>
+                                ${datePeremption ? `<div>⏰ Expire le ${datePeremption}</div>` : ''}
+                            </div>
+
+                            ${photo.notes ? `<p style="font-size: 0.85em; color: #888; margin: 10px 0; font-style: italic;">"${photo.notes}"</p>` : ''}
+
+                            ${alerte}
+
+                            <div style="display: flex; gap: 8px; margin-top: 15px;">
+                                <button onclick="modifierPhotoAliment('${photo.id}')" style="flex: 1; padding: 10px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 0.9em;">
+                                    ✏️ Modifier
+                                </button>
+                                <button onclick="supprimerPhotoAliment('${photo.id}', '${photo.nom.replace(/'/g, "\\'")}', '${photo.fileName}')" style="flex: 1; padding: 10px; background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 0.9em;">
+                                    🗑️
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function modifierPhotoAliment(photoId) {
+            const photo = photosAliments.find(p => p.id === photoId);
+            if (!photo) {
+                alert('❌ Photo introuvable');
+                return;
+            }
+
+            // Créer le modal d'édition
+            const modalHtml = `
+                <div id="modalModificationPhoto" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 10000; animation: fadeIn 0.3s;">
+                    <div style="background: white; padding: 30px; border-radius: 15px; max-width: 600px; width: 90%; max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
+                        <h3 style="color: #667eea; margin-bottom: 20px; font-size: 1.5em;">✏️ Modifier la photo</h3>
+                        
+                        <div style="text-align: center; margin-bottom: 20px;">
+                            <img src="${photo.photoURL}" style="max-width: 100%; max-height: 200px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+                        </div>
+
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; margin-bottom: 5px; color: #333; font-weight: bold;">🏷️ Nom de l'aliment *</label>
+                            <input type="text" id="editNomPhoto" value="${photo.nom.replace(/"/g, '&quot;')}" style="width: 100%; padding: 12px; border: 2px solid #667eea; border-radius: 8px; font-size: 1em;">
+                        </div>
+
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; margin-bottom: 5px; color: #333; font-weight: bold;">📁 Catégorie</label>
+                            <select id="editCategoriePhoto" style="width: 100%; padding: 12px; border: 2px solid #667eea; border-radius: 8px; font-size: 1em;">
+                                <option value="fruits" ${photo.categorie === 'fruits' ? 'selected' : ''}>🍎 Fruits</option>
+                                <option value="legumes" ${photo.categorie === 'legumes' ? 'selected' : ''}>🥕 Légumes</option>
+                                <option value="viandes" ${photo.categorie === 'viandes' ? 'selected' : ''}>🥩 Viandes & Poissons</option>
+                                <option value="produits_laitiers" ${photo.categorie === 'produits_laitiers' ? 'selected' : ''}>🥛 Produits laitiers</option>
+                                <option value="feculents" ${photo.categorie === 'feculents' ? 'selected' : ''}>🍞 Féculents</option>
+                                <option value="conserves" ${photo.categorie === 'conserves' ? 'selected' : ''}>🥫 Conserves</option>
+                                <option value="condiments" ${photo.categorie === 'condiments' ? 'selected' : ''}>🧂 Condiments</option>
+                                <option value="autre" ${photo.categorie === 'autre' ? 'selected' : ''}>📦 Autre</option>
+                            </select>
+                        </div>
+
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; margin-bottom: 5px; color: #333; font-weight: bold;">📅 Date de péremption</label>
+                            <input type="date" id="editDatePeremptionPhoto" value="${photo.datePeremption || ''}" style="width: 100%; padding: 12px; border: 2px solid #667eea; border-radius: 8px; font-size: 1em;">
+                        </div>
+
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 5px; color: #333; font-weight: bold;">📝 Notes</label>
+                            <textarea id="editNotesPhoto" style="width: 100%; padding: 12px; border: 2px solid #667eea; border-radius: 8px; font-size: 1em; min-height: 80px;">${photo.notes || ''}</textarea>
+                        </div>
+
+                        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                            <button onclick="fermerModalPhoto()" style="padding: 12px 25px; background: #ccc; color: #333; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1em;">
+                                Annuler
+                            </button>
+                            <button onclick="sauvegarderModificationPhoto('${photoId}')" style="padding: 12px 25px; background: linear-gradient(135deg, #4caf50 0%, #45a049 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1em;">
+                                💾 Sauvegarder
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            const modalDiv = document.createElement('div');
+            modalDiv.innerHTML = modalHtml;
+            document.body.appendChild(modalDiv);
+        }
+
+        function fermerModalPhoto() {
+            const modal = document.getElementById('modalModificationPhoto');
+            if (modal && modal.parentElement) {
+                modal.parentElement.style.animation = 'fadeOut 0.3s';
+                setTimeout(() => {
+                    if (modal.parentElement && modal.parentElement.parentElement) {
+                        modal.parentElement.parentElement.removeChild(modal.parentElement);
+                    }
+                }, 300);
+            }
+        }
+
+        async function sauvegarderModificationPhoto(photoId) {
+            const nom = document.getElementById('editNomPhoto').value.trim();
+            const categorie = document.getElementById('editCategoriePhoto').value;
+            const datePeremption = document.getElementById('editDatePeremptionPhoto').value;
+            const notes = document.getElementById('editNotesPhoto').value.trim();
+
+            if (!nom) {
+                alert('❌ Le nom de l\'aliment est obligatoire');
+                return;
+            }
+
+            try {
+                await db.collection('photosAliments').doc(photoId).update({
+                    nom: nom,
+                    categorie: categorie,
+                    datePeremption: datePeremption || null,
+                    notes: notes,
+                    dateModification: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                afficherNotification('✅ Photo modifiée avec succès !', 'linear-gradient(135deg, #4caf50 0%, #45a049 100%)');
+
+                fermerModalPhoto();
+                await synchroniserPhotosAliments();
+
+                console.log('✏️ Photo modifiée:', nom, 'ID:', photoId);
+
+            } catch (error) {
+                console.error('❌ Erreur modification photo:', error);
+                afficherNotification('❌ Erreur lors de la modification', 'linear-gradient(135deg, #f5576c 0%, #f093fb 100%)');
+            }
+        }
+
+        async function supprimerPhotoAliment(photoId, nomPhoto, fileName) {
+            if (!confirm(`⚠️ Êtes-vous sûr de vouloir supprimer la photo "${nomPhoto}" ?\n\nCette action est IRRÉVERSIBLE !`)) {
+                return;
+            }
+
+            try {
+                afficherNotification('⏳ Suppression en cours...', 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)');
+
+                // Supprimer la photo de Firebase Storage
+                const storageRef = firebase.storage().ref();
+                const fileRef = storageRef.child(fileName);
+                await fileRef.delete();
+
+                // Supprimer le document de Firestore
+                await db.collection('photosAliments').doc(photoId).delete();
+
+                afficherNotification('✅ Photo supprimée !', 'linear-gradient(135deg, #4caf50 0%, #45a049 100%)');
+
+                // Resynchroniser
+                await synchroniserPhotosAliments();
+
+                console.log('🗑️ Photo supprimée:', nomPhoto, 'ID:', photoId);
+
+            } catch (error) {
+                console.error('❌ Erreur suppression photo:', error);
+                afficherNotification('❌ Erreur lors de la suppression', 'linear-gradient(135deg, #f5576c 0%, #f093fb 100%)');
+            }
+        }
+
+        function filtrerPhotosAliments() {
+            const recherche = document.getElementById('recherchePhotos').value.toLowerCase();
+            const categorieFiltre = document.getElementById('filtreCategorie').value;
+
+            photosAliments = photosAlimentsOriginal.filter(photo => {
+                const matchRecherche = photo.nom.toLowerCase().includes(recherche) || 
+                                      (photo.notes && photo.notes.toLowerCase().includes(recherche));
+                const matchCategorie = !categorieFiltre || photo.categorie === categorieFiltre;
+
+                return matchRecherche && matchCategorie;
+            });
+
+            afficherGaleriePhotos();
         }
 
         // ==============================================
