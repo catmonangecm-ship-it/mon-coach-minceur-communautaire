@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -644,17 +645,17 @@
     </a>
 
     <!-- Modal de connexion/inscription -->
-    <div id="authModal">
-        <div class="auth-container">
-            <div class="auth-header">
-                <div style="font-size: 3em; margin-bottom: 15px;">🔐</div>
-                <h2>Mon Coach Minceur</h2>
-                <p>Connectez-vous pour accéder à toutes les fonctionnalités</p>
+    <div id="authModal" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; position: fixed !important; top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important; display: flex !important; align-items: center !important; justify-content: center !important; z-index: 9999 !important; padding: 20px !important;">
+        <div class="auth-container" style="background: white !important; border-radius: 24px !important; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3) !important; max-width: 480px !important; width: 100% !important; padding: 48px 40px !important;">
+            <div class="auth-header" style="text-align: center !important; margin-bottom: 32px !important;">
+                <div style="font-size: 4em; margin-bottom: 15px;">🚀</div>
+                <h2 style="color: #1f2937 !important; font-size: 2em !important; font-weight: 700 !important; margin: 0 0 8px 0 !important;">Mon Coach Minceur</h2>
+                <p style="color: #6b7280 !important; font-size: 1em !important; margin: 0 !important;">Connectez-vous pour accéder à toutes les fonctionnalités</p>
             </div>
 
-            <div class="auth-tabs">
-                <button class="auth-tab active" onclick="switchAuthTab('login')">Connexion</button>
-                <button class="auth-tab" onclick="switchAuthTab('register')">Inscription</button>
+            <div class="auth-tabs" style="display: flex !important; gap: 8px !important; margin-bottom: 32px !important; background: #f9fafb !important; padding: 6px !important; border-radius: 12px !important;">
+                <button class="auth-tab active" onclick="switchAuthTab('login')" style="flex: 1 !important; padding: 12px 20px !important; background: white !important; border: none !important; border-radius: 8px !important; cursor: pointer !important; font-size: 15px !important; font-weight: 600 !important; color: #2563eb !important; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;">Connexion</button>
+                <button class="auth-tab" onclick="switchAuthTab('register')" style="flex: 1 !important; padding: 12px 20px !important; background: transparent !important; border: none !important; border-radius: 8px !important; cursor: pointer !important; font-size: 15px !important; font-weight: 600 !important; color: #6b7280 !important;">Inscription</button>
             </div>
 
             <div id="authError" class="auth-error"></div>
@@ -662,45 +663,47 @@
 
             <!-- Formulaire de connexion -->
             <form id="loginForm" class="auth-form active" onsubmit="connexion(event)">
-                <div class="auth-input-group">
-                    <label>📧 Email</label>
-                    <input type="email" id="loginEmail" placeholder="votre@email.com" required>
+                <div class="auth-input-group" style="margin-bottom: 20px !important;">
+                    <label style="display: block !important; margin-bottom: 8px !important; font-weight: 600 !important; color: #1f2937 !important; font-size: 14px !important;">📧 Email</label>
+                    <input type="email" id="loginEmail" placeholder="votre@email.com" required style="width: 100% !important; padding: 14px 16px !important; border: 2px solid #e5e7eb !important; border-radius: 10px !important; font-size: 15px !important; color: #1f2937 !important; background: white !important;">
                 </div>
-                <div class="auth-input-group">
-                    <label>🔒 Mot de passe</label>
-                    <input type="password" id="loginPassword" placeholder="••••••••" required>
+                <div class="auth-input-group" style="margin-bottom: 20px !important;">
+                    <label style="display: block !important; margin-bottom: 8px !important; font-weight: 600 !important; color: #1f2937 !important; font-size: 14px !important;">🔒 Mot de passe</label>
+                    <input type="password" id="loginPassword" placeholder="••••••••" required style="width: 100% !important; padding: 14px 16px !important; border: 2px solid #e5e7eb !important; border-radius: 10px !important; font-size: 15px !important; color: #1f2937 !important; background: white !important;">
                 </div>
-                <button type="submit" class="auth-btn" id="loginBtn">
+                <button type="submit" class="auth-btn" id="loginBtn" style="width: 100% !important; padding: 16px 24px !important; background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%) !important; color: white !important; border: none !important; border-radius: 12px !important; cursor: pointer !important; font-size: 16px !important; font-weight: 700 !important; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3) !important; margin-top: 8px !important;">
                     Se connecter
                 </button>
             </form>
 
             <!-- Formulaire d'inscription -->
             <form id="registerForm" class="auth-form" onsubmit="inscription(event)">
-                <div class="auth-input-group">
-                    <label>👤 Nom d'utilisateur</label>
-                    <input type="text" id="registerName" placeholder="Votre nom" required>
+                <div class="auth-input-group" style="margin-bottom: 20px !important;">
+                    <label style="display: block !important; margin-bottom: 8px !important; font-weight: 600 !important; color: #1f2937 !important; font-size: 14px !important;">👤 Nom d'utilisateur</label>
+                    <input type="text" id="registerName" placeholder="Votre nom" required style="width: 100% !important; padding: 14px 16px !important; border: 2px solid #e5e7eb !important; border-radius: 10px !important; font-size: 15px !important; color: #1f2937 !important; background: white !important;">
                 </div>
-                <div class="auth-input-group">
-                    <label>📧 Email</label>
-                    <input type="email" id="registerEmail" placeholder="votre@email.com" required>
+                <div class="auth-input-group" style="margin-bottom: 20px !important;">
+                    <label style="display: block !important; margin-bottom: 8px !important; font-weight: 600 !important; color: #1f2937 !important; font-size: 14px !important;">📧 Email</label>
+                    <input type="email" id="registerEmail" placeholder="votre@email.com" required style="width: 100% !important; padding: 14px 16px !important; border: 2px solid #e5e7eb !important; border-radius: 10px !important; font-size: 15px !important; color: #1f2937 !important; background: white !important;">
                 </div>
-                <div class="auth-input-group">
-                    <label>🔒 Mot de passe</label>
-                    <input type="password" id="registerPassword" placeholder="••••••••" minlength="6" required>
+                <div class="auth-input-group" style="margin-bottom: 20px !important;">
+                    <label style="display: block !important; margin-bottom: 8px !important; font-weight: 600 !important; color: #1f2937 !important; font-size: 14px !important;">🔒 Mot de passe</label>
+                    <input type="password" id="registerPassword" placeholder="••••••••" minlength="6" required style="width: 100% !important; padding: 14px 16px !important; border: 2px solid #e5e7eb !important; border-radius: 10px !important; font-size: 15px !important; color: #1f2937 !important; background: white !important;">
                     <small style="color: #999; font-size: 0.85em;">Minimum 6 caractères</small>
                 </div>
-                <div class="auth-input-group">
-                    <label>🔒 Confirmer le mot de passe</label>
-                    <input type="password" id="registerPasswordConfirm" placeholder="••••••••" minlength="6" required>
+                <div class="auth-input-group" style="margin-bottom: 20px !important;">
+                    <label style="display: block !important; margin-bottom: 8px !important; font-weight: 600 !important; color: #1f2937 !important; font-size: 14px !important;">🔒 Confirmer le mot de passe</label>
+                    <input type="password" id="registerPasswordConfirm" placeholder="••••••••" minlength="6" required style="width: 100% !important; padding: 14px 16px !important; border: 2px solid #e5e7eb !important; border-radius: 10px !important; font-size: 15px !important; color: #1f2937 !important; background: white !important;">
                 </div>
-                <button type="submit" class="auth-btn" id="registerBtn">
+                <button type="submit" class="auth-btn" id="registerBtn" style="width: 100% !important; padding: 16px 24px !important; background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%) !important; color: white !important; border: none !important; border-radius: 12px !important; cursor: pointer !important; font-size: 16px !important; font-weight: 700 !important; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3) !important; margin-top: 8px !important;">
                     Créer mon compte
                 </button>
             </form>
 
-            <div style="text-align: center; margin-top: 20px; color: #999; font-size: 0.85em;">
-                🌍 Rejoignez la communauté Mon Coach Minceur
+            <div style="text-align: center !important; margin-top: 30px !important; padding: 20px !important; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%) !important; border-radius: 12px !important; border: 2px solid #bae6fd !important;">
+                <div style="font-size: 2em; margin-bottom: 10px;">🌍</div>
+                <div style="color: #0369a1 !important; font-size: 0.95em !important; font-weight: 600 !important;">Rejoignez la communauté Mon Coach Minceur</div>
+                <div style="color: #0284c7 !important; font-size: 0.85em !important; margin-top: 5px;">Des milliers d'utilisateurs vous attendent !</div>
             </div>
         </div>
     </div>
