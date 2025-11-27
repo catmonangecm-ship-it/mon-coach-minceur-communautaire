@@ -1,894 +1,1498 @@
-<!-- Bouton flottant Telegram -->
-<a href="https://t.me/+GYg6ymUmOu01M2Nk" target="_blank" rel="noopener noreferrer" class="telegram-float" title="Rejoignez notre communauté Telegram">
-    ✈️
-</a>
-
-<!-- Modal de connexion/inscription -->
-<div id="authModal" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; position: fixed !important; top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important; display: flex !important; align-items: center !important; justify-content: center !important; z-index: 9999 !important; padding: 20px !important;">
-    <div class="auth-container" style="background: white !important; border-radius: 24px !important; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3) !important; max-width: 480px !important; width: 100% !important; padding: 48px 40px !important;">
-        <div class="auth-header" style="text-align: center !important; margin-bottom: 32px !important;">
-            <div style="font-size: 4em; margin-bottom: 15px;">🚀</div>
-            <h2 style="color: #1f2937 !important; font-size: 2em !important; font-weight: 700 !important; margin: 0 0 8px 0 !important;">Mon Coach Minceur</h2>
-            <p style="color: #6b7280 !important; font-size: 1em !important; margin: 0 !important;">Connectez-vous pour accéder à toutes les fonctionnalités</p>
-        </div>
-
-        <div class="auth-tabs" style="display: flex !important; gap: 8px !important; margin-bottom: 32px !important; background: #f9fafb !important; padding: 6px !important; border-radius: 12px !important;">
-            <button class="auth-tab active" onclick="switchAuthTab('login')" style="flex: 1 !important; padding: 12px 20px !important; background: white !important; border: none !important; border-radius: 8px !important; cursor: pointer !important; font-size: 15px !important; font-weight: 600 !important; color: #2563eb !important; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;">Connexion</button>
-            <button class="auth-tab" onclick="switchAuthTab('register')" style="flex: 1 !important; padding: 12px 20px !important; background: transparent !important; border: none !important; border-radius: 8px !important; cursor: pointer !important; font-size: 15px !important; font-weight: 600 !important; color: #6b7280 !important;">Inscription</button>
-        </div>
-
-        <div id="authError" class="auth-error"></div>
-        <div id="authSuccess" class="auth-success"></div>
-
-        <!-- Formulaire de connexion -->
-        <form id="loginForm" class="auth-form active" onsubmit="connexion(event)">
-            <div class="auth-input-group" style="margin-bottom: 20px !important;">
-                <label style="display: block !important; margin-bottom: 8px !important; font-weight: 600 !important; color: #1f2937 !important; font-size: 14px !important;">📧 Email</label>
-                <input type="email" id="loginEmail" placeholder="votre@email.com" required style="width: 100% !important; padding: 14px 16px !important; border: 2px solid #e5e7eb !important; border-radius: 10px !important; font-size: 15px !important; color: #1f2937 !important; background: white !important;">
-            </div>
-            <div class="auth-input-group" style="margin-bottom: 20px !important;">
-                <label style="display: block !important; margin-bottom: 8px !important; font-weight: 600 !important; color: #1f2937 !important; font-size: 14px !important;">🔒 Mot de passe</label>
-                <input type="password" id="loginPassword" placeholder="••••••••" required style="width: 100% !important; padding: 14px 16px !important; border: 2px solid #e5e7eb !important; border-radius: 10px !important; font-size: 15px !important; color: #1f2937 !important; background: white !important;">
-            </div>
-            <button type="submit" class="auth-btn" id="loginBtn" style="width: 100% !important; padding: 16px 24px !important; background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%) !important; color: white !important; border: none !important; border-radius: 12px !important; cursor: pointer !important; font-size: 16px !important; font-weight: 700 !important; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3) !important; margin-top: 8px !important;">
-                Se connecter
-            </button>
-        </form>
-
-        <!-- Formulaire d'inscription -->
-        <form id="registerForm" class="auth-form" onsubmit="inscription(event)">
-            <div class="auth-input-group" style="margin-bottom: 20px !important;">
-                <label style="display: block !important; margin-bottom: 8px !important; font-weight: 600 !important; color: #1f2937 !important; font-size: 14px !important;">👤 Nom d'utilisateur</label>
-                <input type="text" id="registerName" placeholder="Votre nom" required style="width: 100% !important; padding: 14px 16px !important; border: 2px solid #e5e7eb !important; border-radius: 10px !important; font-size: 15px !important; color: #1f2937 !important; background: white !important;">
-            </div>
-            <div class="auth-input-group" style="margin-bottom: 20px !important;">
-                <label style="display: block !important; margin-bottom: 8px !important; font-weight: 600 !important; color: #1f2937 !important; font-size: 14px !important;">📧 Email</label>
-                <input type="email" id="registerEmail" placeholder="votre@email.com" required style="width: 100% !important; padding: 14px 16px !important; border: 2px solid #e5e7eb !important; border-radius: 10px !important; font-size: 15px !important; color: #1f2937 !important; background: white !important;">
-            </div>
-            <div class="auth-input-group" style="margin-bottom: 20px !important;">
-                <label style="display: block !important; margin-bottom: 8px !important; font-weight: 600 !important; color: #1f2937 !important; font-size: 14px !important;">🔒 Mot de passe</label>
-                <input type="password" id="registerPassword" placeholder="••••••••" minlength="6" required style="width: 100% !important; padding: 14px 16px !important; border: 2px solid #e5e7eb !important; border-radius: 10px !important; font-size: 15px !important; color: #1f2937 !important; background: white !important;">
-                <small style="color: #999; font-size: 0.85em;">Minimum 6 caractères</small>
-            </div>
-            <div class="auth-input-group" style="margin-bottom: 20px !important;">
-                <label style="display: block !important; margin-bottom: 8px !important; font-weight: 600 !important; color: #1f2937 !important; font-size: 14px !important;">🔒 Confirmer le mot de passe</label>
-                <input type="password" id="registerPasswordConfirm" placeholder="••••••••" minlength="6" required style="width: 100% !important; padding: 14px 16px !important; border: 2px solid #e5e7eb !important; border-radius: 10px !important; font-size: 15px !important; color: #1f2937 !important; background: white !important;">
-            </div>
-            <button type="submit" class="auth-btn" id="registerBtn" style="width: 100% !important; padding: 16px 24px !important; background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%) !important; color: white !important; border: none !important; border-radius: 12px !important; cursor: pointer !important; font-size: 16px !important; font-weight: 700 !important; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3) !important; margin-top: 8px !important;">
-                Créer mon compte
-            </button>
-        </form>
-
-        <div style="text-align: center !important; margin-top: 30px !important; padding: 20px !important; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%) !important; border-radius: 12px !important; border: 2px solid #bae6fd !important;">
-            <div style="font-size: 2em; margin-bottom: 10px;">🌍</div>
-            <div style="color: #0369a1 !important; font-size: 0.95em !important; font-weight: 600 !important;">Rejoignez la communauté Mon Coach Minceur</div>
-            <div style="color: #0284c7 !important; font-size: 0.85em !important; margin-top: 5px;">Des milliers d'utilisateurs vous attendent !</div>
-        </div>
-    </div>
-</div>
-
-<div class="container">
-    <div class="header">
-        <div style="background: linear-gradient(135deg, #ff006e 0%, #ff6ec7 100%); padding: 15px 30px; border-radius: 25px; margin-bottom: 20px; box-shadow: 0 8px 25px rgba(255, 0, 110, 0.4); display: inline-block;">
-            <h3 style="color: white; font-size: 1.8em; text-shadow: 3px 3px 6px rgba(0,0,0,0.3); letter-spacing: 2px; margin: 0;">
-                🐱 CATJER LA CHATTE QUI RUGIT EN CUISINE 🐱
-            </h3>
-        </div>
-        <h1>💪 Mon Coach Minceur</h1>
-        <div id="userBadgeContainer" style="margin: 10px 0;"></div>
-        
-        <!-- Bouton Rejoindre Facebook -->
-        <div style="margin: 15px 0;">
-            <a href="https://www.facebook.com/profile.php?id=61584460911716" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; background: linear-gradient(135deg, #1877f2 0%, #0c5fcd 100%); color: white; text-decoration: none; border-radius: 25px; font-weight: bold; box-shadow: 0 3px 10px rgba(24,119,242,0.3); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-                <span style="font-size: 1.2em;">👥</span>
-                <span>Suivez notre page Facebook</span>
-            </a>
-        </div>
-        
-        <p>Votre programme personnalisé pour atteindre vos objectifs</p>
-    </div>
-
-    <div class="card">
-        <div class="tabs">
-            <button class="tab active" onclick="showTab('profil')">📊 Mon Profil</button>
-            <button class="tab" onclick="showTab('suivi')">📊 Mon Suivi</button>
-        </div>
-
-        <!-- Onglet Profil -->
-        <div id="profil" class="tab-content active">
-            <h2>Créez votre profil personnalisé</h2>
-            
-            <div class="form-group">
-                <label>Nom / Prénom</label>
-                <input type="text" id="nom" placeholder="Entrez votre nom">
-            </div>
-
-            <div class="form-group">
-                <label>Sexe</label>
-                <select id="sexe">
-                    <option value="femme">Femme</option>
-                    <option value="homme">Homme</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Âge (années)</label>
-                <input type="number" id="age" placeholder="25" min="10" max="100">
-            </div>
-
-            <div class="form-group">
-                <label>Taille (cm)</label>
-                <input type="number" id="taille" placeholder="170" min="100" max="250">
-            </div>
-
-            <div class="form-group">
-                <label>Poids actuel (kg)</label>
-                <input type="number" id="poids" placeholder="70" step="0.1" min="30" max="300">
-            </div>
-
-            <div class="form-group">
-                <label>Poids objectif (kg)</label>
-                <input type="number" id="objectif" placeholder="65" step="0.1" min="30" max="300">
-            </div>
-
-            <div class="form-group">
-                <label>Niveau d'activité</label>
-                <select id="activite">
-                    <option value="1.2">Sédentaire (peu ou pas d'exercice)</option>
-                    <option value="1.375">Légèrement actif (exercice 1-3 jours/semaine)</option>
-                    <option value="1.55">Modérément actif (exercice 3-5 jours/semaine)</option>
-                    <option value="1.725">Très actif (exercice 6-7 jours/semaine)</option>
-                    <option value="1.9">Extrêmement actif (exercice intense quotidien)</option>
-                </select>
-            </div>
-
-            <button class="btn" onclick="calculerProfil()">Calculer mon programme</button>
-
-            <div id="resultatProfil" class="result-box">
-                <h3>Votre bilan personnalisé</h3>
-                <div class="stats">
-                    <div class="stat-card">
-                        <div class="value" id="imcValue">-</div>
-                        <div class="label">IMC</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="value" id="poidsIdealValue">-</div>
-                        <div class="label">Poids idéal (kg)</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="value" id="aPerdrValue">-</div>
-                        <div class="label">À perdre (kg)</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="value" id="caloriesValue">-</div>
-                        <div class="label">Calories/jour</div>
-                    </div>
-                </div>
-                <div id="imcCategorie" style="margin-top: 15px; font-size: 1.1em;"></div>
-                <div id="dureeProgramme" style="margin-top: 10px;"></div>
-                
-                <div style="margin-top: 20px; text-align: center;">
-                    <button class="btn" onclick="showTab('suivi')" style="background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);">
-                        📊 Voir mon suivi détaillé
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Onglet Suivi -->
-        <div id="suivi" class="tab-content">
-            <h2>📊 Mon Suivi</h2>
-            
-            <div class="weight-entry">
-                <div class="form-group" style="margin-bottom: 0;">
-                    <label>Date</label>
-                    <input type="date" id="datePesee">
-                </div>
-                <div class="form-group" style="margin-bottom: 0;">
-                    <label>Poids (kg)</label>
-                    <input type="number" id="poidsPesee" step="0.1" placeholder="70.5">
-                </div>
-                <button class="btn" onclick="ajouterPesee()" style="margin-top: 0;">Ajouter</button>
-            </div>
-
-            <div id="progressionActuelle"></div>
-
-            <canvas id="graphiquePoids" width="400" height="200"></canvas>
-
-            <div class="weight-history">
-                <h3 style="margin-bottom: 15px;">Historique des pesées</h3>
-                <div id="listePesees"></div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-    // ==============================================
-    // CONFIGURATION FIREBASE
-    // ==============================================
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Coach Minceur - Le Secret du Poids</title>
     
-    const firebaseConfig = {
-        apiKey: "AIzaSyAVsE39uVXpYQy_aehNS8f_bo94U-NWI28",
-        authDomain: "moncoachminceurcatjer.firebaseapp.com",
-        projectId: "moncoachminceurcatjer",
-        storageBucket: "moncoachminceurcatjer.firebasestorage.app",
-        messagingSenderId: "441403074242",
-        appId: "1:441403074242:web:b38009005e7fa4e012bd5b",
-        measurementId: "G-M2JY1PDKQW"
-    };
-
-    // Variables Firebase
-    let db = null;
-    let auth = null;
-    let firebaseInitialized = false;
-    let currentUser = null;
-    let firebaseLoadAttempts = 0;
-    const MAX_FIREBASE_ATTEMPTS = 50;
-
-    // Fonction d'initialisation Firebase
-    function initialiserFirebase() {
-        firebaseLoadAttempts++;
-        
-        if (typeof firebase === 'undefined') {
-            if (firebaseLoadAttempts >= MAX_FIREBASE_ATTEMPTS) {
-                console.log('❌ Firebase n\'a pas pu se charger');
-                firebaseInitialized = false;
-                const authModal = document.getElementById('authModal');
-                if (authModal) authModal.style.display = 'none';
-                return;
-            }
-            console.log('⏳ Chargement Firebase... Tentative', firebaseLoadAttempts);
-            setTimeout(initialiserFirebase, 100);
-            return;
-        }
-
-        try {
-            firebase.initializeApp(firebaseConfig);
-            db = firebase.firestore();
-            auth = firebase.auth();
-            firebaseInitialized = true;
-            
-            console.log('✅ Firebase initialisé avec succès !');
-            
-            // Observer l'état de connexion - CORRECTION ICI
-            auth.onAuthStateChanged(function(user) {
-                if (user) {
-                    currentUser = user;
-                    console.log('👤 Utilisateur connecté:', user.email);
-                    
-                    if (user.displayName) {
-                        userData.nom = user.displayName;
-                        sauvegarderUserData();
-                    }
-                    
-                    // CORRECTION: Utiliser style.display au lieu de classList
-                    const modal = document.getElementById('authModal');
-                    if (modal) {
-                        modal.style.display = 'none';
-                    }
-                    
-                    afficherBadgeUtilisateur();
-                    
-                } else {
-                    currentUser = null;
-                    console.log('👤 Aucun utilisateur connecté');
-                    
-                    const modal = document.getElementById('authModal');
-                    if (modal) {
-                        modal.style.display = 'flex';
-                    }
-                }
-            });
-
-        } catch (error) {
-            console.log('⚠️ Erreur Firebase:', error);
-            firebaseInitialized = false;
-            const authModal = document.getElementById('authModal');
-            if (authModal) authModal.style.display = 'none';
-        }
-    }
-
-    // ==============================================
-    // FONCTIONS D'AUTHENTIFICATION
-    // ==============================================
-
-    function switchAuthTab(tab) {
-        document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
-        
-        if (tab === 'login') {
-            document.querySelector('.auth-tab:first-child').classList.add('active');
-            document.getElementById('loginForm').classList.add('active');
-        } else {
-            document.querySelector('.auth-tab:last-child').classList.add('active');
-            document.getElementById('registerForm').classList.add('active');
-        }
-        
-        hideAuthMessages();
-    }
-
-    function showAuthError(message) {
-        const errorDiv = document.getElementById('authError');
-        if (errorDiv) {
-            errorDiv.textContent = message;
-            errorDiv.style.display = 'block';
-        }
-        const successDiv = document.getElementById('authSuccess');
-        if (successDiv) successDiv.style.display = 'none';
-    }
-
-    function showAuthSuccess(message) {
-        const successDiv = document.getElementById('authSuccess');
-        if (successDiv) {
-            successDiv.textContent = message;
-            successDiv.style.display = 'block';
-        }
-        const errorDiv = document.getElementById('authError');
-        if (errorDiv) errorDiv.style.display = 'none';
-    }
-
-    function hideAuthMessages() {
-        const errorDiv = document.getElementById('authError');
-        const successDiv = document.getElementById('authSuccess');
-        if (errorDiv) errorDiv.style.display = 'none';
-        if (successDiv) successDiv.style.display = 'none';
-    }
-
-    async function inscription(event) {
-        event.preventDefault();
-        
-        if (!firebaseInitialized || !auth) {
-            showAuthError('Firebase n\'est pas encore initialisé. Veuillez patienter...');
-            return;
-        }
-        
-        hideAuthMessages();
-
-        const name = document.getElementById('registerName').value.trim();
-        const email = document.getElementById('registerEmail').value.trim();
-        const password = document.getElementById('registerPassword').value;
-        const passwordConfirm = document.getElementById('registerPasswordConfirm').value;
-
-        if (password !== passwordConfirm) {
-            showAuthError('Les mots de passe ne correspondent pas');
-            return;
-        }
-
-        const btn = document.getElementById('registerBtn');
-        btn.disabled = true;
-        btn.textContent = 'Création en cours...';
-
-        try {
-            const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-            
-            await userCredential.user.updateProfile({
-                displayName: name
-            });
-
-            await db.collection('users').doc(userCredential.user.uid).set({
-                nom: name,
-                email: email,
-                dateInscription: firebase.firestore.FieldValue.serverTimestamp(),
-                produitsPartages: 0
-            });
-
-            showAuthSuccess('✅ Compte créé avec succès ! Connexion...');
-            
-            setTimeout(() => {
-                const modal = document.getElementById('authModal');
-                if (modal) modal.style.display = 'none';
-                afficherNotification('🎉 Bienvenue ' + name + ' !');
-            }, 1500);
-
-        } catch (error) {
-            console.error('Erreur inscription:', error);
-            let message = 'Erreur lors de l\'inscription';
-            
-            if (error.code === 'auth/email-already-in-use') {
-                message = 'Cet email est déjà utilisé';
-            } else if (error.code === 'auth/weak-password') {
-                message = 'Le mot de passe est trop faible';
-            } else if (error.code === 'auth/invalid-email') {
-                message = 'Email invalide';
-            }
-            
-            showAuthError(message);
-        } finally {
-            btn.disabled = false;
-            btn.textContent = 'Créer mon compte';
-        }
-    }
-
-    async function connexion(event) {
-        event.preventDefault();
-        
-        if (!firebaseInitialized || !auth) {
-            showAuthError('Firebase n\'est pas encore initialisé. Veuillez patienter...');
-            return;
-        }
-        
-        hideAuthMessages();
-
-        const email = document.getElementById('loginEmail').value.trim();
-        const password = document.getElementById('loginPassword').value;
-
-        const btn = document.getElementById('loginBtn');
-        btn.disabled = true;
-        btn.textContent = 'Connexion...';
-
-        try {
-            await auth.signInWithEmailAndPassword(email, password);
-            
-            showAuthSuccess('✅ Connexion réussie !');
-            
-            // CORRECTION: Utiliser style.display au lieu de classList
-            setTimeout(() => {
-                const modal = document.getElementById('authModal');
-                if (modal) modal.style.display = 'none';
-            }, 1000);
-
-        } catch (error) {
-            console.error('Erreur connexion:', error);
-            let message = 'Erreur lors de la connexion';
-            
-            if (error.code === 'auth/user-not-found') {
-                message = 'Aucun compte avec cet email';
-            } else if (error.code === 'auth/wrong-password') {
-                message = 'Mot de passe incorrect';
-            } else if (error.code === 'auth/invalid-email') {
-                message = 'Email invalide';
-            } else if (error.code === 'auth/too-many-requests') {
-                message = 'Trop de tentatives. Réessayez plus tard';
-            }
-            
-            showAuthError(message);
-        } finally {
-            btn.disabled = false;
-            btn.textContent = 'Se connecter';
-        }
-    }
-
-    async function deconnexion() {
-        if (!confirm('Voulez-vous vraiment vous déconnecter ?')) {
-            return;
-        }
-
-        try {
-            await auth.signOut();
-            afficherNotification('👋 À bientôt !');
-            
-            setTimeout(() => {
-                location.reload();
-            }, 1000);
-            
-        } catch (error) {
-            console.error('Erreur déconnexion:', error);
-            afficherNotification('❌ Erreur lors de la déconnexion');
-        }
-    }
-
-    function afficherBadgeUtilisateur() {
-        const container = document.getElementById('userBadgeContainer');
-        if (container && currentUser) {
-            container.innerHTML = `
-                <div class="user-badge">
-                    <span>👤 ${currentUser.displayName || currentUser.email}</span>
-                    <button onclick="deconnexion()" style="background: rgba(255,255,255,0.3); border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; color: white; font-size: 0.9em;">
-                        🚪 Déconnexion
-                    </button>
-                </div>
-            `;
-        }
-    }
-
-    // ==============================================
-    // DONNÉES UTILISATEUR
-    // ==============================================
+    <!-- Firebase SDK - Version compatible -->
+    <script defer src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
     
-    let userData = JSON.parse(localStorage.getItem('userData')) || {};
-    let pesees = JSON.parse(localStorage.getItem('pesees')) || [];
-
-    function sauvegarderUserData() {
-        localStorage.setItem('userData', JSON.stringify(userData));
-    }
-
-    function chargerUserData() {
-        const data = localStorage.getItem('userData');
-        if (data) {
-            userData = JSON.parse(data);
+    <style>
+        /* ========================================
+           DESIGN PROFESSIONNEL MODERNE
+           ======================================== */
+        
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary-color: #10b981;
+            --accent-color: #f59e0b;
+            --danger-color: #ef4444;
+            --text-dark: #1f2937;
+            --text-medium: #6b7280;
+            --text-light: #9ca3af;
+            --bg-light: #f9fafb;
+            --bg-white: #ffffff;
+            --border-color: #e5e7eb;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --radius-sm: 6px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
         }
-        return userData;
-    }
 
-    // ==============================================
-    // NOTIFICATIONS
-    // ==============================================
-    
-    function afficherNotification(message, couleur = 'linear-gradient(135deg, #4caf50 0%, #45a049 100%)') {
-        const notification = document.createElement('div');
-        notification.style.cssText = `
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-light);
+            min-height: 100vh;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* ========================================
+           HEADER PROFESSIONNEL
+           ======================================== */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            padding: 40px 30px;
+            border-radius: var(--radius-xl);
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 2.25em;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+            font-weight: 400;
+        }
+
+        /* ========================================
+           CARD MODERNE
+           ======================================== */
+        .card {
+            background: var(--bg-white);
+            border-radius: var(--radius-xl);
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+        }
+
+        .card h2 {
+            color: var(--text-dark);
+            margin-bottom: 24px;
+            font-size: 1.75em;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+
+        /* ========================================
+           NAVIGATION TABS MODERNE
+           ======================================== */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            background: var(--bg-white);
+            padding: 8px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+        }
+
+        .tab {
+            padding: 10px 20px;
+            background: transparent;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-medium);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            white-space: nowrap;
+        }
+
+        .tab:hover {
+            background: var(--bg-light);
+            color: var(--text-dark);
+        }
+
+        .tab.active {
+            background: var(--primary-color);
+            color: white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ========================================
+           FORMULAIRES MODERNES
+           ======================================== */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 14px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="email"],
+        input[type="password"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: 15px;
+            color: var(--text-dark);
+            background: var(--bg-white);
+            transition: all 0.2s;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        /* ========================================
+           BOUTONS PROFESSIONNELS
+           ======================================== */
+        .btn {
+            padding: 12px 24px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            transition: all 0.2s;
+            box-shadow: var(--shadow-sm);
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn.delete {
+            background: var(--danger-color);
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+
+        .btn.delete:hover {
+            background: #dc2626;
+        }
+
+        /* ========================================
+           STATS CARDS PROFESSIONNELLES
+           ======================================== */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            padding: 24px;
+            border-radius: var(--radius-lg);
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            color: white;
+        }
+
+        .stat-card .value {
+            font-size: 2em;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .stat-card .label {
+            font-size: 14px;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+
+        /* ========================================
+           RESULT BOX MODERNE
+           ======================================== */
+        .result-box {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border: 1px solid #bae6fd;
+            padding: 24px;
+            border-radius: var(--radius-lg);
+            margin-top: 24px;
+        }
+
+        .result-box h3 {
+            color: var(--primary-color);
+            margin-bottom: 16px;
+            font-size: 1.25em;
+            font-weight: 700;
+        }
+
+        /* ========================================
+           WEIGHT ITEMS MODERNES
+           ======================================== */
+        .weight-history {
+            margin-top: 30px;
+        }
+
+        .weight-history h3 {
+            color: var(--text-dark);
+            margin-bottom: 16px;
+            font-size: 1.25em;
+            font-weight: 700;
+        }
+
+        .weight-item {
+            background: var(--bg-light);
+            padding: 16px;
+            border-radius: var(--radius-md);
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .weight-entry {
+            background: var(--bg-light);
+            padding: 20px;
+            border-radius: var(--radius-lg);
+            margin-bottom: 24px;
+            border: 1px solid var(--border-color);
+        }
+
+        /* ========================================
+           NOTIFICATIONS MODERNES
+           ======================================== */
+        #notification {
             position: fixed;
             top: 20px;
             right: 20px;
             padding: 16px 24px;
-            background: ${couleur};
-            color: white;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-xl);
             z-index: 10000;
+            display: none;
             min-width: 300px;
+            border-left: 4px solid var(--primary-color);
             font-weight: 500;
             animation: slideInRight 0.3s ease-out;
-        `;
-        notification.textContent = message;
-        document.body.appendChild(notification);
-
-        setTimeout(() => {
-            notification.style.opacity = '0';
-            notification.style.transform = 'translateX(400px)';
-            notification.style.transition = 'all 0.3s';
-            setTimeout(() => notification.remove(), 300);
-        }, 3000);
-    }
-
-    // ==============================================
-    // FONCTIONS PROFIL
-    // ==============================================
-    
-    function calculerProfil() {
-        const nom = document.getElementById('nom').value;
-        const sexe = document.getElementById('sexe').value;
-        const age = parseFloat(document.getElementById('age').value);
-        const taille = parseFloat(document.getElementById('taille').value);
-        const poids = parseFloat(document.getElementById('poids').value);
-        const objectif = parseFloat(document.getElementById('objectif').value);
-        const activite = parseFloat(document.getElementById('activite').value);
-
-        if (!nom || !age || !taille || !poids || !objectif) {
-            alert('Veuillez remplir tous les champs');
-            return;
         }
 
-        const imc = (poids / ((taille / 100) ** 2)).toFixed(1);
-        
-        let poidsIdeal;
-        if (sexe === 'homme') {
-            poidsIdeal = (taille - 100 - ((taille - 150) / 4)).toFixed(1);
-        } else {
-            poidsIdeal = (taille - 100 - ((taille - 150) / 2.5)).toFixed(1);
-        }
-
-        const aPerdre = Math.max(0, poids - objectif).toFixed(1);
-
-        let bmr;
-        if (sexe === 'homme') {
-            bmr = 88.362 + (13.397 * poids) + (4.799 * taille) - (5.677 * age);
-        } else {
-            bmr = 447.593 + (9.247 * poids) + (3.098 * taille) - (4.330 * age);
-        }
-        const calories = Math.round((bmr * activite) - 500);
-
-        let categorieIMC;
-        if (imc < 18.5) {
-            categorieIMC = "Insuffisance pondérale";
-        } else if (imc < 25) {
-            categorieIMC = "Poids normal - Félicitations ! 🎉";
-        } else if (imc < 30) {
-            categorieIMC = "Surpoids - Vous êtes sur la bonne voie ! 💪";
-        } else {
-            categorieIMC = "Obésité - Courage, chaque pas compte ! 🌟";
-        }
-
-        const semaines = Math.ceil(aPerdre / 0.5);
-        const mois = (semaines / 4.33).toFixed(1);
-
-        document.getElementById('imcValue').textContent = imc;
-        document.getElementById('poidsIdealValue').textContent = poidsIdeal;
-        document.getElementById('aPerdrValue').textContent = aPerdre;
-        document.getElementById('caloriesValue').textContent = calories;
-        document.getElementById('imcCategorie').innerHTML = `<strong>Catégorie :</strong> ${categorieIMC}`;
-        document.getElementById('dureeProgramme').innerHTML = `<strong>Durée estimée :</strong> ${semaines} semaines (environ ${mois} mois) pour atteindre votre objectif de manière saine.`;
-
-        document.getElementById('resultatProfil').classList.add('show');
-
-        userData = { nom, sexe, age, taille, poids, objectif, activite, imc, poidsIdeal, calories };
-        localStorage.setItem('userData', JSON.stringify(userData));
-    }
-
-    function chargerProfil() {
-        if (Object.keys(userData).length > 0) {
-            document.getElementById('nom').value = userData.nom || '';
-            document.getElementById('sexe').value = userData.sexe || 'femme';
-            document.getElementById('age').value = userData.age || '';
-            document.getElementById('taille').value = userData.taille || '';
-            document.getElementById('poids').value = userData.poids || '';
-            document.getElementById('objectif').value = userData.objectif || '';
-            document.getElementById('activite').value = userData.activite || '1.2';
-
-            if (userData.imc && userData.calories) {
-                document.getElementById('imcValue').textContent = userData.imc;
-                document.getElementById('poidsIdealValue').textContent = userData.poidsIdeal;
-                document.getElementById('aPerdrValue').textContent = Math.max(0, userData.poids - userData.objectif).toFixed(1);
-                document.getElementById('caloriesValue').textContent = userData.calories;
-
-                let categorieIMC;
-                const imc = parseFloat(userData.imc);
-                if (imc < 18.5) {
-                    categorieIMC = "Insuffisance pondérale";
-                } else if (imc < 25) {
-                    categorieIMC = "Poids normal - Félicitations ! 🎉";
-                } else if (imc < 30) {
-                    categorieIMC = "Surpoids - Vous êtes sur la bonne voie ! 💪";
-                } else {
-                    categorieIMC = "Obésité - Courage, chaque pas compte ! 🌟";
-                }
-
-                const aPerdre = Math.max(0, userData.poids - userData.objectif);
-                const semaines = Math.ceil(aPerdre / 0.5);
-                const mois = (semaines / 4.33).toFixed(1);
-
-                document.getElementById('imcCategorie').innerHTML = `<strong>Catégorie :</strong> ${categorieIMC}`;
-                document.getElementById('dureeProgramme').innerHTML = `<strong>Durée estimée :</strong> ${semaines} semaines (environ ${mois} mois) pour atteindre votre objectif de manière saine.`;
-
-                document.getElementById('resultatProfil').classList.add('show');
+        @keyframes slideInRight {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
             }
         }
-    }
 
-    // ==============================================
-    // SUIVI DU POIDS
-    // ==============================================
-    
-    function ajouterPesee() {
-        const date = document.getElementById('datePesee').value;
-        const poids = parseFloat(document.getElementById('poidsPesee').value);
-
-        if (!date || !poids) {
-            alert('Veuillez remplir la date et le poids');
-            return;
+        /* ========================================
+           AUTHENTIFICATION MODERNE ET MAGNIFIQUE
+           ======================================== */
+        #authModal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            padding: 20px;
+            overflow-y: auto;
         }
 
-        const index = pesees.findIndex(p => p.date === date);
-        if (index !== -1) {
-            if (confirm('Une pesée existe déjà pour cette date. Voulez-vous la remplacer ?')) {
-                pesees[index] = { date, poids };
-            } else {
-                return;
+        .auth-container {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 480px;
+            width: 100%;
+            padding: 48px 40px;
+            animation: slideInUp 0.4s ease-out;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
             }
-        } else {
-            pesees.push({ date, poids });
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        pesees.sort((a, b) => new Date(a.date) - new Date(b.date));
-        localStorage.setItem('pesees', JSON.stringify(pesees));
-        afficherPesees();
-        dessinerGraphique();
-
-        document.getElementById('poidsPesee').value = '';
-        document.getElementById('datePesee').valueAsDate = new Date();
-
-        afficherNotification('✅ Pesée enregistrée !');
-    }
-
-    function afficherPesees() {
-        const liste = document.getElementById('listePesees');
-        liste.innerHTML = '';
-
-        if (pesees.length === 0) {
-            liste.innerHTML = '<p style="text-align: center; color: #999;">Aucune pesée enregistrée</p>';
-            return;
+        .auth-header {
+            text-align: center;
+            margin-bottom: 32px;
         }
 
-        afficherProgression();
+        .auth-header h2 {
+            color: var(--text-dark);
+            font-size: 2em;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+            letter-spacing: -0.02em;
+        }
 
-        [...pesees].reverse().forEach((pesee, index) => {
-            const realIndex = pesees.length - 1 - index;
-            const div = document.createElement('div');
-            div.className = 'weight-item';
+        .auth-header p {
+            color: var(--text-medium);
+            font-size: 1em;
+            margin: 0;
+        }
+
+        .auth-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 32px;
+            background: var(--bg-light);
+            padding: 6px;
+            border-radius: 12px;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 12px 20px;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-medium);
+            transition: all 0.2s ease;
+        }
+
+        .auth-tab:hover {
+            color: var(--text-dark);
+        }
+
+        .auth-tab.active {
+            background: white;
+            color: var(--primary-color);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .auth-input-group {
+            margin-bottom: 20px;
+        }
+
+        .auth-input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 14px;
+        }
+
+        .auth-input-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 15px;
+            color: var(--text-dark);
+            background: white;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .auth-input-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        .auth-input-group input::placeholder {
+            color: var(--text-light);
+        }
+
+        .auth-btn {
+            width: 100%;
+            padding: 16px 24px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            margin-top: 8px;
+        }
+
+        .auth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
+        }
+
+        .auth-btn:active {
+            transform: translateY(0);
+        }
+
+        .auth-error {
+            background: #fee;
+            border: 1px solid #fcc;
+            color: #c33;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+            animation: shake 0.5s;
+        }
+
+        .auth-error:not(:empty) {
+            display: block;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .auth-success {
+            background: #efe;
+            border: 1px solid #cfc;
+            color: #3c3;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .auth-success:not(:empty) {
+            display: block;
+        }
+
+        /* Responsive mobile */
+        @media (max-width: 768px) {
+            .auth-container {
+                padding: 32px 24px;
+                margin: 20px;
+            }
+
+            .auth-header h2 {
+                font-size: 1.75em;
+            }
+
+            .auth-tabs {
+                flex-direction: column;
+            }
+
+            .auth-tab {
+                width: 100%;
+            }
+        }
+
+        /* ========================================
+           RESPONSIVE
+           ======================================== */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 1.75em;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .tabs {
+                justify-content: center;
+            }
+
+            .tab {
+                font-size: 13px;
+                padding: 8px 16px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Modal de connexion/inscription -->
+    <div id="authModal">
+        <div class="auth-container">
+            <div class="auth-header">
+                <div style="font-size: 4em; margin-bottom: 15px;">🚀</div>
+                <h2>Mon Coach Minceur</h2>
+                <p>Connectez-vous pour accéder à toutes les fonctionnalités</p>
+            </div>
+
+            <div class="auth-tabs">
+                <button class="auth-tab active" onclick="switchAuthTab('login')">Connexion</button>
+                <button class="auth-tab" onclick="switchAuthTab('register')">Inscription</button>
+            </div>
+
+            <div id="authError" class="auth-error"></div>
+            <div id="authSuccess" class="auth-success"></div>
+
+            <!-- Formulaire de connexion -->
+            <form id="loginForm" class="auth-form active" onsubmit="connexion(event)">
+                <div class="auth-input-group">
+                    <label>📧 Email</label>
+                    <input type="email" id="loginEmail" placeholder="votre@email.com" required>
+                </div>
+                <div class="auth-input-group">
+                    <label>🔒 Mot de passe</label>
+                    <input type="password" id="loginPassword" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="auth-btn" id="loginBtn">
+                    Se connecter
+                </button>
+            </form>
+
+            <!-- Formulaire d'inscription -->
+            <form id="registerForm" class="auth-form" onsubmit="inscription(event)">
+                <div class="auth-input-group">
+                    <label>👤 Nom d'utilisateur</label>
+                    <input type="text" id="registerName" placeholder="Votre nom" required>
+                </div>
+                <div class="auth-input-group">
+                    <label>📧 Email</label>
+                    <input type="email" id="registerEmail" placeholder="votre@email.com" required>
+                </div>
+                <div class="auth-input-group">
+                    <label>🔒 Mot de passe</label>
+                    <input type="password" id="registerPassword" placeholder="••••••••" minlength="6" required>
+                    <small style="color: #999; font-size: 0.85em;">Minimum 6 caractères</small>
+                </div>
+                <div class="auth-input-group">
+                    <label>🔒 Confirmer le mot de passe</label>
+                    <input type="password" id="registerPasswordConfirm" placeholder="••••••••" minlength="6" required>
+                </div>
+                <button type="submit" class="auth-btn" id="registerBtn">
+                    Créer mon compte
+                </button>
+            </form>
+
+            <div style="text-align: center; margin-top: 30px; padding: 20px; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-radius: 12px; border: 2px solid #bae6fd;">
+                <div style="font-size: 2em; margin-bottom: 10px;">🌍</div>
+                <div style="color: #0369a1; font-size: 0.95em; font-weight: 600;">Rejoignez la communauté Mon Coach Minceur</div>
+                <div style="color: #0284c7; font-size: 0.85em; margin-top: 5px;">Des milliers d'utilisateurs vous attendent !</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <div style="background: linear-gradient(135deg, #ff006e 0%, #ff6ec7 100%); padding: 15px 30px; border-radius: 25px; margin-bottom: 20px; box-shadow: 0 8px 25px rgba(255, 0, 110, 0.4); display: inline-block;">
+                <h3 style="color: white; font-size: 1.8em; text-shadow: 3px 3px 6px rgba(0,0,0,0.3); letter-spacing: 2px; margin: 0;">
+                    🐱 CATJER LA CHATTE QUI RUGIT EN CUISINE 🐱
+                </h3>
+            </div>
+            <h1>💪 Mon Coach Minceur</h1>
+            <div id="userBadgeContainer" style="margin: 10px 0;"></div>
             
-            const dateFormatee = new Date(pesee.date + 'T00:00:00').toLocaleDateString('fr-FR', {
-                weekday: 'short',
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric'
-            });
+            <!-- Bouton Rejoindre Facebook -->
+            <div style="margin: 15px 0;">
+                <a href="https://www.facebook.com/profile.php?id=61584460911716" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; background: linear-gradient(135deg, #1877f2 0%, #0c5fcd 100%); color: white; text-decoration: none; border-radius: 25px; font-weight: bold; box-shadow: 0 3px 10px rgba(24,119,242,0.3); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    <span style="font-size: 1.2em;">👥</span>
+                    <span>Suivez notre page Facebook</span>
+                </a>
+            </div>
+            
+            <!-- Bouton Telegram -->
+            <div style="margin: 15px 0;">
+                <a href="https://t.me/+GYg6ymUmOu01M2Nk" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; background: linear-gradient(135deg, #0088cc 0%, #006699 100%); color: white; text-decoration: none; border-radius: 25px; font-weight: bold; box-shadow: 0 3px 10px rgba(0,136,204,0.3); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    <span style="font-size: 1.2em;">✈️</span>
+                    <span>Rejoignez notre Telegram</span>
+                </a>
+            </div>
+            
+            <p>Votre programme personnalisé pour atteindre vos objectifs</p>
+        </div>
 
-            div.innerHTML = `
-                <span class="date">${dateFormatee}</span>
-                <span class="weight">${pesee.poids} kg</span>
-                <button class="delete" onclick="supprimerPesee(${realIndex})">Supprimer</button>
-            `;
-            liste.appendChild(div);
-        });
-    }
+        <div class="card">
+            <div class="tabs">
+                <button class="tab active" onclick="showTab('profil')">📊 Mon Profil</button>
+                <button class="tab" onclick="showTab('suivi')">📈 Mon Suivi</button>
+            </div>
 
-    function afficherProgression() {
-        const progressionDiv = document.getElementById('progressionActuelle');
-        
-        if (pesees.length === 0 || !userData.objectif) {
-            progressionDiv.innerHTML = '';
-            return;
-        }
-
-        const poidsActuel = pesees[pesees.length - 1].poids;
-        const poidsDepart = pesees[0].poids;
-        const objectif = userData.objectif;
-
-        const totalAPerdre = poidsDepart - objectif;
-        const dejaPerdu = poidsDepart - poidsActuel;
-        const resteAPerdre = poidsActuel - objectif;
-
-        const pourcentage = Math.min(100, Math.max(0, (dejaPerdu / totalAPerdre) * 100));
-
-        progressionDiv.innerHTML = `
-            <div style="background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%); padding: 20px; border-radius: 10px; margin-top: 20px;">
-                <h3 style="color: white; margin-bottom: 10px;">📊 Votre progression</h3>
-                <div style="display: flex; justify-content: space-between; color: white; margin-bottom: 10px;">
-                    <span>Départ: ${poidsDepart} kg</span>
-                    <span>Actuel: ${poidsActuel} kg</span>
-                    <span>Objectif: ${objectif} kg</span>
+            <!-- Onglet Profil -->
+            <div id="profil" class="tab-content active">
+                <h2>Créez votre profil personnalisé</h2>
+                
+                <div class="form-group">
+                    <label>Nom / Prénom</label>
+                    <input type="text" id="nom" placeholder="Entrez votre nom">
                 </div>
-                <div style="background: rgba(255,255,255,0.3); border-radius: 10px; height: 30px; overflow: hidden;">
-                    <div style="background: linear-gradient(90deg, #4caf50 0%, #45a049 100%); height: 100%; width: ${pourcentage}%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; transition: width 0.5s;">${pourcentage.toFixed(1)}%</div>
+
+                <div class="form-group">
+                    <label>Sexe</label>
+                    <select id="sexe">
+                        <option value="femme">Femme</option>
+                        <option value="homme">Homme</option>
+                    </select>
                 </div>
-                <div style="color: white; margin-top: 10px; text-align: center;">
-                    <strong>Perdu: ${dejaPerdu.toFixed(1)} kg</strong> sur ${totalAPerdre.toFixed(1)} kg
-                    ${resteAPerdre > 0 ? ` - Encore ${resteAPerdre.toFixed(1)} kg à perdre !` : ' - Objectif atteint ! 🎉'}
+
+                <div class="form-group">
+                    <label>Âge (années)</label>
+                    <input type="number" id="age" placeholder="25" min="10" max="100">
+                </div>
+
+                <div class="form-group">
+                    <label>Taille (cm)</label>
+                    <input type="number" id="taille" placeholder="170" min="100" max="250">
+                </div>
+
+                <div class="form-group">
+                    <label>Poids actuel (kg)</label>
+                    <input type="number" id="poids" placeholder="70" step="0.1" min="30" max="300">
+                </div>
+
+                <div class="form-group">
+                    <label>Poids objectif (kg)</label>
+                    <input type="number" id="objectif" placeholder="65" step="0.1" min="30" max="300">
+                </div>
+
+                <div class="form-group">
+                    <label>Niveau d'activité</label>
+                    <select id="activite">
+                        <option value="1.2">Sédentaire (peu ou pas d'exercice)</option>
+                        <option value="1.375">Légèrement actif (exercice 1-3 jours/semaine)</option>
+                        <option value="1.55">Modérément actif (exercice 3-5 jours/semaine)</option>
+                        <option value="1.725">Très actif (exercice 6-7 jours/semaine)</option>
+                        <option value="1.9">Extrêmement actif (exercice intense quotidien)</option>
+                    </select>
+                </div>
+
+                <button class="btn" onclick="calculerProfil()">Calculer mon programme</button>
+
+                <div id="resultatProfil" class="result-box" style="display: none;">
+                    <h3>Votre bilan personnalisé</h3>
+                    <div class="stats">
+                        <div class="stat-card">
+                            <div class="value" id="imcValue">-</div>
+                            <div class="label">IMC</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="value" id="poidsIdealValue">-</div>
+                            <div class="label">Poids idéal (kg)</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="value" id="aPerdrValue">-</div>
+                            <div class="label">À perdre (kg)</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="value" id="caloriesValue">-</div>
+                            <div class="label">Calories/jour</div>
+                        </div>
+                    </div>
+                    <div id="imcCategorie" style="margin-top: 15px; font-size: 1.1em;"></div>
+                    <div id="dureeProgramme" style="margin-top: 10px;"></div>
+                    
+                    <div style="margin-top: 20px; text-align: center;">
+                        <button class="btn" onclick="showTab('suivi')" style="background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);">
+                            📊 Voir mon suivi détaillé
+                        </button>
+                    </div>
                 </div>
             </div>
-        `;
-    }
 
-    function supprimerPesee(index) {
-        if (confirm('Voulez-vous vraiment supprimer cette pesée ?')) {
-            pesees.splice(index, 1);
+            <!-- Onglet Suivi -->
+            <div id="suivi" class="tab-content">
+                <h2>📊 Mon Suivi</h2>
+                
+                <div class="weight-entry">
+                    <div class="form-group">
+                        <label>Date</label>
+                        <input type="date" id="datePesee">
+                    </div>
+                    <div class="form-group">
+                        <label>Poids (kg)</label>
+                        <input type="number" id="poidsPesee" step="0.1" placeholder="70.5">
+                    </div>
+                    <button class="btn" onclick="ajouterPesee()">Ajouter</button>
+                </div>
+
+                <div id="progressionActuelle"></div>
+
+                <canvas id="graphiquePoids" width="400" height="200" style="max-width: 100%; margin: 20px 0;"></canvas>
+
+                <div class="weight-history">
+                    <h3>Historique des pesées</h3>
+                    <div id="listePesees"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==============================================
+        // CONFIGURATION FIREBASE
+        // ==============================================
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyAVsE39uVXpYQy_aehNS8f_bo94U-NWI28",
+            authDomain: "moncoachminceurcatjer.firebaseapp.com",
+            projectId: "moncoachminceurcatjer",
+            storageBucket: "moncoachminceurcatjer.firebasestorage.app",
+            messagingSenderId: "441403074242",
+            appId: "1:441403074242:web:b38009005e7fa4e012bd5b",
+            measurementId: "G-M2JY1PDKQW"
+        };
+
+        // Variables Firebase
+        let db = null;
+        let auth = null;
+        let firebaseInitialized = false;
+        let currentUser = null;
+        let firebaseLoadAttempts = 0;
+        const MAX_FIREBASE_ATTEMPTS = 50;
+
+        // Fonction d'initialisation Firebase
+        function initialiserFirebase() {
+            firebaseLoadAttempts++;
+            
+            if (typeof firebase === 'undefined') {
+                if (firebaseLoadAttempts >= MAX_FIREBASE_ATTEMPTS) {
+                    console.log('❌ Firebase n\'a pas pu se charger');
+                    firebaseInitialized = false;
+                    const authModal = document.getElementById('authModal');
+                    if (authModal) authModal.style.display = 'none';
+                    return;
+                }
+                console.log('⏳ Chargement Firebase... Tentative', firebaseLoadAttempts);
+                setTimeout(initialiserFirebase, 100);
+                return;
+            }
+
+            try {
+                firebase.initializeApp(firebaseConfig);
+                db = firebase.firestore();
+                auth = firebase.auth();
+                firebaseInitialized = true;
+                
+                console.log('✅ Firebase initialisé avec succès !');
+                
+                // Observer l'état de connexion - CORRECTION ICI
+                auth.onAuthStateChanged(function(user) {
+                    if (user) {
+                        currentUser = user;
+                        console.log('👤 Utilisateur connecté:', user.email);
+                        
+                        if (user.displayName) {
+                            userData.nom = user.displayName;
+                            sauvegarderUserData();
+                        }
+                        
+                        // CORRECTION: Utiliser style.display au lieu de classList
+                        const modal = document.getElementById('authModal');
+                        if (modal) {
+                            modal.style.display = 'none';
+                        }
+                        
+                        afficherBadgeUtilisateur();
+                        
+                    } else {
+                        currentUser = null;
+                        console.log('👤 Aucun utilisateur connecté');
+                        
+                        const modal = document.getElementById('authModal');
+                        if (modal) {
+                            modal.style.display = 'flex';
+                        }
+                    }
+                });
+
+            } catch (error) {
+                console.log('⚠️ Erreur Firebase:', error);
+                firebaseInitialized = false;
+                const authModal = document.getElementById('authModal');
+                if (authModal) authModal.style.display = 'none';
+            }
+        }
+
+        // ==============================================
+        // FONCTIONS D'AUTHENTIFICATION
+        // ==============================================
+
+        function switchAuthTab(tab) {
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+            
+            if (tab === 'login') {
+                document.querySelector('.auth-tab:first-child').classList.add('active');
+                document.getElementById('loginForm').classList.add('active');
+            } else {
+                document.querySelector('.auth-tab:last-child').classList.add('active');
+                document.getElementById('registerForm').classList.add('active');
+            }
+            
+            hideAuthMessages();
+        }
+
+        function showAuthError(message) {
+            const errorDiv = document.getElementById('authError');
+            if (errorDiv) {
+                errorDiv.textContent = message;
+                errorDiv.style.display = 'block';
+            }
+            const successDiv = document.getElementById('authSuccess');
+            if (successDiv) successDiv.style.display = 'none';
+        }
+
+        function showAuthSuccess(message) {
+            const successDiv = document.getElementById('authSuccess');
+            if (successDiv) {
+                successDiv.textContent = message;
+                successDiv.style.display = 'block';
+            }
+            const errorDiv = document.getElementById('authError');
+            if (errorDiv) errorDiv.style.display = 'none';
+        }
+
+        function hideAuthMessages() {
+            const errorDiv = document.getElementById('authError');
+            const successDiv = document.getElementById('authSuccess');
+            if (errorDiv) errorDiv.style.display = 'none';
+            if (successDiv) successDiv.style.display = 'none';
+        }
+
+        async function inscription(event) {
+            event.preventDefault();
+            
+            if (!firebaseInitialized || !auth) {
+                showAuthError('Firebase n\'est pas encore initialisé. Veuillez patienter...');
+                return;
+            }
+            
+            hideAuthMessages();
+
+            const name = document.getElementById('registerName').value.trim();
+            const email = document.getElementById('registerEmail').value.trim();
+            const password = document.getElementById('registerPassword').value;
+            const passwordConfirm = document.getElementById('registerPasswordConfirm').value;
+
+            if (password !== passwordConfirm) {
+                showAuthError('Les mots de passe ne correspondent pas');
+                return;
+            }
+
+            const btn = document.getElementById('registerBtn');
+            btn.disabled = true;
+            btn.textContent = 'Création en cours...';
+
+            try {
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                
+                await userCredential.user.updateProfile({
+                    displayName: name
+                });
+
+                await db.collection('users').doc(userCredential.user.uid).set({
+                    nom: name,
+                    email: email,
+                    dateInscription: firebase.firestore.FieldValue.serverTimestamp(),
+                    produitsPartages: 0
+                });
+
+                showAuthSuccess('✅ Compte créé avec succès ! Connexion...');
+                
+                setTimeout(() => {
+                    const modal = document.getElementById('authModal');
+                    if (modal) modal.style.display = 'none';
+                    afficherNotification('🎉 Bienvenue ' + name + ' !');
+                }, 1500);
+
+            } catch (error) {
+                console.error('Erreur inscription:', error);
+                let message = 'Erreur lors de l\'inscription';
+                
+                if (error.code === 'auth/email-already-in-use') {
+                    message = 'Cet email est déjà utilisé';
+                } else if (error.code === 'auth/weak-password') {
+                    message = 'Le mot de passe est trop faible';
+                } else if (error.code === 'auth/invalid-email') {
+                    message = 'Email invalide';
+                }
+                
+                showAuthError(message);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Créer mon compte';
+            }
+        }
+
+        async function connexion(event) {
+            event.preventDefault();
+            
+            if (!firebaseInitialized || !auth) {
+                showAuthError('Firebase n\'est pas encore initialisé. Veuillez patienter...');
+                return;
+            }
+            
+            hideAuthMessages();
+
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+
+            const btn = document.getElementById('loginBtn');
+            btn.disabled = true;
+            btn.textContent = 'Connexion...';
+
+            try {
+                await auth.signInWithEmailAndPassword(email, password);
+                
+                showAuthSuccess('✅ Connexion réussie !');
+                
+                // CORRECTION: Utiliser style.display au lieu de classList
+                setTimeout(() => {
+                    const modal = document.getElementById('authModal');
+                    if (modal) modal.style.display = 'none';
+                }, 1000);
+
+            } catch (error) {
+                console.error('Erreur connexion:', error);
+                let message = 'Erreur lors de la connexion';
+                
+                if (error.code === 'auth/user-not-found') {
+                    message = 'Aucun compte avec cet email';
+                } else if (error.code === 'auth/wrong-password') {
+                    message = 'Mot de passe incorrect';
+                } else if (error.code === 'auth/invalid-email') {
+                    message = 'Email invalide';
+                } else if (error.code === 'auth/too-many-requests') {
+                    message = 'Trop de tentatives. Réessayez plus tard';
+                }
+                
+                showAuthError(message);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Se connecter';
+            }
+        }
+
+        async function deconnexion() {
+            if (!confirm('Voulez-vous vraiment vous déconnecter ?')) {
+                return;
+            }
+
+            try {
+                await auth.signOut();
+                afficherNotification('👋 À bientôt !');
+                
+                setTimeout(() => {
+                    location.reload();
+                }, 1000);
+                
+            } catch (error) {
+                console.error('Erreur déconnexion:', error);
+                afficherNotification('❌ Erreur lors de la déconnexion');
+            }
+        }
+
+        function afficherBadgeUtilisateur() {
+            const container = document.getElementById('userBadgeContainer');
+            if (container && currentUser) {
+                container.innerHTML = `
+                    <div style="background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 20px; display: inline-flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 1.1em;">👤 ${currentUser.displayName || currentUser.email}</span>
+                        <button onclick="deconnexion()" style="background: rgba(255,255,255,0.3); border: none; padding: 8px 15px; border-radius: 15px; cursor: pointer; color: white; font-size: 0.9em; font-weight: 600;">
+                            🚪 Déconnexion
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        // ==============================================
+        // DONNÉES UTILISATEUR
+        // ==============================================
+        
+        let userData = JSON.parse(localStorage.getItem('userData')) || {};
+        let pesees = JSON.parse(localStorage.getItem('pesees')) || [];
+
+        function sauvegarderUserData() {
+            localStorage.setItem('userData', JSON.stringify(userData));
+        }
+
+        // ==============================================
+        // NOTIFICATIONS
+        // ==============================================
+        
+        function afficherNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 16px 24px;
+                background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+                color: white;
+                border-radius: 12px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                z-index: 10000;
+                min-width: 300px;
+                font-weight: 500;
+                animation: slideInRight 0.3s ease-out;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateX(400px)';
+                notification.style.transition = 'all 0.3s';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // ==============================================
+        // FONCTIONS PROFIL
+        // ==============================================
+        
+        function calculerProfil() {
+            const nom = document.getElementById('nom').value;
+            const sexe = document.getElementById('sexe').value;
+            const age = parseFloat(document.getElementById('age').value);
+            const taille = parseFloat(document.getElementById('taille').value);
+            const poids = parseFloat(document.getElementById('poids').value);
+            const objectif = parseFloat(document.getElementById('objectif').value);
+            const activite = parseFloat(document.getElementById('activite').value);
+
+            if (!nom || !age || !taille || !poids || !objectif) {
+                alert('Veuillez remplir tous les champs');
+                return;
+            }
+
+            const imc = (poids / ((taille / 100) ** 2)).toFixed(1);
+            
+            let poidsIdeal;
+            if (sexe === 'homme') {
+                poidsIdeal = (taille - 100 - ((taille - 150) / 4)).toFixed(1);
+            } else {
+                poidsIdeal = (taille - 100 - ((taille - 150) / 2.5)).toFixed(1);
+            }
+
+            const aPerdre = Math.max(0, poids - objectif).toFixed(1);
+
+            let bmr;
+            if (sexe === 'homme') {
+                bmr = 88.362 + (13.397 * poids) + (4.799 * taille) - (5.677 * age);
+            } else {
+                bmr = 447.593 + (9.247 * poids) + (3.098 * taille) - (4.330 * age);
+            }
+            const calories = Math.round((bmr * activite) - 500);
+
+            let categorieIMC;
+            if (imc < 18.5) {
+                categorieIMC = "Insuffisance pondérale";
+            } else if (imc < 25) {
+                categorieIMC = "Poids normal - Félicitations ! 🎉";
+            } else if (imc < 30) {
+                categorieIMC = "Surpoids - Vous êtes sur la bonne voie ! 💪";
+            } else {
+                categorieIMC = "Obésité - Courage, chaque pas compte ! 🌟";
+            }
+
+            const semaines = Math.ceil(aPerdre / 0.5);
+            const mois = (semaines / 4.33).toFixed(1);
+
+            document.getElementById('imcValue').textContent = imc;
+            document.getElementById('poidsIdealValue').textContent = poidsIdeal;
+            document.getElementById('aPerdrValue').textContent = aPerdre;
+            document.getElementById('caloriesValue').textContent = calories;
+            document.getElementById('imcCategorie').innerHTML = `<strong>Catégorie :</strong> ${categorieIMC}`;
+            document.getElementById('dureeProgramme').innerHTML = `<strong>Durée estimée :</strong> ${semaines} semaines (environ ${mois} mois) pour atteindre votre objectif de manière saine.`;
+
+            document.getElementById('resultatProfil').style.display = 'block';
+
+            userData = { nom, sexe, age, taille, poids, objectif, activite, imc, poidsIdeal, calories };
+            localStorage.setItem('userData', JSON.stringify(userData));
+            
+            afficherNotification('✅ Profil calculé avec succès !');
+        }
+
+        function chargerProfil() {
+            if (Object.keys(userData).length > 0) {
+                document.getElementById('nom').value = userData.nom || '';
+                document.getElementById('sexe').value = userData.sexe || 'femme';
+                document.getElementById('age').value = userData.age || '';
+                document.getElementById('taille').value = userData.taille || '';
+                document.getElementById('poids').value = userData.poids || '';
+                document.getElementById('objectif').value = userData.objectif || '';
+                document.getElementById('activite').value = userData.activite || '1.2';
+
+                if (userData.imc && userData.calories) {
+                    document.getElementById('imcValue').textContent = userData.imc;
+                    document.getElementById('poidsIdealValue').textContent = userData.poidsIdeal;
+                    document.getElementById('aPerdrValue').textContent = Math.max(0, userData.poids - userData.objectif).toFixed(1);
+                    document.getElementById('caloriesValue').textContent = userData.calories;
+
+                    let categorieIMC;
+                    const imc = parseFloat(userData.imc);
+                    if (imc < 18.5) {
+                        categorieIMC = "Insuffisance pondérale";
+                    } else if (imc < 25) {
+                        categorieIMC = "Poids normal - Félicitations ! 🎉";
+                    } else if (imc < 30) {
+                        categorieIMC = "Surpoids - Vous êtes sur la bonne voie ! 💪";
+                    } else {
+                        categorieIMC = "Obésité - Courage, chaque pas compte ! 🌟";
+                    }
+
+                    const aPerdre = Math.max(0, userData.poids - userData.objectif);
+                    const semaines = Math.ceil(aPerdre / 0.5);
+                    const mois = (semaines / 4.33).toFixed(1);
+
+                    document.getElementById('imcCategorie').innerHTML = `<strong>Catégorie :</strong> ${categorieIMC}`;
+                    document.getElementById('dureeProgramme').innerHTML = `<strong>Durée estimée :</strong> ${semaines} semaines (environ ${mois} mois) pour atteindre votre objectif de manière saine.`;
+
+                    document.getElementById('resultatProfil').style.display = 'block';
+                }
+            }
+        }
+
+        // ==============================================
+        // SUIVI DU POIDS
+        // ==============================================
+        
+        function ajouterPesee() {
+            const date = document.getElementById('datePesee').value;
+            const poids = parseFloat(document.getElementById('poidsPesee').value);
+
+            if (!date || !poids) {
+                alert('Veuillez remplir la date et le poids');
+                return;
+            }
+
+            const index = pesees.findIndex(p => p.date === date);
+            if (index !== -1) {
+                if (confirm('Une pesée existe déjà pour cette date. Voulez-vous la remplacer ?')) {
+                    pesees[index] = { date, poids };
+                } else {
+                    return;
+                }
+            } else {
+                pesees.push({ date, poids });
+            }
+
+            pesees.sort((a, b) => new Date(a.date) - new Date(b.date));
             localStorage.setItem('pesees', JSON.stringify(pesees));
             afficherPesees();
             dessinerGraphique();
-        }
-    }
 
-    function dessinerGraphique() {
-        const canvas = document.getElementById('graphiquePoids');
-        const ctx = canvas.getContext('2d');
+            document.getElementById('poidsPesee').value = '';
+            document.getElementById('datePesee').valueAsDate = new Date();
 
-        canvas.width = canvas.offsetWidth;
-        canvas.height = 300;
-
-        const width = canvas.width;
-        const height = canvas.height;
-
-        ctx.clearRect(0, 0, width, height);
-
-        if (pesees.length === 0) {
-            ctx.fillStyle = '#999';
-            ctx.font = '16px Arial';
-            ctx.textAlign = 'center';
-            ctx.fillText('Aucune donnée à afficher', width / 2, height / 2);
-            return;
+            afficherNotification('✅ Pesée enregistrée !');
         }
 
-        const padding = 50;
-        const graphWidth = width - 2 * padding;
-        const graphHeight = height - 2 * padding;
+        function afficherPesees() {
+            const liste = document.getElementById('listePesees');
+            liste.innerHTML = '';
 
-        const poids = pesees.map(p => p.poids);
-        const minPoids = Math.min(...poids, userData.objectif || Infinity) - 2;
-        const maxPoids = Math.max(...poids) + 2;
-        const rangePoids = maxPoids - minPoids;
-
-        ctx.strokeStyle = '#333';
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(padding, padding);
-        ctx.lineTo(padding, height - padding);
-        ctx.lineTo(width - padding, height - padding);
-        ctx.stroke();
-
-        if (userData.objectif) {
-            const yObjectif = height - padding - ((userData.objectif - minPoids) / rangePoids) * graphHeight;
-            ctx.strokeStyle = '#ff4757';
-            ctx.lineWidth = 2;
-            ctx.setLineDash([5, 5]);
-            ctx.beginPath();
-            ctx.moveTo(padding, yObjectif);
-            ctx.lineTo(width - padding, yObjectif);
-            ctx.stroke();
-            ctx.setLineDash([]);
-
-            ctx.fillStyle = '#ff4757';
-            ctx.font = 'bold 12px Arial';
-            ctx.fillText(`Objectif: ${userData.objectif} kg`, width - padding + 5, yObjectif + 5);
-        }
-
-        ctx.strokeStyle = '#667eea';
-        ctx.fillStyle = '#667eea';
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-
-        pesees.forEach((pesee, index) => {
-            const x = padding + (index / (pesees.length - 1 || 1)) * graphWidth;
-            const y = height - padding - ((pesee.poids - minPoids) / rangePoids) * graphHeight;
-
-            if (index === 0) {
-                ctx.moveTo(x, y);
-            } else {
-                ctx.lineTo(x, y);
+            if (pesees.length === 0) {
+                liste.innerHTML = '<p style="text-align: center; color: #999; padding: 20px;">Aucune pesée enregistrée</p>';
+                return;
             }
 
-            ctx.fillRect(x - 4, y - 4, 8, 8);
+            afficherProgression();
 
-            ctx.fillStyle = '#333';
-            ctx.font = '11px Arial';
-            ctx.textAlign = 'center';
-            ctx.fillText(`${pesee.poids}`, x, y - 10);
-
-            if (pesees.length <= 10 || index % Math.ceil(pesees.length / 10) === 0 || index === pesees.length - 1) {
+            [...pesees].reverse().forEach((pesee, index) => {
+                const realIndex = pesees.length - 1 - index;
+                const div = document.createElement('div');
+                div.className = 'weight-item';
+                
                 const dateFormatee = new Date(pesee.date + 'T00:00:00').toLocaleDateString('fr-FR', {
-                    day: '2-digit',
-                    month: '2-digit'
+                    weekday: 'short',
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
                 });
-                ctx.save();
-                ctx.translate(x, height - padding + 15);
-                ctx.rotate(-Math.PI / 4);
-                ctx.fillText(dateFormatee, 0, 0);
-                ctx.restore();
+
+                div.innerHTML = `
+                    <span style="font-weight: 600; color: var(--text-dark);">${dateFormatee}</span>
+                    <div style="display: flex; gap: 15px; align-items: center;">
+                        <span style="font-size: 1.2em; font-weight: 700; color: var(--primary-color);">${pesee.poids} kg</span>
+                        <button class="btn delete" onclick="supprimerPesee(${realIndex})">🗑️ Supprimer</button>
+                    </div>
+                `;
+                liste.appendChild(div);
+            });
+        }
+
+        function afficherProgression() {
+            const progressionDiv = document.getElementById('progressionActuelle');
+            
+            if (pesees.length === 0 || !userData.objectif) {
+                progressionDiv.innerHTML = '';
+                return;
             }
 
+            const poidsActuel = pesees[pesees.length - 1].poids;
+            const poidsDepart = pesees[0].poids;
+            const objectif = userData.objectif;
+
+            const totalAPerdre = poidsDepart - objectif;
+            const dejaPerdu = poidsDepart - poidsActuel;
+            const resteAPerdre = poidsActuel - objectif;
+
+            const pourcentage = Math.min(100, Math.max(0, (dejaPerdu / totalAPerdre) * 100));
+
+            progressionDiv.innerHTML = `
+                <div style="background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%); padding: 25px; border-radius: 15px; margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                    <h3 style="color: white; margin-bottom: 15px; font-size: 1.4em;">📊 Votre progression</h3>
+                    <div style="display: flex; justify-content: space-between; color: white; margin-bottom: 15px; font-weight: 600;">
+                        <span>🎯 Départ: ${poidsDepart} kg</span>
+                        <span>⚖️ Actuel: ${poidsActuel} kg</span>
+                        <span>🏆 Objectif: ${objectif} kg</span>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.3); border-radius: 15px; height: 35px; overflow: hidden; box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);">
+                        <div style="background: linear-gradient(90deg, #4caf50 0%, #45a049 100%); height: 100%; width: ${pourcentage}%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; transition: width 0.5s; font-size: 1.1em;">${pourcentage.toFixed(1)}%</div>
+                    </div>
+                    <div style="color: white; margin-top: 15px; text-align: center; font-size: 1.1em;">
+                        <strong>✨ Perdu: ${dejaPerdu.toFixed(1)} kg</strong> sur ${totalAPerdre.toFixed(1)} kg
+                        ${resteAPerdre > 0 ? ` - Encore ${resteAPerdre.toFixed(1)} kg à perdre ! 💪` : ' - Objectif atteint ! 🎉🎊'}
+                    </div>
+                </div>
+            `;
+        }
+
+        function supprimerPesee(index) {
+            if (confirm('Voulez-vous vraiment supprimer cette pesée ?')) {
+                pesees.splice(index, 1);
+                localStorage.setItem('pesees', JSON.stringify(pesees));
+                afficherPesees();
+                dessinerGraphique();
+                afficherNotification('🗑️ Pesée supprimée');
+            }
+        }
+
+        function dessinerGraphique() {
+            const canvas = document.getElementById('graphiquePoids');
+            const ctx = canvas.getContext('2d');
+
+            canvas.width = canvas.offsetWidth;
+            canvas.height = 300;
+
+            const width = canvas.width;
+            const height = canvas.height;
+
+            ctx.clearRect(0, 0, width, height);
+
+            if (pesees.length === 0) {
+                ctx.fillStyle = '#999';
+                ctx.font = '16px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('Aucune donnée à afficher', width / 2, height / 2);
+                return;
+            }
+
+            const padding = 50;
+            const graphWidth = width - 2 * padding;
+            const graphHeight = height - 2 * padding;
+
+            const poids = pesees.map(p => p.poids);
+            const minPoids = Math.min(...poids, userData.objectif || Infinity) - 2;
+            const maxPoids = Math.max(...poids) + 2;
+            const rangePoids = maxPoids - minPoids;
+
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(padding, padding);
+            ctx.lineTo(padding, height - padding);
+            ctx.lineTo(width - padding, height - padding);
+            ctx.stroke();
+
+            if (userData.objectif) {
+                const yObjectif = height - padding - ((userData.objectif - minPoids) / rangePoids) * graphHeight;
+                ctx.strokeStyle = '#ff4757';
+                ctx.lineWidth = 2;
+                ctx.setLineDash([5, 5]);
+                ctx.beginPath();
+                ctx.moveTo(padding, yObjectif);
+                ctx.lineTo(width - padding, yObjectif);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                ctx.fillStyle = '#ff4757';
+                ctx.font = 'bold 12px Arial';
+                ctx.fillText(`Objectif: ${userData.objectif} kg`, width - padding + 5, yObjectif + 5);
+            }
+
+            ctx.strokeStyle = '#667eea';
             ctx.fillStyle = '#667eea';
-        });
+            ctx.lineWidth = 3;
+            ctx.beginPath();
 
-        ctx.stroke();
-    }
+            pesees.forEach((pesee, index) => {
+                const x = padding + (index / (pesees.length - 1 || 1)) * graphWidth;
+                const y = height - padding - ((pesee.poids - minPoids) / rangePoids) * graphHeight;
 
-    // ==============================================
-    // NAVIGATION
-    // ==============================================
-    
-    function showTab(tabName) {
-        document.querySelectorAll('.tab-content').forEach(content => {
-            content.classList.remove('active');
-        });
-        document.querySelectorAll('.tab').forEach(tab => {
-            tab.classList.remove('active');
-        });
+                if (index === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
 
-        document.getElementById(tabName).classList.add('active');
+                ctx.fillRect(x - 4, y - 4, 8, 8);
+
+                ctx.fillStyle = '#333';
+                ctx.font = 'bold 11px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText(`${pesee.poids}`, x, y - 10);
+
+                if (pesees.length <= 10 || index % Math.ceil(pesees.length / 10) === 0 || index === pesees.length - 1) {
+                    const dateFormatee = new Date(pesee.date + 'T00:00:00').toLocaleDateString('fr-FR', {
+                        day: '2-digit',
+                        month: '2-digit'
+                    });
+                    ctx.save();
+                    ctx.translate(x, height - padding + 15);
+                    ctx.rotate(-Math.PI / 4);
+                    ctx.font = '10px Arial';
+                    ctx.fillText(dateFormatee, 0, 0);
+                    ctx.restore();
+                }
+
+                ctx.fillStyle = '#667eea';
+            });
+
+            ctx.stroke();
+        }
+
+        // ==============================================
+        // NAVIGATION
+        // ==============================================
         
-        document.querySelectorAll('.tab').forEach(tab => {
-            if (tab.getAttribute('onclick').includes(tabName)) {
-                tab.classList.add('active');
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            document.getElementById(tabName).classList.add('active');
+            
+            document.querySelectorAll('.tab').forEach(tab => {
+                if (tab.getAttribute('onclick').includes(tabName)) {
+                    tab.classList.add('active');
+                }
+            });
+
+            if (tabName === 'suivi') {
+                setTimeout(() => dessinerGraphique(), 100);
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ==============================================
+        // INITIALISATION
+        // ==============================================
+        
+        window.addEventListener('load', function() {
+            console.log('📦 Tous les scripts chargés, initialisation Firebase...');
+            initialiserFirebase();
+        });
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            chargerProfil();
+            afficherPesees();
+            document.getElementById('datePesee').valueAsDate = new Date();
+            
+            console.log('✅ Application chargée');
+        });
+
+        window.addEventListener('resize', () => {
+            if (document.getElementById('suivi').classList.contains('active')) {
+                dessinerGraphique();
             }
         });
-
-        if (tabName === 'suivi') {
-            dessinerGraphique();
-        }
-
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    // ==============================================
-    // INITIALISATION
-    // ==============================================
-    
-    window.addEventListener('load', function() {
-        console.log('📦 Tous les scripts chargés, initialisation Firebase...');
-        initialiserFirebase();
-    });
-    
-    document.addEventListener('DOMContentLoaded', function() {
-        chargerProfil();
-        afficherPesees();
-        document.getElementById('datePesee').valueAsDate = new Date();
-        
-        console.log('✅ Application chargée');
-    });
-
-    window.addEventListener('resize', () => {
-        if (document.getElementById('suivi').classList.contains('active')) {
-            dessinerGraphique();
-        }
-    });
-</script>
+    </script>
+</body>
+</html>
