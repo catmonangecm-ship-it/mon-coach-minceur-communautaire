@@ -6031,27 +6031,50 @@ Réponds de manière personnalisée, encourageante et professionnelle. Donne des
                 return;
             }
 
+            console.log('🗑️ Tentative suppression:', nomProduit, 'ID:', idDoc);
+
+            if (!idDoc) {
+                alert('❌ Erreur : ID du produit manquant');
+                console.error('❌ ID manquant pour:', nomProduit);
+                return;
+            }
+
             if (!confirm(`⚠️ Êtes-vous sûr de vouloir supprimer "${nomProduit}" de la base communautaire ?\n\nCette action est IRRÉVERSIBLE !`)) {
                 return;
             }
 
             try {
+                console.log('📡 Suppression Firebase en cours...');
                 await db.collection('produitsPartages').doc(idDoc).delete();
+                console.log('✅ Suppression Firebase réussie');
+                
+                afficherNotification('🔄 Synchronisation en cours...', 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)');
+                
+                // VIDER le cache localStorage avant de resynchroniser
+                console.log('🗑️ Vidage du cache localStorage...');
+                localStorage.removeItem('baseCommunautaire');
+                
+                // Vider aussi le tableau en mémoire
+                baseCommunautaire = [];
+                
+                // Resynchroniser depuis Firebase
+                console.log('🔄 Début synchronisation...');
+                await synchroniserBaseCommunautaire();
+                console.log('✅ Synchronisation terminée');
+                
                 afficherNotification('✅ Produit supprimé !', 'linear-gradient(135deg, #4caf50 0%, #45a049 100%)');
                 
-                // Resynchroniser
-                await synchroniserBaseCommunautaire();
-                
-                // Réafficher les deux vues
-                afficherProduitsCommunautaires(); // Vue normale
+                // Réafficher la vue admin si elle est affichée
                 const listeAdmin = document.getElementById('listeProduitsAdmin');
                 if (listeAdmin && listeAdmin.innerHTML) {
-                    afficherProduitsCommunautairesAdmin(); // Vue admin si elle est affichée
+                    afficherProduitsCommunautairesAdmin();
                 }
                 
-                console.log('🗑️ Produit supprimé:', nomProduit, 'ID:', idDoc);
+                console.log('🗑️ Produit supprimé avec succès:', nomProduit);
             } catch (error) {
                 console.error('❌ Erreur suppression:', error);
+                console.error('❌ Détails:', error.message);
+                alert(`❌ Erreur lors de la suppression: ${error.message}`);
                 afficherNotification('❌ Erreur lors de la suppression', 'linear-gradient(135deg, #f5576c 0%, #f093fb 100%)');
             }
         }
@@ -7510,14 +7533,19 @@ Réponds de manière personnalisée, encourageante et professionnelle. Donne des
                 console.log('🔄 Synchronisation base communautaire...');
 
                 const snapshot = await db.collection('produitsPartages').get();
+                console.log('📡 Données reçues:', snapshot.size, 'documents');
                 
                 baseCommunautaire = [];
                 snapshot.forEach(doc => {
-                    baseCommunautaire.push({
+                    const produit = {
                         id: doc.id,
                         ...doc.data()
-                    });
+                    };
+                    baseCommunautaire.push(produit);
+                    console.log('📦 Produit chargé:', produit.nom, 'ID:', doc.id);
                 });
+
+                console.log('📊 Total produits chargés:', baseCommunautaire.length);
 
                 statsGlobales.totalProduits = baseCommunautaire.length;
                 statsGlobales.derniereSync = new Date().toISOString();
@@ -7535,6 +7563,7 @@ Réponds de manière personnalisée, encourageante et professionnelle. Donne des
 
             } catch (error) {
                 console.error('❌ Erreur synchronisation:', error);
+                console.error('❌ Détails:', error.message);
                 
                 const cached = localStorage.getItem('baseCommunautaire');
                 if (cached) {
