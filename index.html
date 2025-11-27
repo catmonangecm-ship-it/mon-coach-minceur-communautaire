@@ -1,4 +1,4 @@
-       <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -1725,7 +1725,7 @@
                         
                         // Masquer le modal de connexion
                         const modal = document.getElementById('authModal');
-                        if (modal) modal.classList.remove('active');
+                        if (modal) modal.style.display = 'none';
                         
                         // Afficher le badge utilisateur
                         afficherBadgeUtilisateur();
@@ -1851,7 +1851,8 @@
                 showAuthSuccess('✅ Compte créé avec succès ! Connexion...');
                 
                 setTimeout(() => {
-                    document.getElementById('authModal').classList.remove('active');
+                    const modal = document.getElementById('authModal');
+                    if (modal) modal.style.display = 'none';
                     afficherNotification('🎉 Bienvenue ' + name + ' !', 'linear-gradient(135deg, #4caf50 0%, #45a049 100%)');
                 }, 1500);
 
@@ -1897,7 +1898,8 @@
                 showAuthSuccess('✅ Connexion réussie !');
                 
                 setTimeout(() => {
-                    document.getElementById('authModal').classList.remove('active');
+                    const modal = document.getElementById('authModal');
+                    if (modal) modal.style.display = 'none';
                 }, 1000);
 
             } catch (error) {
