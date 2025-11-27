@@ -4665,6 +4665,56 @@
         // AFFICHAGE BASE COMMUNAUTAIRE
         // ==============================================
 
+        // Fonction helper pour générer le HTML d'un produit communautaire
+        function genererHtmlProduitCommunautaire(produit, afficherBoutonAdmin = false) {
+            const date = produit.dateAjout ? new Date(produit.dateAjout.seconds * 1000).toLocaleDateString('fr-FR') : 'Date inconnue';
+            const contributeur = produit.contributeur || 'Anonyme';
+            const idDoc = produit.id || '';
+            const isAdmin = afficherBoutonAdmin && estAdmin();
+            
+            return `
+            <div class="weight-item" style="flex-direction: column; align-items: stretch; margin-bottom: 15px; border-left: 4px solid #4caf50;">
+                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+                    <div style="flex: 1;">
+                        <div style="font-weight: bold; color: #333; font-size: 1.1em;">${produit.nom}</div>
+                        <div style="color: #667eea; font-size: 0.9em;">${produit.marque || 'Sans marque'}</div>
+                        <div style="display: flex; gap: 15px; margin-top: 8px;">
+                            <div style="color: #4caf50; font-size: 0.85em;">
+                                👤 ${contributeur}
+                            </div>
+                            <div style="color: #999; font-size: 0.85em;">
+                                📅 ${date}
+                            </div>
+                        </div>
+                    </div>
+                    ${isAdmin ? `
+                    <button onclick="supprimerProduitAdmin('${idDoc.replace(/'/g, "\\'")}', '${produit.nom.replace(/'/g, "\\'")}'); event.stopPropagation();" style="background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%); color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; white-space: nowrap;">
+                        🗑️ Supprimer
+                    </button>
+                    ` : ''}
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; background: #f8f9fa; padding: 10px; border-radius: 5px;">
+                    <div style="text-align: center;">
+                        <div style="font-weight: bold; color: #667eea;">${Math.round(produit.calories)}</div>
+                        <div style="font-size: 0.8em; color: #666;">kcal</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-weight: bold; color: #f5576c;">${produit.proteines.toFixed(1)}g</div>
+                        <div style="font-size: 0.8em; color: #666;">protéines</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-weight: bold; color: #00f2fe;">${produit.glucides.toFixed(1)}g</div>
+                        <div style="font-size: 0.8em; color: #666;">glucides</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-weight: bold; color: #38f9d7;">${produit.lipides.toFixed(1)}g</div>
+                        <div style="font-size: 0.8em; color: #666;">lipides</div>
+                    </div>
+                </div>
+            </div>
+            `;
+        }
+
         function afficherProduitsCommunautaires() {
             const liste = document.getElementById('listeProduitsCommunautaires');
             const compteur = document.getElementById('compteurBaseCommunautaire');
@@ -4705,46 +4755,7 @@
                 return 0;
             });
 
-            liste.innerHTML = produitsTries.map((produit) => {
-                const date = produit.dateAjout ? new Date(produit.dateAjout.seconds * 1000).toLocaleDateString('fr-FR') : 'Date inconnue';
-                const contributeur = produit.contributeur || 'Anonyme';
-                
-                return `
-                <div class="weight-item" style="flex-direction: column; align-items: stretch; margin-bottom: 15px; border-left: 4px solid #4caf50;">
-                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
-                        <div style="flex: 1;">
-                            <div style="font-weight: bold; color: #333; font-size: 1.1em;">${produit.nom}</div>
-                            <div style="color: #667eea; font-size: 0.9em;">${produit.marque || 'Sans marque'}</div>
-                            <div style="display: flex; gap: 15px; margin-top: 8px;">
-                                <div style="color: #4caf50; font-size: 0.85em;">
-                                    👤 ${contributeur}
-                                </div>
-                                <div style="color: #999; font-size: 0.85em;">
-                                    📅 ${date}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; background: #f8f9fa; padding: 10px; border-radius: 5px;">
-                        <div style="text-align: center;">
-                            <div style="font-weight: bold; color: #667eea;">${Math.round(produit.calories)}</div>
-                            <div style="font-size: 0.8em; color: #666;">kcal</div>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="font-weight: bold; color: #f5576c;">${produit.proteines.toFixed(1)}g</div>
-                            <div style="font-size: 0.8em; color: #666;">protéines</div>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="font-weight: bold; color: #00f2fe;">${produit.glucides.toFixed(1)}g</div>
-                            <div style="font-size: 0.8em; color: #666;">glucides</div>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="font-weight: bold; color: #38f9d7;">${produit.lipides.toFixed(1)}g</div>
-                            <div style="font-size: 0.8em; color: #666;">lipides</div>
-                        </div>
-                    </div>
-                </div>
-            `}).join('');
+            liste.innerHTML = produitsTries.map((produit) => genererHtmlProduitCommunautaire(produit, true)).join('');
         }
 
         function filtrerProduitsCommunautaires() {
@@ -4783,46 +4794,7 @@
                 return 0;
             });
 
-            liste.innerHTML = produitsTries.map((produit) => {
-                const date = produit.dateAjout ? new Date(produit.dateAjout.seconds * 1000).toLocaleDateString('fr-FR') : 'Date inconnue';
-                const contributeur = produit.contributeur || 'Anonyme';
-                
-                return `
-                <div class="weight-item" style="flex-direction: column; align-items: stretch; margin-bottom: 15px; border-left: 4px solid #4caf50;">
-                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
-                        <div style="flex: 1;">
-                            <div style="font-weight: bold; color: #333; font-size: 1.1em;">${produit.nom}</div>
-                            <div style="color: #667eea; font-size: 0.9em;">${produit.marque || 'Sans marque'}</div>
-                            <div style="display: flex; gap: 15px; margin-top: 8px;">
-                                <div style="color: #4caf50; font-size: 0.85em;">
-                                    👤 ${contributeur}
-                                </div>
-                                <div style="color: #999; font-size: 0.85em;">
-                                    📅 ${date}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; background: #f8f9fa; padding: 10px; border-radius: 5px;">
-                        <div style="text-align: center;">
-                            <div style="font-weight: bold; color: #667eea;">${Math.round(produit.calories)}</div>
-                            <div style="font-size: 0.8em; color: #666;">kcal</div>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="font-weight: bold; color: #f5576c;">${produit.proteines.toFixed(1)}g</div>
-                            <div style="font-size: 0.8em; color: #666;">protéines</div>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="font-weight: bold; color: #00f2fe;">${produit.glucides.toFixed(1)}g</div>
-                            <div style="font-size: 0.8em; color: #666;">glucides</div>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="font-weight: bold; color: #38f9d7;">${produit.lipides.toFixed(1)}g</div>
-                            <div style="font-size: 0.8em; color: #666;">lipides</div>
-                        </div>
-                    </div>
-                </div>
-            `}).join('');
+            liste.innerHTML = produitsTries.map((produit) => genererHtmlProduitCommunautaire(produit, true)).join('');
         }
 
         // ==============================================
@@ -6070,8 +6042,12 @@ Réponds de manière personnalisée, encourageante et professionnelle. Donne des
                 // Resynchroniser
                 await synchroniserBaseCommunautaire();
                 
-                // Réafficher
-                afficherProduitsCommunautairesAdmin();
+                // Réafficher les deux vues
+                afficherProduitsCommunautaires(); // Vue normale
+                const listeAdmin = document.getElementById('listeProduitsAdmin');
+                if (listeAdmin && listeAdmin.innerHTML) {
+                    afficherProduitsCommunautairesAdmin(); // Vue admin si elle est affichée
+                }
                 
                 console.log('🗑️ Produit supprimé:', nomProduit, 'ID:', idDoc);
             } catch (error) {
